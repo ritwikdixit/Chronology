@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="LoginLabel">Login</string>
+    <string name="HomepageLabel">Home</string>
+    <string name="app_name">MadFBLA201415</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="create_account"><u>Sign Up for Free!</u></string>
+
+    <string name="fullname">full name</string>
+    <string name="email">email</string>
+    <string name="repeat_pass">repeat password</string>
+    <string name="sign_in"><u>Sign In!</u></string>
+
+    <string name="sign_in_button_string">Sign In</string>
+    <string name="sign_up_button_string">Sign Up</string>
+
+    <string name="temporary">This is the homepage. Later it will host
+    multiple fragments, including a "Scrolling Image Banner", and ListView.
+    We can also think of some cool stuff to populate the action bar later. </string>
+
+</resources>
