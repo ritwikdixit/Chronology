@@ -18,7 +18,7 @@
             android:id="@+id/login_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
+            android:hint="@string/email"
             android:gravity="center"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"

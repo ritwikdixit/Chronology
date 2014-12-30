@@ -3,6 +3,7 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import com.firebase.client.*;
 public class SignupFragment extends Fragment {
 
     private EditText mFullName, mEmail, mPhoneNumber,
-            mUsername, mPassword, mRepeatPassword;
+             mPassword, mRepeatPassword;
     private Button mSignUpButton;
     private TextView mSignInButtonView;
     private Firebase ref;
@@ -42,7 +43,6 @@ public class SignupFragment extends Fragment {
 
         mFullName = (EditText) rootView.findViewById(R.id.signup_full_name);
         mEmail = (EditText) rootView.findViewById(R.id.signup_email);
-        mUsername = (EditText) rootView.findViewById(R.id.signup_username);
         mPhoneNumber = (EditText) rootView.findViewById(R.id.signup_phone);
         mPassword = (EditText) rootView.findViewById(R.id.signup_password);
         mRepeatPassword = (EditText) rootView.findViewById(R.id.signup_repeat_password);
@@ -50,7 +50,7 @@ public class SignupFragment extends Fragment {
         mSignInButtonView = (TextView) rootView.findViewById(R.id.sign_in_buttonview);
 
         allFields = new EditText[] {
-                mFullName, mEmail, mPhoneNumber, mUsername, mPassword, mRepeatPassword
+                mFullName, mEmail, mPhoneNumber, mPassword, mRepeatPassword
         };
 
         ref = new Firebase(URL_FIREBASE);
@@ -61,7 +61,7 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
+                Log.v(LOG_TAG, "This worked wow guys!");
                 //check if password fields are equal and no field is empty
                 if (mPassword.getText().toString().equals(mRepeatPassword.getText().toString())
                         && !anyFieldIsNull()) {
@@ -115,6 +115,13 @@ public class SignupFragment extends Fragment {
 
                         ref.child("users").child(authData.getUid()).child("full_name")
                                 .setValue(mFullName.getText().toString());
+
+                        ref.child("users").child(authData.getUid()).child("phone_number")
+                                .setValue(mPhoneNumber.getText().toString());
+
+                        ref.child("users").child(authData.getUid()).child("email")
+                                .setValue(mEmail.getText().toString());
+
 
                         Toast.makeText(getActivity().getApplicationContext(), "Success, Account Created!",
                                 Toast.LENGTH_SHORT).show();

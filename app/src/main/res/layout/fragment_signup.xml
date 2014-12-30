@@ -46,16 +46,6 @@
             android:layout_gravity="center_vertical" />
 
         <EditText
-            android:id="@+id/signup_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:gravity="center"
-            android:layout_marginRight="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_gravity="center_vertical" />
-
-        <EditText
             android:id="@+id/signup_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
