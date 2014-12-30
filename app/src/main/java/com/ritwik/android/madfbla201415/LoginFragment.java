@@ -24,6 +24,7 @@ public class LoginFragment extends Fragment {
     private static final String LOG_TAG = "LoginPhase";
 
     public LoginFragment() {
+        //empty constructor refer to onCreateView
     }
 
     @Override
