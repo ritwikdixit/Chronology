@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.*;
+
 //class for signing up
 
 public class SignupFragment extends Fragment {
@@ -18,12 +20,14 @@ public class SignupFragment extends Fragment {
             mUsername, mPassword, mRepeatPassword;
     private Button mSignUpButton;
     private TextView mSignInButtonView;
+    private Firebase ref = new Firebase(URL_FIREBASE);
 
     //for convenience for anyFieldIsNull()
     private EditText[] allFields;
 
     //constants
     private static final String LOG_TAG = "LoginPhase";
+    private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
 
     public SignupFragment() {
 
@@ -53,18 +57,26 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //TODO: Firebase check if distinct username, add User
-
                 //check if password fields are equal and no field is empty
                 if (mPassword.getText().toString().equals(mRepeatPassword.getText().toString())
                         && !anyFieldIsNull()) {
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Success, Account Created!",
-                            Toast.LENGTH_SHORT).show();
+                    ref.createUser(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.ResultHandler() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Success, Account Created!",
+                                    Toast.LENGTH_SHORT).show();
 
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_main_container, new LoginFragment())
-                            .commit();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_main_container, new LoginFragment())
+                                    .commit();
+                        }
+                        @Override
+                        public void onError(FirebaseError firebaseError) {
+                            //TODO: Display Error : firebaseError.getMessage();
+                        }
+                    });
+
                 } else {
 
                     Toast.makeText(getActivity().getApplicationContext(), "Fields must not be empty, " +
@@ -73,7 +85,6 @@ public class SignupFragment extends Fragment {
 
                     mPassword.setText(null);
                     mRepeatPassword.setText(null);
-
                 }
             }
 
