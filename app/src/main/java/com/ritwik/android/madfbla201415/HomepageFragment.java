@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class HomepageFragment extends Fragment {
 
@@ -14,6 +16,7 @@ public class HomepageFragment extends Fragment {
     // essentially a list of images being animated by runnable
 
     private ViewPager mScrollBanner;
+    private ListView mListView;
     private PagerAdapter mImageAdapter;
 
     //holds the IDs for the images, placeholder images
@@ -31,6 +34,21 @@ public class HomepageFragment extends Fragment {
         mImageAdapter = new BannerAdapter(getActivity(), mBannerIds);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
+
+        // Sample throwaway strings to test listview with
+        String[] items = new String[10];
+        for (int i = 0; i < 10; i++)
+            items[i] = "Event #" + i;
+
+        // Populating the list
+        mListView = (ListView) rootView.findViewById(R.id.list_view);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(
+                this.getActivity(),
+                android.R.layout.simple_list_item_1,
+                items
+        );
+        mListView.setAdapter(itemsAdapter);
+
 
         return rootView;
     }
