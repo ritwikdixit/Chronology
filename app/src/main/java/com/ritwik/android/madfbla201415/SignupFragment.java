@@ -64,12 +64,22 @@ public class SignupFragment extends Fragment {
                     ref.createUser(mEmail.getText().toString(), mPassword.getText().toString(), new Firebase.ResultHandler() {
                         @Override
                         public void onSuccess() {
+
                             Toast.makeText(getActivity().getApplicationContext(), "Success, Account Created!",
                                     Toast.LENGTH_SHORT).show();
 
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_main_container, new LoginFragment())
-                                    .commit();
+                            ref.authWithPassword(mEmail.getText().toString(), mPassword.getText().toString() , new Firebase.AuthResultHandler() {
+                                @Override
+                                public void onAuthenticated(AuthData authData) {
+                                    ref.child("users").child(authData.getUid()).child("full_name").setValue(mFullName.getText().toString());
+                                    //TODO: Move to HomesScreen
+                                }
+                                @Override
+                                public void onAuthenticationError(FirebaseError firebaseError) {
+                                    //Auth Error
+                                    //TODO: Display somehow :  firebaseError.getMessage();
+                                }
+                            });
                         }
                         @Override
                         public void onError(FirebaseError firebaseError) {

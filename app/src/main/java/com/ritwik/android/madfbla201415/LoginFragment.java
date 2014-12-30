@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                        //Auth Successful
-                       //TODO: Move to next screen
+                       //TODO: Move to HomeScreen
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
