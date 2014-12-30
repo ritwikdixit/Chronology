@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.firebase.client.Firebase;
+import android.widget.Toast;
+import com.firebase.client.*;
 
 public class LoginFragment extends Fragment {
 
@@ -36,20 +36,31 @@ public class LoginFragment extends Fragment {
         mSignInButton = (Button) rootView.findViewById(R.id.sign_in_button);
         mSignUpButtonView = (TextView) rootView.findViewById(R.id.sign_up_buttonview);
 
+        Firebase.setAndroidContext(getActivity());
+        ref = new Firebase(URL_FIREBASE);
+
         //creating anonymous inner classes for click events
         mSignInButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                //TODO: Authenticate user data with Firebase Server
-
-                //Read about Explicit Intents at
-                // http://developer.android.com/guide/components/intents-filters.html
-                //used to start activities (like this) and send data across activities
-
-                Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
-                startActivity(homepageIntent);
+                //Authorize with Server, otherwise make toast displaying error
+                ref.authWithPassword(mLoginField.getText().toString(),
+                        mPassField.getText().toString() , new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        //Auth Successful
+                        Intent homePageIntent = new Intent(getActivity(), HomepageActivity.class);
+                        startActivity(homePageIntent);
+                    }
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        //Auth Error
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
 
@@ -71,18 +82,6 @@ public class LoginFragment extends Fragment {
             }
 
         });
-
-        Firebase.setAndroidContext(getActivity());
-        ref = new Firebase(URL_FIREBASE);
-
-        /*
-        For reference
-        Testing adding values with distinct key pairs
-        Map<String, Object> mapp = new HashMap<String, Object>();
-        mapp.put("runtimeMessage3", "more data");
-        mapp.put("runtimeMessage4", "more data");
-        ref.child("announcements").child("current").updateChildren(mapp);
-        */
 
         return rootView;
     }

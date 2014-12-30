@@ -1,8 +1,18 @@
 <resources>
 
+    <!-- Also change Action Bar color -->
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+    </style>
+
+    <!--  android:shadowColor="#0000ff"
+   android:shadowDx="2"
+   android:shadowDy="4" -->
+
+    <style name="bottomActionBar">
+        <item name="android:background">@color/chronology_color</item>
     </style>
 
 </resources>
