@@ -13,6 +13,7 @@
     <string name="email">email</string>
     <string name="repeat_pass">repeat password</string>
     <string name="sign_in"><u>Sign In!</u></string>
+    <string name="phone_number">phone number</string>
 
     <string name="sign_in_button_string">Sign In</string>
     <string name="sign_up_button_string">Sign Up</string>
