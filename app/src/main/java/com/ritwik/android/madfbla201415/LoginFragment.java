@@ -9,15 +9,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.firebase.client.*;
 
-import com.firebase.client.Firebase;
+import org.shaded.apache.commons.codec.digest.DigestUtils;
 
 public class LoginFragment extends Fragment {
 
     private Button mSignInButton;
     private TextView mSignUpButtonView;
     private EditText mLoginField, mPassField;
-    private Firebase ref;
+    private Firebase ref = new Firebase(URL_FIREBASE);
 
     //Constants
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
@@ -42,7 +43,19 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //TODO: Authenticate user data with Firebase Server
+                ref.authWithPassword(mLoginField.getText().toString(), mPassField.getText().toString() , new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                       //Auth Successful
+                       //TODO: Move to next screen
+                    }
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                       //Auth Error
+                       //TODO: Display somehow :  firebaseError.getMessage();
+                    }
+                });
+
 
                 //Read about Explicit Intents at
                 // http://developer.android.com/guide/components/intents-filters.html
