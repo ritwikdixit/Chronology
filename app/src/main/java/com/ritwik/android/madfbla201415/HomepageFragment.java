@@ -35,7 +35,7 @@ public class HomepageFragment extends Fragment {
 
     private static final String LOG_TAG = "EventList";
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
-    private Firebase ref = new Firebase(URL_FIREBASE);
+    private Firebase ref = DataHolder.getRef();
 
 
     @Override
@@ -51,8 +51,8 @@ public class HomepageFragment extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 
         final ArrayList<EventItem> events = new ArrayList<EventItem>();
-
-        ref.child("calendar").addChildEventListener(new ChildEventListener() {
+        Query eventsByDate = ref.child("calendar").orderByChild("start_date");
+        eventsByDate.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {

@@ -1,6 +1,9 @@
 package com.ritwik.android.madfbla201415;
 
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class EventItem {
 
     private static final String LOG_TAG = "EventList";
@@ -61,8 +64,11 @@ public class EventItem {
 
     public String formatDate(String mServerDateData) {
         String[] parts = mServerDateData.split("-");
-        return parts[1] + "/" + parts[2] + "/" + parts[0];
 
+        return theMonth(Integer.parseInt(parts[1])) + " " + parts[2] + ", " + parts[0];
     }
-
+    public static String theMonth(int month){
+        String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
+        return monthNames[month - 1];
+    }
 }

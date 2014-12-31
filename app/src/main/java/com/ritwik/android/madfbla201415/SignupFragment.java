@@ -52,7 +52,7 @@ public class SignupFragment extends Fragment {
                 mFullName, mEmail, mPhoneNumber, mUsername, mPassword, mRepeatPassword
         };
 
-        ref = new Firebase(URL_FIREBASE);
+        ref = DataHolder.getRef();
 
         //creating anonymous inner classes for click events
         mSignUpButton.setOnClickListener(new View.OnClickListener() {

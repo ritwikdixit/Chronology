@@ -37,7 +37,8 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         Firebase.setAndroidContext(getActivity());
-        ref = new Firebase(URL_FIREBASE);
+        DataHolder.setRef(new Firebase(URL_FIREBASE));
+        ref = DataHolder.getRef();
 
         ref.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
