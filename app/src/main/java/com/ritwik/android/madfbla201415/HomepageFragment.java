@@ -7,8 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.firebase.client.Firebase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HomepageFragment extends Fragment {
 
@@ -25,6 +29,10 @@ public class HomepageFragment extends Fragment {
             R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher
     };
 
+    private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
+    private Firebase ref = new Firebase(URL_FIREBASE);
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,19 +43,19 @@ public class HomepageFragment extends Fragment {
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
 
-        // Sample throwaway strings to test listview with
-        String[] items = new String[10];
-        for (int i = 0; i < 10; i++)
-            items[i] = "Event #" + i;
-
-        // Populating the list
         mListView = (ListView) rootView.findViewById(R.id.list_view);
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(
-                this.getActivity(),
-                android.R.layout.simple_list_item_1,
-                items
-        );
-        mListView.setAdapter(itemsAdapter);
+
+        ArrayList<EventItem> events = new ArrayList<EventItem>();
+        events.add(new EventItem(ref.child("calendar").child("event1")));
+
+        //TODO: THe problem is that if you go to event item class
+        //the data isnt done downloading because it creates "listeners"
+        //which can go off at any time so the code skips over them
+
+        EventListItemAdapter eventAdapter
+                = new EventListItemAdapter(getActivity(), events);
+
+        mListView.setAdapter(eventAdapter);
 
 
         return rootView;
