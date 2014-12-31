@@ -35,15 +35,15 @@ public class EventListItemAdapter extends ArrayAdapter<EventItem> {
         TextView mTitle = (TextView) convertView.findViewById(R.id.event_list_item_title);
         TextView mDetails = (TextView) convertView.findViewById(R.id.event_list_item_details);
 
-        mDate.setText(thisEvent.getmStartDate());
+        mDate.setText(thisEvent.formatDate(thisEvent.getmStartDate()));
         mTime.setText(thisEvent.getmStartTime());
         mTitle.setText(thisEvent.getmTitle());
 
         //populating a preview of the details
-        if (thisEvent.getmDetails().length() <= 35) {
+        if (thisEvent.getmDetails().length() <= 25) {
             mDetails.setText(thisEvent.getmDetails());
         } else {
-            mDetails.setText(thisEvent.getmDetails().substring(0, 35) + "...");
+            mDetails.setText(thisEvent.getmDetails().substring(0, 25) + "...");
         }
 
         return convertView;

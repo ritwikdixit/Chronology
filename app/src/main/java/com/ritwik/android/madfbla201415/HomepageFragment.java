@@ -25,12 +25,15 @@ public class HomepageFragment extends Fragment {
     private ListView mListView;
     private PagerAdapter mImageAdapter;
 
+    private EventListItemAdapter eventAdapter;
+
     //holds the IDs for the images, placeholder images
     private int[] mBannerIds = {
             R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
             R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher
     };
 
+    private static final String LOG_TAG = "EventList";
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
     private Firebase ref = new Firebase(URL_FIREBASE);
 
@@ -48,6 +51,7 @@ public class HomepageFragment extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 
         final ArrayList<EventItem> events = new ArrayList<EventItem>();
+
         ref.child("calendar").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
@@ -62,6 +66,8 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("location").toString(),
                         newEvent.get("details").toString()
                 ));
+                mListView.setAdapter(eventAdapter);
+
             }
 
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -79,11 +85,7 @@ public class HomepageFragment extends Fragment {
         });
 
 
-        //TODO: THe problem is that if you go to event item class
-        //the data isnt done downloading because it creates "listeners"
-        //which can go off at any time so the code skips over them
-
-        EventListItemAdapter eventAdapter
+        eventAdapter
                 = new EventListItemAdapter(getActivity(), events);
 
         mListView.setAdapter(eventAdapter);

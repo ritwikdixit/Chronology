@@ -15,12 +15,17 @@ public class EventItem {
     private String mLocation;
     private String mDetails;
 
-    public EventItem(String mStartDate, String mEndDate, String mStartTime, String mEndTime, String mTitle, String mLocation, String mDetails) {
-        this.mTitle = mTitle;
+    public EventItem(String mStartDate, String mEndDate, String mStartTime,
+                     String mEndTime, String mTitle, String mLocation, String mDetails) {
 
-        this.mStartDate = mStartDate;  this.mEndDate = mEndDate;
-        this.mStartTime = mStartTime;  this.mEndTime = mEndTime;
-        this. mLocation = mLocation;   this.mDetails = mDetails;
+        this.mTitle = mTitle;
+        this.mStartDate = mStartDate;
+        this.mEndDate = mEndDate;
+        this.mStartTime = mStartTime;
+        this.mEndTime = mEndTime;
+        this. mLocation = mLocation;
+        this.mDetails = mDetails;
+
     }
 
 
@@ -52,6 +57,12 @@ public class EventItem {
         return mDetails;
     }
 
+    //formats date so it fits in the listView
 
+    public String formatDate(String mServerDateData) {
+        String[] parts = mServerDateData.split("-");
+        return parts[1] + "/" + parts[2] + "/" + parts[0];
+
+    }
 
 }
