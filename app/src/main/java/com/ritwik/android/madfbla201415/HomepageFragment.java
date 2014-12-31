@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class HomepageFragment extends Fragment {
 
             }
             public void onCancelled(FirebaseError firebaseError) {
-
+                Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
         });
 

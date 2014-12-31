@@ -19,7 +19,7 @@ public class LoginFragment extends Fragment {
     private Button mSignInButton;
     private TextView mSignUpButtonView;
     private EditText mLoginField, mPassField;
-    private Firebase ref = new Firebase(URL_FIREBASE);
+    private Firebase ref;
 
     //Constants
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
@@ -38,6 +38,9 @@ public class LoginFragment extends Fragment {
         mPassField = (EditText) rootView.findViewById(R.id.login_password);
         mSignInButton = (Button) rootView.findViewById(R.id.sign_in_button);
         mSignUpButtonView = (TextView) rootView.findViewById(R.id.sign_up_buttonview);
+
+        Firebase.setAndroidContext(getActivity());
+        ref = new Firebase(URL_FIREBASE);
 
         //creating anonymous inner classes for click events
         mSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +89,6 @@ public class LoginFragment extends Fragment {
             }
 
         });
-
-        Firebase.setAndroidContext(getActivity());
-        ref = new Firebase(URL_FIREBASE);
 
         /*
         For reference
