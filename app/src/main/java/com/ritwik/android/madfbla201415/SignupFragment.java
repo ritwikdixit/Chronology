@@ -42,7 +42,6 @@ public class SignupFragment extends Fragment {
 
         mFullName = (EditText) rootView.findViewById(R.id.signup_full_name);
         mEmail = (EditText) rootView.findViewById(R.id.signup_email);
-        mUsername = (EditText) rootView.findViewById(R.id.signup_username);
         mPhoneNumber = (EditText) rootView.findViewById(R.id.signup_phone);
         mPassword = (EditText) rootView.findViewById(R.id.signup_password);
         mRepeatPassword = (EditText) rootView.findViewById(R.id.signup_repeat_password);

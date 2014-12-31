@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.firebase.client.Firebase;
+import com.firebase.client.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class HomepageFragment extends Fragment {
 
@@ -45,8 +46,37 @@ public class HomepageFragment extends Fragment {
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 
-        ArrayList<EventItem> events = new ArrayList<EventItem>();
-        events.add(new EventItem(ref.child("calendar").child("event1")));
+        final ArrayList<EventItem> events = new ArrayList<EventItem>();
+        ref.child("calendar").addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                events.add(new EventItem(
+                        newEvent.get("start_date").toString(),
+                        newEvent.get("end_date").toString(),
+                        newEvent.get("start_time").toString(),
+                        newEvent.get("end_time").toString(),
+                        newEvent.get("title").toString(),
+                        newEvent.get("location").toString(),
+                        newEvent.get("details").toString()
+                ));
+            }
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
 
         //TODO: THe problem is that if you go to event item class
         //the data isnt done downloading because it creates "listeners"
