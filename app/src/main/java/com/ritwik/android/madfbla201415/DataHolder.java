@@ -6,6 +6,7 @@ import com.firebase.client.Firebase;
  * Created by Soham Pardeshi on 12/31/2014.
  */
 public class DataHolder {
+
     private static Firebase ref;
     private DataHolder(){} //Empty Constructor
 

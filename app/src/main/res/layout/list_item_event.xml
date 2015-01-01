@@ -9,7 +9,6 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_marginLeft="8dp"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -23,7 +22,7 @@
 
             <TextView
                 android:id="@+id/event_list_item_date"
-                android:text="01/24/15"
+                android:text="Jan 31, 2015"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -40,6 +39,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:layout_weight="2"
+            android:layout_marginLeft="4dp"
             android:orientation="vertical" >
 
 

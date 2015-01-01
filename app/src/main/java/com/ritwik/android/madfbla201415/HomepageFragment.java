@@ -34,7 +34,6 @@ public class HomepageFragment extends Fragment {
     };
 
     private static final String LOG_TAG = "EventList";
-    private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
     private Firebase ref = DataHolder.getRef();
 
 

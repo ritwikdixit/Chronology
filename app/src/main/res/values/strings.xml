@@ -22,4 +22,6 @@
     multiple fragments, including a "Scrolling Image Banner", and ListView.
     We can also think of some cool stuff to populate the action bar later. </string>
 
+    <string name="loading">Loading... Please Wait.</string>
+
 </resources>
