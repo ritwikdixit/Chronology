@@ -26,7 +26,8 @@ public class LoadingActivity extends ActionBarActivity {
         setContentView(R.layout.activity_loading);
 
         Firebase.setAndroidContext(this);
-        DataHolder.setRef(new Firebase(URL_FIREBASE));
+        if(DataHolder.isNull())
+            DataHolder.setRef(new Firebase(URL_FIREBASE));
         ref = DataHolder.getRef();
         mContext = this;
 

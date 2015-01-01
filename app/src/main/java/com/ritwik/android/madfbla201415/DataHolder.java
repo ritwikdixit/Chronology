@@ -16,4 +16,7 @@ public class DataHolder {
     public static Firebase getRef(){
         return ref;
     }
+    public static boolean isNull(){
+        return ref == null;
+    }
 }
