@@ -39,11 +39,11 @@ public class EventListItemAdapter extends ArrayAdapter<EventItem> {
         mTime.setText(thisEvent.getmStartTime());
         mTitle.setText(thisEvent.getmTitle());
 
-        //populating a preview of the details
-        if (thisEvent.getmDetails().length() <= 25) {
+        //populating a preview of the detail0
+        if (thisEvent.getmDetails().length() <= 30) {
             mDetails.setText(thisEvent.getmDetails());
         } else {
-            mDetails.setText(thisEvent.getmDetails().substring(0, 25) + "...");
+            mDetails.setText(thisEvent.getmDetails().substring(0, 30) + "...");
         }
 
         return convertView;

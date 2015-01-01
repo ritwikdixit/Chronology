@@ -47,11 +47,15 @@ public class HomepageFragment extends Fragment {
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
 
+        mScrollBanner.setScaleX(1);
+
         mListView = (ListView) rootView.findViewById(R.id.list_view);
+
 
         final ArrayList<EventItem> events = new ArrayList<EventItem>();
         Query eventsByDate = ref.child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
+
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
