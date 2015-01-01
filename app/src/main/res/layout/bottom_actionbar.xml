@@ -8,16 +8,6 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/all_events_menu_button"
-            android:src="@drawable/ic_launcher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_weight="1"
-            android:background="@android:color/transparent" />
-
-
-        <ImageButton
             android:id="@+id/notifications_menu_button"
             android:src="@drawable/ic_launcher"
             android:layout_width="wrap_content"
@@ -28,7 +18,17 @@
 
 
         <ImageButton
-            android:id="@+id/create_event_menu_button"
+            android:id="@+id/monthly_view_button"
+            android:src="@drawable/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
+
+
+        <ImageButton
+            android:id="@+id/all_events_menu_button"
             android:src="@drawable/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
 
 
         <ImageButton
-            android:id="@+id/settings_menu_button"
+            android:id="@+id/log_out_button"
             android:src="@drawable/ic_launcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

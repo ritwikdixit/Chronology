@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 public class EventListItemAdapter extends ArrayAdapter<EventItem> {
 
-    private FragmentActivity mContext;
+    private Activity mActivity;
 
-    public EventListItemAdapter(FragmentActivity activity, ArrayList<EventItem> events) {
+    public EventListItemAdapter(Activity activity, ArrayList<EventItem> events) {
         super(activity, 0, events);
-        mContext = activity;
+        mActivity = activity;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = mContext.getLayoutInflater()
+            convertView = mActivity.getLayoutInflater()
                     .inflate(R.layout.list_item_event, null);
         }
 

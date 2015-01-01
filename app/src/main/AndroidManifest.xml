@@ -29,5 +29,8 @@
 
         </activity>
 
+        <activity android:name=".AllEventsActivity"
+            android:label="@string/all_events" />
+
     </application>
 </manifest>

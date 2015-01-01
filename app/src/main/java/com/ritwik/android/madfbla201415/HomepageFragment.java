@@ -1,5 +1,7 @@
 package com.ritwik.android.madfbla201415;
 
+import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -8,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.firebase.client.*;
 
@@ -24,8 +29,12 @@ public class HomepageFragment extends Fragment {
     private ViewPager mScrollBanner;
     private ListView mListView;
     private PagerAdapter mImageAdapter;
+    private ProgressBar mProgressBar;
+
+    private ImageButton mAllEventsButton;
 
     private EventListItemAdapter eventAdapter;
+    private ArrayList<EventItem> events;
 
     //holds the IDs for the images, placeholder images
     private int[] mBannerIds = {
@@ -47,12 +56,33 @@ public class HomepageFragment extends Fragment {
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
 
-        mScrollBanner.setScaleX(1);
+        mAllEventsButton = (ImageButton) rootView.findViewById(R.id.all_events_menu_button);
+
+        //for aesthetics
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        mProgressBar.setMax(100);
+        mProgressBar.setProgress(0);
+
+        //When a page changes on a banner the bar smooth scrolls to position
+        mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                //set the progress bar accordingly
+                int bar = (int) (position *
+                        (double) mProgressBar.getMax() / (mBannerIds.length - 1) + 0.5);
+                ObjectAnimator anim = ObjectAnimator.ofInt(mProgressBar, "progress", bar);
+                anim.setDuration(350);
+                anim.setInterpolator(new DecelerateInterpolator());
+                anim.start();
+            }
+        });
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 
 
-        final ArrayList<EventItem> events = new ArrayList<EventItem>();
+        events = new ArrayList<EventItem>();
         Query eventsByDate = ref.child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
 
@@ -93,9 +123,20 @@ public class HomepageFragment extends Fragment {
 
         mListView.setAdapter(eventAdapter);
 
+        mAllEventsButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), AllEventsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }
+
 
 
 
