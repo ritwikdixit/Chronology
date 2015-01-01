@@ -39,9 +39,11 @@ public class LoadingActivity extends ActionBarActivity {
                 if (authData != null) {
                     Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
                     startActivity(redirectIntent);
+                    finish();
                 } else {
                     Intent redirectIntent = new Intent(mContext, LoginActivity.class);
                     startActivity(redirectIntent);
+                    finish();
                 }
             }
         });
