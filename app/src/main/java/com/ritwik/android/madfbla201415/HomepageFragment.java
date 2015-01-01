@@ -2,6 +2,7 @@ package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -32,9 +34,14 @@ public class HomepageFragment extends Fragment {
     private ProgressBar mProgressBar;
 
     private ImageButton mAllEventsButton;
+    private ImageButton mHomeButton;
+    private ImageButton mLogOutButton;
 
     private EventListItemAdapter eventAdapter;
-    private ArrayList<EventItem> events;
+
+    //this is static so i can refer to it in the other class
+    //detail activity
+    private static ArrayList<EventItem> events;
 
     //holds the IDs for the images, placeholder images
     private int[] mBannerIds = {
@@ -44,6 +51,16 @@ public class HomepageFragment extends Fragment {
 
     private static final String LOG_TAG = "EventList";
     private Firebase ref = DataHolder.getRef();
+
+    //keys for detail activity
+    public static final String TITLE_KEY = "title";
+    public static final String START_DATE_KEY = "start_date";
+    public static final String END_DATE_KEY = "end_date";
+    public static final String START_TIME_KEY = "start_time";
+    public static final String END_TIME_KEY = "end_time";
+    public static final String LOCATION_KEY = "location";
+    public static final String DETAILS_KEY = "details";
+
 
 
     @Override
@@ -55,8 +72,6 @@ public class HomepageFragment extends Fragment {
         mImageAdapter = new BannerAdapter(getActivity(), mBannerIds);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
-
-        mAllEventsButton = (ImageButton) rootView.findViewById(R.id.all_events_menu_button);
 
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -123,18 +138,73 @@ public class HomepageFragment extends Fragment {
 
         mListView.setAdapter(eventAdapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Intent to detail activity with position extra and data
+                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+
+                detailIntent.putExtra(TITLE_KEY, events.get(position).getmTitle());
+                detailIntent.putExtra(START_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmStartDate()));
+                detailIntent.putExtra(END_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmEndDate()));
+                detailIntent.putExtra(START_TIME_KEY, events.get(position).getmStartTime());
+                detailIntent.putExtra(END_TIME_KEY, events.get(position).getmEndTime());
+                detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());
+                detailIntent.putExtra(DETAILS_KEY, events.get(position).getmDetails());
+
+                startActivity(detailIntent);
+
+            }
+        });
+
+        //bottom menu
+        mAllEventsButton = (ImageButton) rootView.findViewById(R.id.all_events_menu_button);
+        mHomeButton = (ImageButton) rootView.findViewById(R.id.homepage_button);
+        mLogOutButton = (ImageButton) rootView.findViewById(R.id.log_out_button);
+
+        initBottomMenu();
+
+        return rootView;
+    }
+
+
+    public void initBottomMenu() {
+
+        //for all buttons if they are clicked go to appropriate activity
+
         mAllEventsButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(getActivity(), AllEventsActivity.class);
                 startActivity(intent);
             }
         });
 
+        mHomeButton.setOnClickListener(new View.OnClickListener() {
 
-        return rootView;
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), HomepageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mLogOutButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ref.unauth();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

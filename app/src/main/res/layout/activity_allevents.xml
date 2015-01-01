@@ -14,7 +14,13 @@
 
     <ListView
         android:id="@+id/all_events_listView"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp" />
+
+    <include
+        android:id="@+id/bottom_menu"
+        layout="@layout/bottom_actionbar" />
+
 
 </LinearLayout>

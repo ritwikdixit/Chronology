@@ -1,14 +1,20 @@
 package com.ritwik.android.madfbla201415;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
@@ -23,6 +29,12 @@ public class AllEventsActivity extends ActionBarActivity {
     private ListView mAllEventsView;
     private EventListItemAdapter adapter;
     private ArrayList<EventItem> events;
+
+    private ImageButton mAllEventsButton;
+    private ImageButton mHomeButton;
+    private ImageButton mLogOutButton;
+
+    private Activity mContext = this;
 
 
     @Override
@@ -69,6 +81,40 @@ public class AllEventsActivity extends ActionBarActivity {
         adapter = new EventListItemAdapter(this, events);
         mAllEventsView.setAdapter(adapter);
 
+        mAllEventsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Putting data for detail activity
+                Intent detailIntent = new Intent(mContext, DetailActivity.class);
+                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+
+                detailIntent.putExtra(HomepageFragment.TITLE_KEY,
+                        events.get(position).getmTitle());
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmStartDate()));
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmEndDate()));
+                detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
+                        events.get(position).getmStartTime());
+                detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
+                        events.get(position).getmEndTime());
+                detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
+                        events.get(position).getmLocation());
+                detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
+                        events.get(position).getmDetails());
+
+                startActivity(detailIntent);
+
+            }
+        });
+
+        //bottom menu
+        mAllEventsButton = (ImageButton) findViewById(R.id.all_events_menu_button);
+        mHomeButton = (ImageButton) findViewById(R.id.homepage_button);
+        mLogOutButton = (ImageButton) findViewById(R.id.log_out_button);
+        initBottomMenu(this);
 
     }
 
@@ -91,6 +137,39 @@ public class AllEventsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initBottomMenu(final Activity context) {
+
+        //for all buttons if they are clicked go to appropriate activity
+
+        mAllEventsButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AllEventsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mHomeButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, HomepageActivity.class);
+                startActivity(intent);
+            }
+        });
+        mLogOutButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                DataHolder.getRef().unauth();
+                Intent intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

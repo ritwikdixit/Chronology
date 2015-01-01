@@ -32,5 +32,8 @@
         <activity android:name=".AllEventsActivity"
             android:label="@string/all_events" />
 
+        <activity android:name=".DetailActivity"
+            android:label="@string/event" />
+
     </application>
 </manifest>

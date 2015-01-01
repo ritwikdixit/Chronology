@@ -24,5 +24,6 @@
 
     <string name="loading">Loading... Please Wait.</string>
     <string name="all_events">All Events</string>
+    <string name="event">Event</string>
 
 </resources>
