@@ -49,13 +49,18 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 1) {
             //all events
-            Intent intent = new Intent(mContext, AllEventsActivity.class);
-            mContext.startActivity(intent);
+            if(!(mContext instanceof  AllEventsActivity)){
+                Intent intent = new Intent(mContext, AllEventsActivity.class);
+                mContext.startActivity(intent);
+            }
 
         } else if (position == 2) {
             //home
-            Intent intent = new Intent(mContext, HomepageActivity.class);
-            mContext.startActivity(intent);
+            if(!(mContext instanceof  HomepageActivity)) {
+                Intent intent = new Intent(mContext, HomepageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mContext.startActivity(intent);
+            }
 
         } else if (position == 3) {
             //search
@@ -64,6 +69,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             //log out
             ref.unauth();
             Intent intent = new Intent(mContext, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mContext.startActivity(intent);
         }
 
