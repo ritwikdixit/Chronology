@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:padding="16dp"
-        android:text="Todo Later Filters" />
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:padding="16dp"
+            android:text="Todo Later Filters" />
+
+        <ListView
+            android:id="@+id/all_events_listView"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
 
     <ListView
-        android:id="@+id/all_events_listView"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-
-    <include
-        android:id="@+id/bottom_menu"
-        layout="@layout/bottom_actionbar" />
+        android:id= "@+id/left_drawer"
+        android:background="@color/chronology_color"
+        android:choiceMode="singleChoice"
+        android:layout_gravity="start"
+        android:layout_width="240dp"
+        android:layout_height="match_parent" />
 
 
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>

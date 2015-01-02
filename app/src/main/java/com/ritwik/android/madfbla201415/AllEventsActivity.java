@@ -3,12 +3,15 @@ package com.ritwik.android.madfbla201415;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -31,17 +34,52 @@ public class AllEventsActivity extends ActionBarActivity {
     private EventListItemAdapter adapter;
     private ArrayList<EventItem> events;
 
-    private ImageButton mAllEventsButton;
-    private ImageButton mHomeButton;
-    private ImageButton mLogOutButton;
-
     private Activity mContext = this;
+
+    //drawer
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private String[] mDrawerArray = { "Month View",
+            "All Events", "Home", "Search", "Log Out" };
+    private ActionBarDrawerToggle mDrawerToggle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allevents);
+
+        //init the drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, R.id.list_item_text, mDrawerArray));
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
+                this, mDrawerLayout, mDrawerList));
+
+        mDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout, R.string.drawer_open, R.string.drawer_closed) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //set all items unchecked
+                for (int i = 0; i < mDrawerArray.length; i++) {
+                    mDrawerList.setItemChecked(i, false);
+                }
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerList.bringToFront();
+        mDrawerLayout.requestLayout();
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
         events = new ArrayList<>();
@@ -111,12 +149,6 @@ public class AllEventsActivity extends ActionBarActivity {
             }
         });
 
-        //bottom menu
-        mAllEventsButton = (ImageButton) findViewById(R.id.all_events_menu_button);
-        mHomeButton = (ImageButton) findViewById(R.id.homepage_button);
-        mLogOutButton = (ImageButton) findViewById(R.id.log_out_button);
-        initBottomMenu(this);
-
     }
 
     @Override
@@ -138,39 +170,6 @@ public class AllEventsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void initBottomMenu(final Activity context) {
-
-        //for all buttons if they are clicked go to appropriate activity
-
-        mAllEventsButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, AllEventsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mHomeButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HomepageActivity.class);
-                startActivity(intent);
-            }
-        });
-        mLogOutButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                DataHolder.getRef().unauth();
-                Intent intent = new Intent(context, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
 

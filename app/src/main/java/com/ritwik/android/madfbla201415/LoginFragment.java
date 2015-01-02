@@ -59,6 +59,7 @@ public class LoginFragment extends Fragment {
                         //http://developer.android.com/guide/components/intents-filters.html
                         //used to start activities (like this) and send data across activities
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
+                        homepageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homepageIntent);
                     }
                     @Override
@@ -90,6 +91,7 @@ public class LoginFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_main_container, new SignupFragment())
                         .addToBackStack(null).commit();
+                getActivity().finish();
             }
         });
 

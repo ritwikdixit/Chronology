@@ -66,7 +66,7 @@ public class SignupFragment extends Fragment {
                         && !anyFieldIsNull()) {
 
                     createUserFromCurrentData();
-
+                    getActivity().finish();
                 } else {
 
                     Toast.makeText(getActivity().getApplicationContext(), "Fields must not be empty, " +
@@ -89,6 +89,7 @@ public class SignupFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_main_container, new LoginFragment())
                         .addToBackStack(null).commit();
+                getActivity().finish();
             }
 
         });
@@ -119,6 +120,7 @@ public class SignupFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
 
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
+                        homepageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homepageIntent);
                     }
 

@@ -25,5 +25,7 @@
     <string name="loading">Loading... Please Wait.</string>
     <string name="all_events">All Events</string>
     <string name="event">Event</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_closed">Closed</string>
 
 </resources>

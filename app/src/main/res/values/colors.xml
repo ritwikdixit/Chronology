@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="chronology_color">#098DB5</color>
+    <color name="chronology_color">#4caf50</color>
+    <color name="chronology_light_color">#6ecf93</color>
+    <color name="drawer_background">#bcbcbc</color>
 </resources>
