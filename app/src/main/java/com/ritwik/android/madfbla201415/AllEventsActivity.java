@@ -147,8 +147,9 @@ public class AllEventsActivity extends ActionBarActivity {
 
             @Override
             public void onClick(View v) {
+                /*
                 Intent intent = new Intent(context, AllEventsActivity.class);
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
@@ -157,6 +158,7 @@ public class AllEventsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, HomepageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -166,6 +168,7 @@ public class AllEventsActivity extends ActionBarActivity {
             public void onClick(View v) {
                 DataHolder.getRef().unauth();
                 Intent intent = new Intent(context, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });

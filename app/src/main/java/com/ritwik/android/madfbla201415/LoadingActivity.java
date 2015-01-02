@@ -59,33 +59,6 @@ public class LoadingActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume() {
-
-        super.onResume();
-        /*
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Log.v(LOG_TAG, "Error on Sleep");
-        }
-        */
-        ref.addAuthStateListener(new Firebase.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(AuthData authData) {
-
-                if (authData != null) {
-                    Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
-                    startActivity(redirectIntent);
-                } else {
-                    Intent redirectIntent = new Intent(mContext, LoginActivity.class);
-                    startActivity(redirectIntent);
-                }
-            }
-        });
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Maybe have a different action bar menu file later
         getMenuInflater().inflate(R.menu.menu_home, menu);

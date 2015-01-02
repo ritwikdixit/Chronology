@@ -211,8 +211,10 @@ public class HomepageFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                /*
                 Intent intent = new Intent(getActivity(), HomepageActivity.class);
                 startActivity(intent);
+                */
             }
         });
 
