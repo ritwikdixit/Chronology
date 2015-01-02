@@ -94,6 +94,8 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+        //TODO: WRAP BACK ON SWIPE
+
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 
 

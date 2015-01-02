@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * Created by Ritwik on 12/31/14.
  */
+
 public class AllEventsActivity extends ActionBarActivity {
 
     private ListView mAllEventsView;
