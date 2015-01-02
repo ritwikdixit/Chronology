@@ -2,6 +2,9 @@ package com.ritwik.android.madfbla201415;
 
 import com.firebase.client.Firebase;
 
+/**
+ * Created by Soham Pardeshi on 12/31/2014.
+ */
 public class DataHolder {
 
     private static Firebase ref;
@@ -43,7 +46,6 @@ public class DataHolder {
         return phoneNumber;
     }
     public static boolean hasUserData(){
-        return fullName != null && phoneNumber != null && email != null
-                && !fullName.trim().equals("") && !email.trim().equals("") && !phoneNumber.trim().equals("");
+        return fullName != null && phoneNumber != null && email != null && !fullName.trim().equals("") && !email.trim().equals("") && !phoneNumber.trim().equals("");
     }
 }
