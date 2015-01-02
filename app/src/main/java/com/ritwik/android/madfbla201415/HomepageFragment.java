@@ -78,6 +78,27 @@ public class HomepageFragment extends Fragment {
         mProgressBar.setMax(100);
         mProgressBar.setProgress(0);
 
+        //On Creation of Homepage, store user Data
+        if(DataHolder.hasUserData())
+            ref.child("users").child(DataHolder.getUID()).addChildEventListener(new ChildEventListener() {
+
+                // Retrieve new posts as they are added to Firebase
+                @Override
+                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                    Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                    DataHolder.setEmail(newEvent.get("email").toString());
+                    DataHolder.setName(newEvent.get("full_name").toString());
+                    DataHolder.setPhoneNumber(newEvent.get("phone_number").toString());
+                }
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.d("Loading User Data Error", firebaseError.getMessage());
+                }
+            });
+
         //When a page changes on a banner the bar smooth scrolls to position
         mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
 
@@ -206,8 +227,4 @@ public class HomepageFragment extends Fragment {
         });
 
     }
-
-
-
-
 }

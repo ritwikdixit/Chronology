@@ -9,7 +9,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.util.Map;
 
 //this class will redirect to the appropriate page
 public class LoadingActivity extends ActionBarActivity {
@@ -31,13 +36,16 @@ public class LoadingActivity extends ActionBarActivity {
         ref = DataHolder.getRef();
         mContext = this;
 
+        //TODO: Remove the following line after testing
+       // ref.unauth();
+        //TODO: Remove the previous line after testing
         //Checks if authorized, starts intent to appropriate activity
         ref.addAuthStateListener(new Firebase.AuthStateListener() {
 
             @Override
             public void onAuthStateChanged(AuthData authData) {
-
                 if (authData != null) {
+                    DataHolder.setUID(authData.getUid());
                     Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
                     startActivity(redirectIntent);
                 } else {
