@@ -2,7 +2,9 @@ package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -16,14 +18,19 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.firebase.client.*;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class HomepageFragment extends Fragment {
@@ -41,6 +48,11 @@ public class HomepageFragment extends Fragment {
     //this is static so i can refer to it in the other class
     //detail activity
     private static ArrayList<EventItem> events;
+
+    // ^ Same with this one
+    //
+    // -J
+    private static ArrayList<String> urls;
 
     //holds the IDs for the images, placeholder images
     private int[] mBannerIds = {
@@ -193,6 +205,35 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+        urls = new ArrayList<String>();
+        Query imageUrlQuery = ref.child("images").orderByKey();
+        imageUrlQuery.addChildEventListener(new ChildEventListener() {
+
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Map<String, Object> image = (Map<String, Object>) snapshot.getValue();
+                Log.d("", image.toString());
+                urls.add(image.get("url").toString());
+            }
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {
+                // Right here: Permission denied?
+                Log.d("Loading Image Item Error", firebaseError.getMessage());
+            }
+        });
+
+        List<Bitmap> images = new ArrayList<Bitmap>();
+//        for (String url: urls) {
+//            images.add(
+//                    new DownloadImageTask(
+//                            // insert ImageView object here into constructor
+//                    ).execute(url)
+//            );
+//        }
 
 
         eventAdapter
@@ -225,6 +266,31 @@ public class HomepageFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 }
