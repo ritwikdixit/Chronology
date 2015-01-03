@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.firebase.client.*;
 
+import java.util.List;
+
 public class LoginFragment extends Fragment {
 
     private Button mSignInButton;
@@ -21,6 +23,7 @@ public class LoginFragment extends Fragment {
     private EditText mLoginField, mPassField;
     private Firebase ref;
     private boolean isSuccess = false;
+    private Fragment mContent;
 
     //Constants
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
@@ -38,6 +41,8 @@ public class LoginFragment extends Fragment {
         Firebase.setAndroidContext(getActivity());
         DataHolder.setRef(new Firebase(URL_FIREBASE));
         ref = DataHolder.getRef();
+
+        mContent = this;
 
         mLoginField = (EditText) rootView.findViewById(R.id.login_username);
         mPassField = (EditText) rootView.findViewById(R.id.login_password);
@@ -61,6 +66,7 @@ public class LoginFragment extends Fragment {
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
                         homepageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homepageIntent);
+                        getActivity().finish();
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
@@ -90,10 +96,11 @@ public class LoginFragment extends Fragment {
                 //addToBackStack is called so that user can press back to go back to LoginFragment
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_main_container, new SignupFragment())
-                        .addToBackStack(null).commit();
-                getActivity().finish();
+                        .commit();
+
             }
         });
+
 
         return rootView;
     }

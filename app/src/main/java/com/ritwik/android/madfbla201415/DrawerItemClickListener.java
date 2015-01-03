@@ -3,6 +3,7 @@ package com.ritwik.android.madfbla201415;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
@@ -69,7 +70,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             //log out
             ref.unauth();
             Intent intent = new Intent(mContext, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             mContext.startActivity(intent);
         }
 

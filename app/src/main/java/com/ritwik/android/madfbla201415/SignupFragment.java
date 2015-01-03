@@ -88,8 +88,7 @@ public class SignupFragment extends Fragment {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_main_container, new LoginFragment())
-                        .addToBackStack(null).commit();
-                getActivity().finish();
+                        .commit();
             }
 
         });
