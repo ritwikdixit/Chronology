@@ -49,11 +49,6 @@ public class HomepageFragment extends Fragment {
     //detail activity
     private static ArrayList<EventItem> events;
 
-    // ^ Same with this one
-    //
-    // -J
-    private static ArrayList<String> urls;
-
     //holds the IDs for the images, placeholder images
     private int[] mBannerIds = {
             R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
@@ -71,6 +66,7 @@ public class HomepageFragment extends Fragment {
     public static final String END_TIME_KEY = "end_time";
     public static final String LOCATION_KEY = "location";
     public static final String DETAILS_KEY = "details";
+    public static final String URL_KEY = "url";
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -182,9 +178,11 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("end_time").toString(),
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
-                        newEvent.get("details").toString()
+                        newEvent.get("details").toString(),
+                        newEvent.get("url").toString()
                 ));
                 mListView.setAdapter(eventAdapter);
+                Log.d("", newEvent.get("url").toString());
 
             }
 
@@ -204,36 +202,6 @@ public class HomepageFragment extends Fragment {
                 Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
         });
-
-        urls = new ArrayList<String>();
-        Query imageUrlQuery = ref.child("images").orderByKey();
-        imageUrlQuery.addChildEventListener(new ChildEventListener() {
-
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> image = (Map<String, Object>) snapshot.getValue();
-                Log.d("", image.toString());
-                urls.add(image.get("url").toString());
-            }
-
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            public void onCancelled(FirebaseError firebaseError) {
-                // Right here: Permission denied?
-                Log.d("Loading Image Item Error", firebaseError.getMessage());
-            }
-        });
-
-        List<Bitmap> images = new ArrayList<Bitmap>();
-//        for (String url: urls) {
-//            images.add(
-//                    new DownloadImageTask(
-//                            // insert ImageView object here into constructor
-//                    ).execute(url)
-//            );
-//        }
 
 
         eventAdapter
@@ -266,31 +234,6 @@ public class HomepageFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 
 }

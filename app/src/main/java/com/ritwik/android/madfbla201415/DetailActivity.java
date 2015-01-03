@@ -3,8 +3,10 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -17,6 +19,7 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mEndTime;
     private TextView mLocation;
     private TextView mDetails;
+    private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
     private Firebase ref;
@@ -35,6 +38,7 @@ public class DetailActivity extends ActionBarActivity {
         mEndTime = (TextView) findViewById(R.id.detail_end_time);
         mLocation = (TextView) findViewById(R.id.detail_location);
         mDetails = (TextView) findViewById(R.id.detail_details);
+        mImage = (ImageView) findViewById(R.id.detail_image);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();

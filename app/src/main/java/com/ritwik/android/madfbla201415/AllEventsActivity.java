@@ -97,7 +97,8 @@ public class AllEventsActivity extends ActionBarActivity {
                         newEvent.get("end_time").toString(),
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
-                        newEvent.get("details").toString()
+                        newEvent.get("details").toString(),
+                        newEvent.get("url").toString()
                 ));
                 mAllEventsView.setAdapter(adapter);
 

@@ -1,6 +1,13 @@
 package com.ritwik.android.madfbla201415;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.ImageView;
+
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,8 +25,11 @@ public class EventItem {
     private String mLocation;
     private String mDetails;
 
+    private String mUrl;
+
     public EventItem(String mStartDate, String mEndDate, String mStartTime,
-                     String mEndTime, String mTitle, String mLocation, String mDetails) {
+                     String mEndTime, String mTitle, String mLocation, String mDetails,
+                     String mUrl) {
 
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -28,7 +38,7 @@ public class EventItem {
         this.mEndTime = mEndTime;
         this. mLocation = mLocation;
         this.mDetails = mDetails;
-
+        this.mUrl = mUrl;
     }
 
 
@@ -60,6 +70,8 @@ public class EventItem {
         return mDetails;
     }
 
+    public String getmUrl() { return mUrl; }
+
     //formats date so it fits in the listView
 
     public String formatDate(String mServerDateData) {
@@ -70,5 +82,30 @@ public class EventItem {
     public static String theMonth(int month){
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         return monthNames[month - 1];
+    }
+
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
