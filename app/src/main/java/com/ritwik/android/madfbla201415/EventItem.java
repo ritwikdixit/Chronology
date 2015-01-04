@@ -1,6 +1,13 @@
 package com.ritwik.android.madfbla201415;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.ImageView;
+
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,8 +25,11 @@ public class EventItem {
     private String mLocation;
     private String mDetails;
 
+    private String mUrl;
+
     public EventItem(String mStartDate, String mEndDate, String mStartTime,
-                     String mEndTime, String mTitle, String mLocation, String mDetails) {
+                     String mEndTime, String mTitle, String mLocation, String mDetails,
+                     String mUrl) {
 
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -28,7 +38,7 @@ public class EventItem {
         this.mEndTime = mEndTime;
         this. mLocation = mLocation;
         this.mDetails = mDetails;
-
+        this.mUrl = mUrl;
     }
 
 
@@ -59,6 +69,8 @@ public class EventItem {
     public String getmDetails() {
         return mDetails;
     }
+
+    public String getmUrl() { return mUrl; }
 
     //formats date so it fits in the listView
 

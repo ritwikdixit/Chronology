@@ -1,17 +1,20 @@
 package com.ritwik.android.madfbla201415;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.GestureDetector;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+
+import java.io.InputStream;
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -22,8 +25,8 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mLocation;
     private TextView mDetails;
 
-    private LinearLayout mRoot;
-    private GestureDetector g;
+    private String imageUrl;
+    private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
     private Firebase ref;
@@ -42,19 +45,10 @@ public class DetailActivity extends ActionBarActivity {
         mEndTime = (TextView) findViewById(R.id.detail_end_time);
         mLocation = (TextView) findViewById(R.id.detail_location);
         mDetails = (TextView) findViewById(R.id.detail_details);
-        mRoot = (LinearLayout) findViewById(R.id.root_container_detail);
+        mImage = (ImageView) findViewById(R.id.detail_image);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
-
-        g = new GestureDetector(this, new SwipeListener());
-
-        mRoot.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return g.onTouchEvent(event);
-            }
-        });
 
         //if this was 4 you could get fire base event called event4
         int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
@@ -76,6 +70,11 @@ public class DetailActivity extends ActionBarActivity {
         mDetails.setText(
                 getIntent().getStringExtra(HomepageFragment.DETAILS_KEY));
 
+        // This is the image URL
+        imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
+
+        // TODO Put the image in the ImageView with DownloadImageTask
+        // ...
     }
 
 
@@ -98,5 +97,31 @@ public class DetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

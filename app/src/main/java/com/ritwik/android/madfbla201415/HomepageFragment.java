@@ -2,7 +2,9 @@ package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,14 +20,19 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.firebase.client.*;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class HomepageFragment extends Fragment {
@@ -61,6 +68,7 @@ public class HomepageFragment extends Fragment {
     public static final String END_TIME_KEY = "end_time";
     public static final String LOCATION_KEY = "location";
     public static final String DETAILS_KEY = "details";
+    public static final String URL_KEY = "url";
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -174,9 +182,11 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("end_time").toString(),
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
-                        newEvent.get("details").toString()
+                        newEvent.get("details").toString(),
+                        newEvent.get("url").toString()
                 ));
                 mListView.setAdapter(eventAdapter);
+                Log.d("", newEvent.get("url").toString());
 
             }
 
@@ -196,7 +206,6 @@ public class HomepageFragment extends Fragment {
                 Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
         });
-
 
 
         eventAdapter
@@ -222,6 +231,7 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(END_TIME_KEY, events.get(position).getmEndTime());
                 detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());
                 detailIntent.putExtra(DETAILS_KEY, events.get(position).getmDetails());
+                detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
 
                 startActivity(detailIntent);
 
