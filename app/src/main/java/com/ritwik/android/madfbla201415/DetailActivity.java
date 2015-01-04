@@ -70,7 +70,10 @@ public class DetailActivity extends ActionBarActivity {
         mLocation.setText("Location: " +
                 getIntent().getStringExtra(HomepageFragment.LOCATION_KEY));
         mDetails.setText(
-                getIntent().getStringExtra(HomepageFragment.DETAILS_KEY));
+                getIntent().getStringExtra(HomepageFragment.DETAILS_KEY) +
+                        " [Contact: " + getIntent().getStringExtra(HomepageFragment.CONTACT_INFO_KEY) +
+                        "]"
+        );
 
         // This is the image URL
         imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);

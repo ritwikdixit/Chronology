@@ -24,12 +24,13 @@ public class EventItem {
     private String mTitle;
     private String mLocation;
     private String mDetails;
+    private String mContactInfo;
 
     private String mUrl;
 
     public EventItem(String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl) {
+                     String mUrl, String mContactInfo) {
 
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -39,6 +40,7 @@ public class EventItem {
         this. mLocation = mLocation;
         this.mDetails = mDetails;
         this.mUrl = mUrl;
+        this.mContactInfo = mContactInfo;
     }
 
 
@@ -71,6 +73,8 @@ public class EventItem {
     }
 
     public String getmUrl() { return mUrl; }
+
+    public String getmContactInfo() { return mContactInfo; }
 
     //formats date so it fits in the listView
 

@@ -69,6 +69,7 @@ public class HomepageFragment extends Fragment {
     public static final String LOCATION_KEY = "location";
     public static final String DETAILS_KEY = "details";
     public static final String URL_KEY = "url";
+    public static final String CONTACT_INFO_KEY = "contact_info";
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -183,7 +184,8 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
                         newEvent.get("details").toString(),
-                        newEvent.get("url").toString()
+                        newEvent.get("url").toString(),
+                        newEvent.get("contact_info").toString()
                 ));
                 mListView.setAdapter(eventAdapter);
                 Log.d("", newEvent.get("url").toString());
@@ -232,6 +234,7 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());
                 detailIntent.putExtra(DETAILS_KEY, events.get(position).getmDetails());
                 detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
+                detailIntent.putExtra(CONTACT_INFO_KEY, events.get(position).getmContactInfo());
 
                 startActivity(detailIntent);
 

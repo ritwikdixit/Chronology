@@ -98,7 +98,8 @@ public class AllEventsActivity extends ActionBarActivity {
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
                         newEvent.get("details").toString(),
-                        newEvent.get("url").toString()
+                        newEvent.get("url").toString(),
+                        newEvent.get("contact_info").toString()
                 ));
                 mAllEventsView.setAdapter(adapter);
 
