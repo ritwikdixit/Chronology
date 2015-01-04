@@ -3,10 +3,12 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -73,10 +75,18 @@ public class DetailActivity extends ActionBarActivity {
         // This is the image URL
         imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
 
-        // TODO Put the image in the ImageView with DownloadImageTask
-        // ...
-
+        // ImageView setup
         new DownloadImageTask(mImage).execute(imageUrl);
+        mImage.setBackgroundColor(Color.parseColor("#C2C2C2"));
+
+        // Set dimensions of ImageView
+        Display display = getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        mImage.setMinimumWidth(width);
+        mImage.setMaxWidth(width);
+        mImage.setMinimumHeight(150); // These are in dp?
+        mImage.setMaxHeight(150);
+        mImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
 
 
