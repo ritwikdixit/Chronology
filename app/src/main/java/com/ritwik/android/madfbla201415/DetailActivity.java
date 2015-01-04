@@ -76,7 +76,9 @@ public class DetailActivity extends ActionBarActivity {
         imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
 
         // ImageView setup
-        new DownloadImageTask(mImage).execute(imageUrl);
+        new HomepageFragment.DownloadImageTask(mImage).execute(imageUrl);
+        //mImage = HomepageFragment.getEvents().get(eventNum - 1).getmImage();
+
     }
 
 
@@ -101,29 +103,4 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 }

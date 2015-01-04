@@ -98,7 +98,8 @@ public class AllEventsActivity extends ActionBarActivity {
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
                         newEvent.get("details").toString(),
-                        newEvent.get("url").toString()
+                        newEvent.get("url").toString(),
+                        getApplicationContext()
                 ));
                 mAllEventsView.setAdapter(adapter);
 
@@ -144,6 +145,9 @@ public class AllEventsActivity extends ActionBarActivity {
                         events.get(position).getmLocation());
                 detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
                         events.get(position).getmDetails());
+                detailIntent.putExtra(HomepageFragment.URL_KEY,
+                        events.get(position).getmUrl());
+
 
                 startActivity(detailIntent);
 

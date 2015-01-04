@@ -1,11 +1,13 @@
 package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -30,6 +32,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +54,6 @@ public class HomepageFragment extends Fragment {
     //detail activity
     private static ArrayList<EventItem> events;
 
-    //holds the IDs for the images, placeholder images
-    private int[] mBannerIds = {
-            R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher,
-            R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher
-    };
-
     private static final String LOG_TAG = "EventList";
     private Firebase ref = DataHolder.getRef();
 
@@ -76,8 +73,6 @@ public class HomepageFragment extends Fragment {
     private String[] mDrawerArray = { "Month View",
             "All Events", "Home", "Search", "Log Out" };
     private ActionBarDrawerToggle mDrawerToggle;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,15 +112,10 @@ public class HomepageFragment extends Fragment {
         mDrawerList.bringToFront();
         mDrawerLayout.requestLayout();
 
-        mImageAdapter = new BannerAdapter(getActivity(), mBannerIds);
-        mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
-        mScrollBanner.setAdapter(mImageAdapter);
-
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mProgressBar.setMax(100);
         mProgressBar.setProgress(0);
-
         //On Creation of Homepage, store user Data
         if(DataHolder.hasUserData())
             ref.child("users").child(DataHolder.getUID()).addChildEventListener(new ChildEventListener() {
@@ -147,22 +137,6 @@ public class HomepageFragment extends Fragment {
                 }
             });
 
-        //When a page changes on a banner the bar smooth scrolls to position
-        mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
-
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                //set the progress bar accordingly
-                int bar = (int) (position *
-                        (double) mProgressBar.getMax() / (mBannerIds.length - 1) + 0.5);
-                ObjectAnimator anim = ObjectAnimator.ofInt(mProgressBar, "progress", bar);
-                anim.setDuration(350);
-                anim.setInterpolator(new DecelerateInterpolator());
-                anim.start();
-            }
-        });
-
         //TODO: WRAP BACK ON SWIPE
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
@@ -183,10 +157,13 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("title").toString(),
                         newEvent.get("location").toString(),
                         newEvent.get("details").toString(),
-                        newEvent.get("url").toString()
+                        newEvent.get("url").toString(),
+                        getActivity()
                 ));
+
                 mListView.setAdapter(eventAdapter);
-                Log.d("", newEvent.get("url").toString());
+                mImageAdapter = new BannerAdapter(getActivity(), events);
+                mScrollBanner.setAdapter(mImageAdapter);
 
             }
 
@@ -207,6 +184,30 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+        //Banner Adapter
+        mImageAdapter = new BannerAdapter(getActivity(), events);
+        mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
+        mScrollBanner.setAdapter(mImageAdapter);
+
+        //When a page changes on a banner the bar smooth scrolls to position
+        mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+
+            boolean stuckDrag = false;
+            boolean scrolling = false;
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                //set the progress bar accordingly
+                int bar = (int) (position *
+                        (double) mProgressBar.getMax() / (events.size() - 1) + 0.5);
+                ObjectAnimator anim = ObjectAnimator.ofInt(mProgressBar, "progress", bar);
+                anim.setDuration(350);
+                anim.setInterpolator(new DecelerateInterpolator());
+                anim.start();
+            }
+
+        });
 
         eventAdapter
                 = new EventListItemAdapter(getActivity(), events);
@@ -245,5 +246,41 @@ public class HomepageFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+    public static ArrayList<EventItem> getEvents() {
+        return events;
+    }
+
+
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+
+            //only do this if they dont already have the image
+
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Bitmap", e.getMessage() + " " + e.getLocalizedMessage() + " error");
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            Log.v("Bitmap", "Done Loading Bitmap");
+            bmImage.setImageBitmap(result);
+
+        }
+
     }
 }

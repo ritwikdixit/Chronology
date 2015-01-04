@@ -13,11 +13,11 @@
 
         <android.support.v4.view.ViewPager
             android:id="@+id/scrolling_banner"
+            android:background="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:layout_weight="2" />
+            android:layout_weight="2.25" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:id="@+id/progressBar"
             android:layout_gravity="center" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_weight="3" />
 
     </LinearLayout>

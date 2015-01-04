@@ -1,8 +1,10 @@
 package com.ritwik.android.madfbla201415;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -12,8 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class EventItem {
-
-    private static final String LOG_TAG = "EventList";
 
     private String mStartDate;
     private String mEndDate;
@@ -26,10 +26,11 @@ public class EventItem {
     private String mDetails;
 
     private String mUrl;
+    private ImageView mImage;
 
     public EventItem(String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl) {
+                     String mUrl, Context context) {
 
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -39,6 +40,11 @@ public class EventItem {
         this. mLocation = mLocation;
         this.mDetails = mDetails;
         this.mUrl = mUrl;
+
+        mImage = new ImageView(context);
+        mImage.setImageResource(R.drawable.black);
+        mImage.setBackgroundResource(R.drawable.black);
+        new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
     }
 
 
@@ -72,6 +78,10 @@ public class EventItem {
 
     public String getmUrl() { return mUrl; }
 
+    public ImageView getmImage() {
+        return mImage;
+    }
+
     //formats date so it fits in the listView
 
     public String formatDate(String mServerDateData) {
@@ -80,7 +90,8 @@ public class EventItem {
         return theMonth(Integer.parseInt(parts[1])) + " " + parts[2] + ", " + parts[0];
     }
     public static String theMonth(int month){
-        String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
+        String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June",
+                "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         return monthNames[month - 1];
     }
 }

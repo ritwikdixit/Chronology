@@ -1,21 +1,25 @@
 package com.ritwik.android.madfbla201415;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 //Custom Adapter for custom scrolling image banner
 
 public class BannerAdapter extends PagerAdapter {
 
     private Context mContext;
-    private int[] mResourceIds;
+    private ArrayList<EventItem> mEvents;
 
-    public BannerAdapter(Context context, int[] ids) {
+    public BannerAdapter(Context context, ArrayList<EventItem> events) {
         mContext = context;
-        mResourceIds = ids.clone();
+        mEvents = new ArrayList<>(events);
     }
 
     @Override
@@ -25,15 +29,45 @@ public class BannerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mResourceIds.length;
+        return mEvents.size();
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
 
-        ImageView image = new ImageView(mContext);
-        image.setImageResource(mResourceIds[position]);
+        ImageView image = mEvents.get(position).getmImage();
         container.addView(image);
+
+        //set listener
+        image.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent detailIntent = new Intent(mContext, DetailActivity.class);
+
+                detailIntent.putExtra(HomepageFragment.TITLE_KEY,
+                        mEvents.get(position).getmTitle());
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, mEvents.get(position)
+                        .formatDate(mEvents.get(position).getmStartDate()));
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, mEvents.get(position)
+                        .formatDate(mEvents.get(position).getmEndDate()));
+                detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
+                        mEvents.get(position).getmStartTime());
+                detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
+                        mEvents.get(position).getmEndTime());
+                detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
+                        mEvents.get(position).getmLocation());
+                detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
+                        mEvents.get(position).getmDetails());
+                detailIntent.putExtra(HomepageFragment.URL_KEY,
+                        mEvents.get(position).getmUrl());
+
+                mContext.startActivity(detailIntent);
+            }
+        });
+
+
         return image;
     }
 
