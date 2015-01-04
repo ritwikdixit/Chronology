@@ -227,6 +227,7 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(END_TIME_KEY, events.get(position).getmEndTime());
                 detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());
                 detailIntent.putExtra(DETAILS_KEY, events.get(position).getmDetails());
+                detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
 
                 startActivity(detailIntent);
 

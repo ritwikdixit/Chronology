@@ -1,6 +1,9 @@
 package com.ritwik.android.madfbla201415;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.io.InputStream;
+
 public class DetailActivity extends ActionBarActivity {
 
     private TextView mStartDate;
@@ -19,6 +24,8 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mEndTime;
     private TextView mLocation;
     private TextView mDetails;
+
+    private String imageUrl;
     private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
@@ -63,6 +70,11 @@ public class DetailActivity extends ActionBarActivity {
         mDetails.setText(
                 getIntent().getStringExtra(HomepageFragment.DETAILS_KEY));
 
+        // This is the image URL
+        imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
+
+        // TODO Put the image in the ImageView with DownloadImageTask
+        // ...
     }
 
 
@@ -85,5 +97,31 @@ public class DetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }
