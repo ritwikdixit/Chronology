@@ -2,6 +2,7 @@ package com.ritwik.android.madfbla201415;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +18,7 @@ public class HomepageActivity extends ActionBarActivity {
 
         //This is temporary so later this will change
         setContentView(R.layout.activity_homepage);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.homepage_fragment_container, new HomepageFragment())
@@ -45,4 +47,5 @@ public class HomepageActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -3,8 +3,12 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -17,6 +21,9 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mEndTime;
     private TextView mLocation;
     private TextView mDetails;
+
+    private LinearLayout mRoot;
+    private GestureDetector g;
 
     private static final String LOG_TAG = "EventList";
     private Firebase ref;
@@ -35,9 +42,19 @@ public class DetailActivity extends ActionBarActivity {
         mEndTime = (TextView) findViewById(R.id.detail_end_time);
         mLocation = (TextView) findViewById(R.id.detail_location);
         mDetails = (TextView) findViewById(R.id.detail_details);
+        mRoot = (LinearLayout) findViewById(R.id.root_container_detail);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
+
+        g = new GestureDetector(this, new SwipeListener());
+
+        mRoot.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return g.onTouchEvent(event);
+            }
+        });
 
         //if this was 4 you could get fire base event called event4
         int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
