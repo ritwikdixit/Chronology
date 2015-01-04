@@ -77,16 +77,6 @@ public class DetailActivity extends ActionBarActivity {
 
         // ImageView setup
         new DownloadImageTask(mImage).execute(imageUrl);
-        mImage.setBackgroundColor(Color.parseColor("#C2C2C2"));
-
-        // Set dimensions of ImageView
-        Display display = getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        mImage.setMinimumWidth(width);
-        mImage.setMaxWidth(width);
-        mImage.setMinimumHeight(150); // These are in dp?
-        mImage.setMaxHeight(150);
-        mImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
 
 
