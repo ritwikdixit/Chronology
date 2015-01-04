@@ -26,6 +26,7 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mEndTime;
     private TextView mLocation;
     private TextView mDetails;
+    private TextView mContactInfo;
 
     private String imageUrl;
     private ImageView mImage;
@@ -48,6 +49,7 @@ public class DetailActivity extends ActionBarActivity {
         mLocation = (TextView) findViewById(R.id.detail_location);
         mDetails = (TextView) findViewById(R.id.detail_details);
         mImage = (ImageView) findViewById(R.id.detail_image);
+        mContactInfo = (TextView) findViewById(R.id.detail_contact_info);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
@@ -70,9 +72,9 @@ public class DetailActivity extends ActionBarActivity {
         mLocation.setText("Location: " +
                 getIntent().getStringExtra(HomepageFragment.LOCATION_KEY));
         mDetails.setText(
-                getIntent().getStringExtra(HomepageFragment.DETAILS_KEY) +
-                        " [Contact: " + getIntent().getStringExtra(HomepageFragment.CONTACT_INFO_KEY) +
-                        "]"
+                getIntent().getStringExtra(HomepageFragment.DETAILS_KEY));
+        mContactInfo.setText("Contact: " +
+                getIntent().getStringExtra(HomepageFragment.CONTACT_INFO_KEY)
         );
 
         // This is the image URL
