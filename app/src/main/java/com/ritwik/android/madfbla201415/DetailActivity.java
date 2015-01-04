@@ -75,6 +75,8 @@ public class DetailActivity extends ActionBarActivity {
 
         // TODO Put the image in the ImageView with DownloadImageTask
         // ...
+
+        new DownloadImageTask(mImage).execute(imageUrl);
     }
 
 
