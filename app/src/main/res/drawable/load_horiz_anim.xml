@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/load_anim"
+    android:oneshot="false" >
+
+    <!-- loading animation finally figured out how to do animations -->
+
+    <item android:drawable="@drawable/horiz_load1" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load2" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load3" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load4" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load5" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load6" android:duration="200" />
+    <item android:drawable="@drawable/horiz_load7" android:duration="200" />
+
+</animation-list>

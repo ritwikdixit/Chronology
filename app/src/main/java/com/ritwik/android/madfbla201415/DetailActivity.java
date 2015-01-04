@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -80,7 +81,11 @@ public class DetailActivity extends ActionBarActivity {
         // This is the image URL
         imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
 
-        // ImageView setup
+        // ImageView setup with animation background and picture
+        mImage.setImageResource(R.drawable.load_horiz_anim);
+        AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
+        loadAnimation.start();
+
         new HomepageFragment.DownloadImageTask(mImage).execute(imageUrl);
         //mImage = HomepageFragment.getEvents().get(eventNum - 1).getmImage();
 

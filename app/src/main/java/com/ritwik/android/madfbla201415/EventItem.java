@@ -4,6 +4,7 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,10 +28,11 @@ public class EventItem {
 
     private String mUrl;
     private ImageView mImage;
+    private String mContactInfo;
 
     public EventItem(String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl, Context context) {
+                     String mUrl, String mContactInfo, Context context) {
 
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -40,11 +42,14 @@ public class EventItem {
         this. mLocation = mLocation;
         this.mDetails = mDetails;
         this.mUrl = mUrl;
+        this.mContactInfo = mContactInfo;
 
         mImage = new ImageView(context);
-        mImage.setImageResource(R.drawable.black);
-        mImage.setBackgroundResource(R.drawable.black);
-        new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
+        mImage.setImageResource(R.drawable.load_horiz_anim);
+        AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
+        loadAnimation.start();
+
+         new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
     }
 
 
@@ -81,6 +86,11 @@ public class EventItem {
     public ImageView getmImage() {
         return mImage;
     }
+
+    public String getmContactInfo() {
+        return mContactInfo;
+    }
+
 
     //formats date so it fits in the listView
 
