@@ -7,8 +7,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +30,7 @@ import java.util.Map;
  * Created by Ritwik on 12/31/14.
  */
 
-public class AllEventsActivity extends ActionBarActivity {
+public class AllEventsActivity extends ActionBarActivity  {
 
     private ListView mAllEventsView;
     private EventListItemAdapter adapter;
@@ -151,9 +153,9 @@ public class AllEventsActivity extends ActionBarActivity {
                 detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
                         events.get(position).getmContactInfo());
 
-
-
                 startActivity(detailIntent);
+                AllEventsActivity.this.overridePendingTransition(
+                        R.anim.right_to_left, R.anim.neg_right_left);
 
             }
         });

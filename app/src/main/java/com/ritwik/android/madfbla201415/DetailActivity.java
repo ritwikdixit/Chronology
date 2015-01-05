@@ -1,25 +1,22 @@
 package com.ritwik.android.madfbla201415;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
-import java.io.InputStream;
-
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends ActionBarActivity implements View.OnClickListener{
 
     private TextView mStartDate;
     private TextView mEndDate;
@@ -29,6 +26,8 @@ public class DetailActivity extends ActionBarActivity {
     private TextView mDetails;
     private TextView mContactInfo;
 
+    private LinearLayout layout;
+
     private String imageUrl;
     private ImageView mImage;
 
@@ -36,6 +35,9 @@ public class DetailActivity extends ActionBarActivity {
     private Firebase ref;
     private EventItem thisEvent;
 
+    private GestureDetectorCompat mLeftDetector;
+    private View.OnTouchListener mListener;
+    private SwipeListener mFlinglistener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +89,42 @@ public class DetailActivity extends ActionBarActivity {
         loadAnimation.start();
 
         new HomepageFragment.DownloadImageTask(mImage).execute(imageUrl);
-        //mImage = HomepageFragment.getEvents().get(eventNum - 1).getmImage();
+
+        layout = (LinearLayout) findViewById(R.id.root_container_detail);
+
+        mFlinglistener = new SwipeListener();
+        mLeftDetector = new GestureDetectorCompat(this, mFlinglistener);
+        mListener = new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                boolean touch = mLeftDetector.onTouchEvent(event);
+                if (mFlinglistener.hasSwiped()) {
+                    finish();
+                    DetailActivity.this.overridePendingTransition(
+                            R.anim.neg_left_right, R.anim.left_to_right);
+                }
+                return touch;
+            }
+        };
+
+        layout.setOnClickListener(DetailActivity.this);
+        layout.setOnTouchListener(mListener);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        DetailActivity.this.overridePendingTransition(
+                R.anim.neg_left_right, R.anim.left_to_right);
     }
 
     @Override
@@ -113,4 +141,8 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }

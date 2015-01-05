@@ -234,7 +234,8 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
                 detailIntent.putExtra(CONTACT_INFO_KEY, events.get(position).getmContactInfo());
 
-
+                HomepageFragment.this.setEnterTransition(R.anim.right_to_left);
+                HomepageFragment.this.setExitTransition(R.anim.neg_right_left);
                 startActivity(detailIntent);
 
             }
