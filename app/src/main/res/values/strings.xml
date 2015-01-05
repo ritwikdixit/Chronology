@@ -28,4 +28,5 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_closed">Closed</string>
 
+    <string name="search_hint">Search Chronology events</string>
 </resources>

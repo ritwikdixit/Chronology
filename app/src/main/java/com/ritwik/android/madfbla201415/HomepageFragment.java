@@ -1,22 +1,27 @@
 package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -32,7 +37,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +78,52 @@ public class HomepageFragment extends Fragment {
     private String[] mDrawerArray = { "Month View",
             "All Events", "Home", "Search", "Log Out" };
     private ActionBarDrawerToggle mDrawerToggle;
+    private Toolbar toolbar;
+    private SearchView mSearch;
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchManager managerSearch = (SearchManager) getActivity()
+                .getSystemService(Context.SEARCH_SERVICE);
+
+        MenuItem item = menu.findItem(R.id.chronology_search_bar);
+        mSearch = (SearchView) MenuItemCompat.getActionView(item);
+
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getActivity().getComponentName()));
+        mSearch.setIconifiedByDefault(false);
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.chronology_search_bar
+                || item.getItemId() == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_homepage, container, false);
+
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return true;
+            }
+        });
 
         //init the drawer
         mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
@@ -91,7 +135,7 @@ public class HomepageFragment extends Fragment {
                 getActivity(), mDrawerLayout, mDrawerList));
 
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
-                mDrawerLayout, R.string.drawer_open, R.string.drawer_closed) {
+                mDrawerLayout,  toolbar, R.string.drawer_open, R.string.drawer_closed) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -110,6 +154,7 @@ public class HomepageFragment extends Fragment {
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
         mDrawerList.bringToFront();
         mDrawerLayout.requestLayout();
 
@@ -137,8 +182,6 @@ public class HomepageFragment extends Fragment {
                     Log.d("Loading User Data Error", firebaseError.getMessage());
                 }
             });
-
-        //TODO: WRAP BACK ON SWIPE
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
 

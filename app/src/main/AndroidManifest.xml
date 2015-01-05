@@ -35,5 +35,14 @@
         <activity android:name=".DetailActivity"
             android:label="@string/event" />
 
+        <activity android:name=".SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/search" />
+        </activity>
+
     </application>
 </manifest>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -45,12 +46,24 @@ public class AllEventsActivity extends ActionBarActivity  {
             "All Events", "Home", "Search", "Log Out" };
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allevents);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return true;
+            }
+        });
+
+        toolbar.inflateMenu(R.menu.menu_main);
 
         //init the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
@@ -62,7 +75,7 @@ public class AllEventsActivity extends ActionBarActivity  {
                 this, mDrawerLayout, mDrawerList));
 
         mDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, R.string.drawer_open, R.string.drawer_closed) {
+                mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_closed) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -80,6 +93,8 @@ public class AllEventsActivity extends ActionBarActivity  {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+
         mDrawerList.bringToFront();
         mDrawerLayout.requestLayout();
 
@@ -163,24 +178,9 @@ public class AllEventsActivity extends ActionBarActivity  {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
 
