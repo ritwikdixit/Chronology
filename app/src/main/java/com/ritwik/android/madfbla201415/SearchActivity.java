@@ -1,6 +1,7 @@
 package com.ritwik.android.madfbla201415;
 
 import android.app.SearchManager;
+import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 //Do not start this activity unless there is an intent with
@@ -22,6 +26,7 @@ public class SearchActivity extends ActionBarActivity{
     private ListView mEventsView;
     private EventListItemAdapter adapter;
     private ArrayList<EventItem> events;
+    private int TOTAL_TO_SEARCH = 14;
 
     //this is what you update in the search
     private ArrayList<EventItem> mData;
@@ -76,24 +81,14 @@ public class SearchActivity extends ActionBarActivity{
          */
 
         //putting in fake data
-        for (int i = 0; i < 14; i++) {
-            mData.add(new EventItem(
-                    "Jan Fake 2015",
-                    "Feb Fake 2015",
-                    i + ":00 AM",
-                    (i + 2) + ":00 AM",
-                    "Fake Data Party " + i + "!",
-                    "Room A2" + i,
-                    "Replace this with a real query for the events array list",
-                    "http://3.bp.blogspot.com/-n3CnbF1f1NI/T2-T7O-xtfI" +
-                            "/AAAAAAAABkw/8h-dbpMa0i8/s320/george-bush_1239113c.jpg",
-                    "420 - 420 - BlazeIt",
-                    this
-            ));
+        int found = 0;
+        Iterator<EventItem> iterator = events.iterator();
+        while(found < TOTAL_TO_SEARCH && iterator.hasNext()){
+            EventItem event = iterator.next();
+            if(event.getmLocation().contains(query) || event.getmTitle().contains(query) || event.getmDetails().contains(query))
+                mData.add(event);
         }
-
         presentData();
-
     }
 
     //when the search is complete

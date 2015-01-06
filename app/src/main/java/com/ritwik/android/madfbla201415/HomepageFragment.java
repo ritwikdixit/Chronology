@@ -240,6 +240,7 @@ public class HomepageFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+
                 //set the progress bar accordingly
                 int bar = (int) (position *
                         (double) mProgressBar.getMax() / (events.size() - 1) + 0.5);

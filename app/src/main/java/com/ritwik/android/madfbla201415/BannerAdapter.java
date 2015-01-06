@@ -3,7 +3,6 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -69,12 +68,13 @@ public class BannerAdapter extends PagerAdapter {
             }
         });
 
-
         return image;
     }
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((ImageView) object);
     }
+
 }
