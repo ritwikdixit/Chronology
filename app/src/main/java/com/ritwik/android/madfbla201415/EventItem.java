@@ -104,4 +104,16 @@ public class EventItem {
                 "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         return monthNames[month - 1];
     }
+
+
+    //this is for debugging do not delete
+    @Override
+    public String toString() {
+        return mTitle + "---"
+                + mStartDate + "-" + mEndDate
+                + " " + mStartTime + "-" + mEndTime
+                + " locate @" + mLocation + " " + " details=" + mDetails
+                + " img src=" + mUrl + " contact @" + mContactInfo;
+
+    }
 }

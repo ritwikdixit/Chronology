@@ -9,8 +9,6 @@ import android.view.MenuItem;
 
 public class HomepageActivity extends ActionBarActivity {
 
-    private Toolbar toolbar;
-
     public HomepageActivity() {
 
     }

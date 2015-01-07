@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -75,45 +74,45 @@ public class HomepageFragment extends Fragment {
     //drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private String[] mDrawerArray = { "Month View",
-            "All Events", "Home", "Search", "Log Out" };
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
     private SearchView mSearch;
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_main, menu);
+
+        //android library API 11+ standard search
         SearchManager managerSearch = (SearchManager) getActivity()
                 .getSystemService(Context.SEARCH_SERVICE);
-
-        MenuItem item = menu.findItem(R.id.chronology_search_bar);
-        mSearch = (SearchView) MenuItemCompat.getActionView(item);
-
-        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getActivity().getComponentName()));
-        mSearch.setIconifiedByDefault(false);
-
-        super.onCreateOptionsMenu(menu, inflater);
+        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
+        mSearch.setSearchableInfo(
+                managerSearch.getSearchableInfo(getActivity().getComponentName()));
+        mSearch.setIconifiedByDefault(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-        if (item.getItemId() == R.id.chronology_search_bar
-                || item.getItemId() == R.id.action_settings) {
+        if (id == R.id.chronology_search_bar) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_homepage, container, false);
-
+        setHasOptionsMenu(true);
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_main);
@@ -128,8 +127,8 @@ public class HomepageFragment extends Fragment {
         //init the drawer
         mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) rootView.findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(),
-                R.layout.drawer_list_item, R.id.list_item_text, mDrawerArray));
+        mDrawerList.setAdapter(new ArrayAdapter<>(getActivity(),
+                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 getActivity(), mDrawerLayout, mDrawerList));
@@ -140,23 +139,22 @@ public class HomepageFragment extends Fragment {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                getActivity().supportInvalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 //set all items unchecked
-                for (int i = 0; i < mDrawerArray.length; i++) {
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
                     mDrawerList.setItemChecked(i, false);
                 }
+                getActivity().supportInvalidateOptionsMenu();
             }
         };
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        mDrawerList.bringToFront();
-        mDrawerLayout.requestLayout();
 
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -164,7 +162,8 @@ public class HomepageFragment extends Fragment {
         mProgressBar.setProgress(0);
         //On Creation of Homepage, store user Data
         if(DataHolder.hasUserData())
-            ref.child("users").child(DataHolder.getUID()).addChildEventListener(new ChildEventListener() {
+            ref.child("users").child(DataHolder.getUID())
+                    .addChildEventListener(new ChildEventListener() {
 
                 // Retrieve new posts as they are added to Firebase
                 @Override
@@ -292,6 +291,7 @@ public class HomepageFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDrawerToggle.syncState();
+
     }
 
     public static ArrayList<EventItem> getEvents() {

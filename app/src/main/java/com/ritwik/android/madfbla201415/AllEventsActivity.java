@@ -1,26 +1,26 @@
 package com.ritwik.android.madfbla201415;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
+
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
@@ -42,11 +42,10 @@ public class AllEventsActivity extends ActionBarActivity  {
     //drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private String[] mDrawerArray = { "Month View",
-            "All Events", "Home", "Search", "Log Out" };
     private ActionBarDrawerToggle mDrawerToggle;
 
     private Toolbar toolbar;
+    private SearchView mSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class AllEventsActivity extends ActionBarActivity  {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.list_item_text, mDrawerArray));
+                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 this, mDrawerLayout, mDrawerList));
@@ -86,7 +85,7 @@ public class AllEventsActivity extends ActionBarActivity  {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 //set all items unchecked
-                for (int i = 0; i < mDrawerArray.length; i++) {
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
                     mDrawerList.setItemChecked(i, false);
                 }
             }
@@ -95,8 +94,12 @@ public class AllEventsActivity extends ActionBarActivity  {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        mDrawerList.bringToFront();
-        mDrawerLayout.requestLayout();
+        /*SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        mSearch = (SearchView) toolbar.findViewById(R.id.chronology_search_bar);
+
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setIconifiedByDefault(false);*/
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
         events = new ArrayList<>();
@@ -175,6 +178,34 @@ public class AllEventsActivity extends ActionBarActivity  {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        //android library API 11+ standard search
+        SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setIconifiedByDefault(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.chronology_search_bar) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.ritwik.android.madfbla201415;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -41,6 +44,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private SwipeListener mFlinglistener;
 
     private Toolbar toolbar;
+    private SearchView mSearch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +136,11 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        //android library API 11+ standard search
+        SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setIconifiedByDefault(true);
         return true;
     }
 
@@ -148,7 +158,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.chronology_search_bar) {
             return true;
         }
 
