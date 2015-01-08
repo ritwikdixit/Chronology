@@ -47,6 +47,10 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         if (position == 0) {
             //month view
+            if(!(mContext instanceof  CalendarActivity)){
+                Intent intent = new Intent(mContext, CalendarActivity.class);
+                mContext.startActivity(intent);
+            }
 
         } else if (position == 1) {
             //all events
@@ -64,7 +68,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             }
 
         } else if (position == 3) {
-            //search
+            //help
 
         } else if (position == 4) {
             //log out

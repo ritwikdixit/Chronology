@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -40,15 +41,21 @@ public class SearchActivity extends ActionBarActivity {
         //standard action bar stuff
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                //item clicked not special
                 return true;
             }
         });
-        toolbar.inflateMenu(R.menu.menu_main);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //init the data holders
@@ -81,7 +88,6 @@ public class SearchActivity extends ActionBarActivity {
             presentData();
 
             if (events.size() <= 0) {
-
                 events = new ArrayList<>(HomepageFragment.getEvents());
                 delayNewQuery();
                 Log.v(TAG, "delayed");
@@ -90,10 +96,8 @@ public class SearchActivity extends ActionBarActivity {
 
     //when the search is complete
     public void presentData() {
-
         adapter = new EventListItemAdapter(this, mData);
         mEventsView.setAdapter(adapter);
-
     }
 
     //this is in case it has not loaded yet
@@ -108,12 +112,10 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        //TODO: BACK BUTTON
-        
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        super.onBackPressed();
+        SearchActivity.this.overridePendingTransition(
+                R.anim.neg_left_right, R.anim.left_to_right);
     }
+
 }

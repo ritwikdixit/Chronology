@@ -55,6 +55,9 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -62,7 +65,12 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
             }
         });
 
-        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mStartDate = (TextView) findViewById(R.id.detail_start_date);
         mEndDate = (TextView) findViewById(R.id.detail_end_date);
@@ -169,4 +177,6 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     public void onClick(View v) {
 
     }
+
+
 }

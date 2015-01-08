@@ -16,33 +16,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.ListView;
 
-
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
- * Created by Ritwik on 12/31/14.
+ * Created by Ritwik on 1/7/15.
  */
+public class CalendarActivity extends ActionBarActivity {
 
-public class AllEventsActivity extends ActionBarActivity  {
-
-    private ListView mAllEventsView;
+    private ListView mEventsList;
     private EventListItemAdapter adapter;
+
     private ArrayList<EventItem> events;
+    private ArrayList<EventItem> filteredEvents;
+
+    private CalendarView mCalendar;
 
     private Activity mContext = this;
+    private static final long MILLIS_PER_DAY = 86400000;
 
     //drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private SimpleDateFormat mSimpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final String TAG = "Calendar";
 
     private Toolbar toolbar;
     private SearchView mSearch;
@@ -51,7 +54,7 @@ public class AllEventsActivity extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_allevents);
+        setContentView(R.layout.activity_calendar);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,7 +70,7 @@ public class AllEventsActivity extends ActionBarActivity  {
         //init the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+        mDrawerList.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
@@ -94,49 +97,35 @@ public class AllEventsActivity extends ActionBarActivity  {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
-        events = new ArrayList<>();
-        Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
-        eventsByDate.addChildEventListener(new ChildEventListener() {
+        events = new ArrayList<>(HomepageFragment.getEvents());
+        filteredEvents = new ArrayList<>();
 
-            // Retrieve new posts as they are added to Firebase
+        mEventsList =  (ListView) findViewById(R.id.events_per_day_listView);
+        adapter = new EventListItemAdapter(this, events);
+        mEventsList.setAdapter(adapter);
+
+        mCalendar = (CalendarView) findViewById(R.id.calendar_chronology);
+        initializeCalendar();
+        mCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                events.add(new EventItem(
-                        newEvent.get("start_date").toString(),
-                        newEvent.get("end_date").toString(),
-                        newEvent.get("start_time").toString(),
-                        newEvent.get("end_time").toString(),
-                        newEvent.get("title").toString(),
-                        newEvent.get("location").toString(),
-                        newEvent.get("details").toString(),
-                        newEvent.get("url").toString(),
-                        newEvent.get("contact_info").toString(),
-                        getApplicationContext()
-                ));
-                mAllEventsView.setAdapter(adapter);
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
-            }
+                month++;
+                String date;
+                if (month < 10) {
+                    date = ""+year+"-0"+month+"-"+dayOfMonth;
 
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                } else {
+                    date = ""+year+"-"+month+"-"+dayOfMonth;
+                }
 
-            }
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Loading Event Item Error", firebaseError.getMessage());
+                filteredEvents = new ArrayList<>(filterEvents(date, events));
+                mEventsList.setAdapter(adapter);
             }
         });
 
-        adapter = new EventListItemAdapter(this, events);
-        mAllEventsView.setAdapter(adapter);
-
-        mAllEventsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mEventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -165,11 +154,16 @@ public class AllEventsActivity extends ActionBarActivity  {
                         events.get(position).getmContactInfo());
 
                 startActivity(detailIntent);
-                AllEventsActivity.this.overridePendingTransition(
+                CalendarActivity.this.overridePendingTransition(
                         R.anim.right_to_left, R.anim.neg_right_left);
 
             }
         });
+
+    }
+
+    private void initializeCalendar() {
+        mCalendar.setShowWeekNumber(false);
 
     }
 
@@ -206,6 +200,25 @@ public class AllEventsActivity extends ActionBarActivity  {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
+
+    public ArrayList<EventItem> filterEvents(String todayDate, ArrayList<EventItem> allEvents) {
+
+        ArrayList<EventItem> filteredEvents = new ArrayList<>();
+        Log.v(TAG, " start" + (allEvents.get(0).getmStartDate().compareTo(todayDate) == -1) + " ");
+        Log.v(TAG, " end" + (allEvents.get(0).getmEndDate().compareTo(todayDate) == 1) + " ");
+        Log.v(TAG, "today date = " + todayDate + " end date = " + events.get(0).getmStartDate());
+
+        for (EventItem thisEvent : allEvents) {
+            if (thisEvent.getmStartDate().compareTo(todayDate) == -1
+                    && thisEvent.getmEndDate().compareTo(todayDate) == 1) {
+
+                filteredEvents.add(thisEvent);
+            }
+        }
+
+        return filteredEvents;
+    }
+
 
 
 }
