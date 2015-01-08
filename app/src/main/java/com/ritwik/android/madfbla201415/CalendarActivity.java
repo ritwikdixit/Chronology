@@ -21,8 +21,6 @@ import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Ritwik on 1/7/15.
@@ -101,7 +99,7 @@ public class CalendarActivity extends ActionBarActivity {
         filteredEvents = new ArrayList<>();
 
         mEventsList =  (ListView) findViewById(R.id.events_per_day_listView);
-        adapter = new EventListItemAdapter(this, events);
+        adapter = new EventListItemAdapter(this, filteredEvents);
         mEventsList.setAdapter(adapter);
 
         mCalendar = (CalendarView) findViewById(R.id.calendar_chronology);
@@ -112,15 +110,22 @@ public class CalendarActivity extends ActionBarActivity {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
                 month++;
-                String date;
-                if (month < 10) {
-                    date = ""+year+"-0"+month+"-"+dayOfMonth;
+                String monthStr = "", dayStr = "";
 
+                if (month < 10) {
+                    monthStr = "0"+month;
                 } else {
-                    date = ""+year+"-"+month+"-"+dayOfMonth;
+                    monthStr = ""+month;
                 }
 
-                filteredEvents = new ArrayList<>(filterEvents(date, events));
+                if (dayOfMonth < 10) {
+                    dayStr = "0"+dayOfMonth;
+                } else {
+                    dayStr = ""+dayOfMonth;
+                }
+
+                String date = year + "-" + monthStr + "-" + dayStr;
+                filterEvents(date, events);
                 mEventsList.setAdapter(adapter);
             }
         });
@@ -135,23 +140,23 @@ public class CalendarActivity extends ActionBarActivity {
                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
-                        events.get(position).getmTitle());
-                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmStartDate()));
-                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmEndDate()));
+                        filteredEvents.get(position).getmTitle());
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, filteredEvents.get(position)
+                        .formatDate(filteredEvents.get(position).getmStartDate()));
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, filteredEvents.get(position)
+                        .formatDate(filteredEvents.get(position).getmEndDate()));
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
-                        events.get(position).getmStartTime());
+                        filteredEvents.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
-                        events.get(position).getmEndTime());
+                        filteredEvents.get(position).getmEndTime());
                 detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
-                        events.get(position).getmLocation());
+                        filteredEvents.get(position).getmLocation());
                 detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
-                        events.get(position).getmDetails());
+                        filteredEvents.get(position).getmDetails());
                 detailIntent.putExtra(HomepageFragment.URL_KEY,
-                        events.get(position).getmUrl());
+                        filteredEvents.get(position).getmUrl());
                 detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
-                        events.get(position).getmContactInfo());
+                        filteredEvents.get(position).getmContactInfo());
 
                 startActivity(detailIntent);
                 CalendarActivity.this.overridePendingTransition(
@@ -201,22 +206,17 @@ public class CalendarActivity extends ActionBarActivity {
         mDrawerToggle.syncState();
     }
 
-    public ArrayList<EventItem> filterEvents(String todayDate, ArrayList<EventItem> allEvents) {
+    public void filterEvents(String todayDate, ArrayList<EventItem> allEvents) {
 
-        ArrayList<EventItem> filteredEvents = new ArrayList<>();
-        Log.v(TAG, " start" + (allEvents.get(0).getmStartDate().compareTo(todayDate) == -1) + " ");
-        Log.v(TAG, " end" + (allEvents.get(0).getmEndDate().compareTo(todayDate) == 1) + " ");
-        Log.v(TAG, "today date = " + todayDate + " end date = " + events.get(0).getmStartDate());
+        filteredEvents.clear();
 
         for (EventItem thisEvent : allEvents) {
-            if (thisEvent.getmStartDate().compareTo(todayDate) == -1
-                    && thisEvent.getmEndDate().compareTo(todayDate) == 1) {
-
+            if (thisEvent.getmStartDate().compareTo(todayDate) < 1
+                    && thisEvent.getmEndDate().compareTo(todayDate) > -1) {
                 filteredEvents.add(thisEvent);
             }
         }
 
-        return filteredEvents;
     }
 
 
