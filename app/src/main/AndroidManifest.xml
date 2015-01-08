@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ritwik.android.madfbla201415" >
+    <!-- GCM connects to Google Services. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+
+    <permission android:name="com.ritwik.android.madfbla201415.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="PB_PACKAGE.permission.C2D_MESSAGE" />
+
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/chrono_icon"
+        android:name="com.ritwik.android.madfbla201415.PushNotif"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -16,10 +30,34 @@
             android:name=".LoginActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity android:name="com.pushbots.push.PBMsg"/>
+        <activity android:name="com.pushbots.push.PBListener"/>
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="com.ritwik.android.madfbla201415" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.pushbots.push.MsgReceiver" />
+        <service android:name="com.pushbots.push.GCMIntentService" />
+        <service android:name="org.OpenUDID.OpenUDID_service" >
+            <intent-filter>
+                <action android:name="org.openudid.GETUDID" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".HomepageActivity"
             android:label="@string/HomepageLabel" >
+            <intent-filter>
+                <action android:name="com.ritwik.android.madfbla201415.MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".LoadingActivity"

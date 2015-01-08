@@ -36,9 +36,6 @@ public class LoadingActivity extends ActionBarActivity {
         ref = DataHolder.getRef();
         mContext = this;
 
-        //TODO: Remove the following line after testing
-       // ref.unauth();
-        //TODO: Remove the previous line after testing
         //Checks if authorized, starts intent to appropriate activity
         ref.addAuthStateListener(new Firebase.AuthStateListener() {
 
