@@ -13,6 +13,11 @@ public class HomepageActivity extends ActionBarActivity {
 
     }
 
+    public void animToDetail() {
+        HomepageActivity.this
+                .overridePendingTransition(R.anim.right_to_left, R.anim.neg_right_left);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

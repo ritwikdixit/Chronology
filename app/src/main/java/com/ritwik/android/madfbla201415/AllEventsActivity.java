@@ -93,6 +93,8 @@ public class AllEventsActivity extends ActionBarActivity  {
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
+
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
         events = new ArrayList<>();

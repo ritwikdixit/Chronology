@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +45,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private View.OnTouchListener mListener;
     private SwipeListener mFlinglistener;
 
+    private ShareActionProvider mShare;
+
     private Toolbar toolbar;
     private SearchView mSearch;
 
@@ -55,13 +59,13 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.inflateMenu(R.menu.menu_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                return true;
+                return onOptionsItemSelected(menuItem);
             }
         });
 
@@ -143,13 +147,26 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         //android library API 11+ standard search
         SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
         mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
         mSearch.setIconifiedByDefault(true);
-        return true;
+
+        mShare = (ShareActionProvider) MenuItemCompat
+                .getActionProvider(menu.findItem(R.id.chronology_share_action));
+
+        mShare.setShareIntent(getDefaultIntent());
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "Chronology is so good!");
+        return intent;
     }
 
     @Override
@@ -166,8 +183,13 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.chronology_search_bar) {
+        if (id == R.id.chronology_search_bar
+                || id == R.id.chronology_share_action) {
             return true;
+        }
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

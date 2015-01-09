@@ -94,6 +94,8 @@ public class CalendarActivity extends ActionBarActivity {
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
+
 
         events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();

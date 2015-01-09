@@ -15,6 +15,7 @@
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/chrono_icon"
@@ -77,6 +78,10 @@
 
         <activity android:name=".CalendarActivity"
             android:label="@string/calendar"/>
+
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/AppTheme2"
+            android:label="@string/action_settings" />
 
         <activity android:name=".SearchActivity">
             <intent-filter>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -156,6 +157,7 @@ public class HomepageFragment extends Fragment {
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
 
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -278,9 +280,8 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
                 detailIntent.putExtra(CONTACT_INFO_KEY, events.get(position).getmContactInfo());
 
-                HomepageFragment.this.setEnterTransition(R.anim.right_to_left);
-                HomepageFragment.this.setExitTransition(R.anim.neg_right_left);
                 startActivity(detailIntent);
+                ((HomepageActivity) getActivity()).animToDetail();
 
             }
         });

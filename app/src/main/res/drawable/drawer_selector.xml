@@ -2,11 +2,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true"
-        android:drawable="@color/chronology_light_color" />
+        android:drawable="@color/drawer_select" />
 
     <item android:state_activated="true"
-        android:drawable="@color/chronology_light_color" />
+        android:drawable="@color/drawer_select" />
 
-    <item android:drawable="@color/chronology_color" />
+    <item android:drawable="@color/drawer_background" />
 
 </selector>

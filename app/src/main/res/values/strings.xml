@@ -30,4 +30,13 @@
 
     <string name="calendar">Calendar</string>
     <string name="search_hint">Search Chronology events</string>
+    <string name="share">Share</string>
+
+    <!-- Settings strings -->
+    <string name="notifications">Notifications</string>
+    <string name="notifications_summary">Enable Notifications</string>
+
+    <!-- SETTINGS KEYS -->
+    <string name="notifications_key">notifications_check</string>
+
 </resources>

@@ -1,8 +1,11 @@
 package com.ritwik.android.madfbla201415;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -23,6 +26,9 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
     private ListView mDrawerList;
     private int mPosition;
 
+    //for log out
+    private DialogInterface.OnClickListener dialogListener;
+
     private Firebase ref = DataHolder.getRef();
     private static final String LOG_TAG = "Drawer";
 
@@ -31,6 +37,40 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         mContext = a;
         mDrawerLayout = layout;
         mDrawerList = list;
+    }
+
+    private void initLogOutDialog() {
+
+        //if the user clicks log out make sure it was not mis click and
+        //they actually wanted to log out
+
+        dialogListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+
+                    dialog.dismiss();
+                    ref.unauth();
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                    mContext.startActivity(intent);
+
+                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    dialog.dismiss();
+                }
+
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+        builder.setTitle("Log Out")
+                .setMessage("Are you sure you want to Log Out?")
+                .setPositiveButton("Yes", dialogListener)
+                .setNegativeButton("No", dialogListener)
+                .show();
+
     }
 
     @Override
@@ -71,11 +111,14 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             //help
 
         } else if (position == 4) {
-            //log out
-            ref.unauth();
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            //settings
+            Intent intent = new Intent(mContext, SettingsActivity.class);
             mContext.startActivity(intent);
+
+        } else if (position == 5) {
+
+            //log out
+            initLogOutDialog();
         }
 
     }
