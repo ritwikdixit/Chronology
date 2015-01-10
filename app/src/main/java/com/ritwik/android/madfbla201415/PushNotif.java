@@ -11,5 +11,6 @@ public class PushNotif extends Application {
     public void onCreate() {
         super.onCreate();
         Pushbots.init(this, Notif_Sender_ID, Notif_App_ID);
+        Pushbots.getInstance().setMsgReceiver(PushReceiver.class);
     }
 }

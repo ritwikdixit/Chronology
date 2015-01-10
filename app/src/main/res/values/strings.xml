@@ -35,6 +35,7 @@
     <!-- Settings strings -->
     <string name="notifications">Notifications</string>
     <string name="notifications_summary">Enable Notifications</string>
+    <string name="push_notif">Push Notifications</string>
 
     <!-- SETTINGS KEYS -->
     <string name="notifications_key">notifications_check</string>

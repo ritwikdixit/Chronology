@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ritwik.android.madfbla201415" >
+
     <!-- GCM connects to Google Services. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -11,7 +12,7 @@
 
     <permission android:name="com.ritwik.android.madfbla201415.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-    <uses-permission android:name="PB_PACKAGE.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.ritwik.android.madfbla201415.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -76,6 +77,9 @@
         <activity android:name=".DetailActivity"
             android:label="@string/event" />
 
+        <activity android:name=".PushActivity"
+            android:label="@string/push_notif" />
+
         <activity android:name=".CalendarActivity"
             android:label="@string/calendar"/>
 
@@ -91,6 +95,6 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
+        <receiver android:name="com.ritwik.android.madfbla201415.PushReceiver"></receiver>
     </application>
 </manifest>

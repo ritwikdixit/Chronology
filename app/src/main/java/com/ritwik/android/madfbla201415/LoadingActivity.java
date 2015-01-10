@@ -23,6 +23,7 @@ public class LoadingActivity extends ActionBarActivity {
     private Context mContext;
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
     private static final String LOG_TAG =  "Loading";
+    private static boolean active = false;
 
 
     @Override
@@ -60,6 +61,18 @@ public class LoadingActivity extends ActionBarActivity {
         // Maybe have a different action bar menu file later
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void onStart(){
+        super.onStart();
+        active = true;
+    }
+    public void onStop(){
+        super.onStop();
+        active = false;
+    }
+    public static boolean isActive(){
+        return active;
     }
 
     @Override
