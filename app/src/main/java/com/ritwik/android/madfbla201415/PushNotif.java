@@ -1,9 +1,10 @@
 package com.ritwik.android.madfbla201415;
+import com.activeandroid.ActiveAndroid;
 import com.pushbots.push.Pushbots;
 import android.app.Application;
 import android.util.Log;
 
-public class PushNotif extends Application {
+public class PushNotif extends com.activeandroid.app.Application {
     public static final String Notif_App_ID = "54a346da1d0ab1b55e8b45fc";
     public static final String Notif_Sender_ID = "901400243848";
 
@@ -12,5 +13,6 @@ public class PushNotif extends Application {
         super.onCreate();
         Pushbots.init(this, Notif_Sender_ID, Notif_App_ID);
         Pushbots.getInstance().setMsgReceiver(PushReceiver.class);
+        ActiveAndroid.initialize(this);
     }
 }

@@ -6,6 +6,8 @@ package com.ritwik.android.madfbla201415;
 
 import java.util.HashMap;
 import com.pushbots.push.Pushbots;
+import com.ritwik.android.madfbla201415.Database.PushModel;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +24,10 @@ public class PushReceiver extends BroadcastReceiver
         // Handle Push Message when opened
         if (action.equals(Pushbots.MSG_OPENED)) {
             HashMap<?, ?> PushdataOpen = (HashMap<?, ?>) intent.getExtras().get(Pushbots.MSG_OPEN);
+            String message = PushdataOpen.get("message").toString();
+            String details = "No further details";
+            if(PushdataOpen.containsKey("details"))
+                details = PushdataOpen.get("details").toString();
             if(!LoadingActivity.isActive()) {
 
                 Intent startAppIntent = new Intent(Intent.ACTION_MAIN);
@@ -31,19 +37,15 @@ public class PushReceiver extends BroadcastReceiver
 
 
                 Intent viewPushIntent = new Intent(Pushbots.getInstance().appContext, PushActivity.class);
-                viewPushIntent.putExtra("Push_Message", PushdataOpen.get("message").toString());
-                if(PushdataOpen.containsKey("details"))
-                    viewPushIntent.putExtra("Push_Details", PushdataOpen.get("details").toString());
-                else
-                    viewPushIntent.putExtra("Push_Details", "No further details");
+                viewPushIntent.putExtra("Push_Details", details);
+                viewPushIntent.putExtra("Push_Message", message);
                 viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 Pushbots.getInstance().appContext.startActivity(viewPushIntent);
 
+                PushModel newPush = new PushModel(System.currentTimeMillis(), message, details);
+                newPush.save();
 
             }
-            //TODO: Remove below code. Testing only.
-            Log.w(TAG, "User clicked notification with Message: " + PushdataOpen.get("message"));
-
         // Handle Push Message when received
         }else if(action.equals(Pushbots.MSG_RECEIVE)){
             //They received the message
