@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -63,6 +64,38 @@ public class SearchActivity extends ActionBarActivity {
         events = new ArrayList<>(HomepageFragment.getEvents());
 
         mEventsView = (ListView) findViewById(R.id.search_list_view);
+
+        mEventsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+
+                detailIntent.putExtra(HomepageFragment.TITLE_KEY,
+                        events.get(position).getmTitle());
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmStartDate()));
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, events.get(position)
+                        .formatDate(events.get(position).getmEndDate()));
+                detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
+                        events.get(position).getmStartTime());
+                detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
+                        events.get(position).getmEndTime());
+                detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
+                        events.get(position).getmLocation());
+                detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
+                        events.get(position).getmDetails());
+                detailIntent.putExtra(HomepageFragment.URL_KEY,
+                        events.get(position).getmUrl());
+                detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
+                        events.get(position).getmContactInfo());
+
+                startActivity(detailIntent);
+                SearchActivity.this.overridePendingTransition(
+                        R.anim.right_to_left, R.anim.neg_right_left);
+            }
+        });
 
         //handle the incoming android standard search intent
         Intent intent = getIntent();

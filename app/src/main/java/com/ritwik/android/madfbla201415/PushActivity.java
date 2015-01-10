@@ -3,7 +3,9 @@ package com.ritwik.android.madfbla201415;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -19,21 +21,20 @@ import android.widget.LinearLayout;
 
 import com.firebase.client.Firebase;
 
-public class PushActivity extends ActionBarActivity implements View.OnClickListener{
+public class PushActivity extends ActionBarActivity {
 
     private LinearLayout layout;
 
     private static final String LOG_TAG = "NotifView";
     private Firebase ref;
 
-    private GestureDetectorCompat mLeftDetector;
-    private View.OnTouchListener mListener;
-    private SwipeListener mFlinglistener;
-
     private ShareActionProvider mShare;
 
     private Toolbar toolbar;
     private SearchView mSearch;
+
+    //This is the boolean to hold whether notifications is checked in settings
+    private boolean enabledNotifications;
 
 
     @Override
@@ -65,6 +66,12 @@ public class PushActivity extends ActionBarActivity implements View.OnClickListe
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
 
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+
+        enabledNotifications = prefs.getBoolean(getString(R.string.notifications_key), true);
+
+
         layout = (LinearLayout) findViewById(R.id.root_container_detail);
 
 
@@ -75,24 +82,7 @@ public class PushActivity extends ActionBarActivity implements View.OnClickListe
         }
 
 
-        mFlinglistener = new SwipeListener();
-        mLeftDetector = new GestureDetectorCompat(this, mFlinglistener);
-        mListener = new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                boolean touch = mLeftDetector.onTouchEvent(event);
-                if (mFlinglistener.hasSwiped()) {
-                    finish();
-                    PushActivity.this.overridePendingTransition(
-                            R.anim.neg_left_right, R.anim.left_to_right);
-                }
-                return touch;
-            }
-        };
-
-        layout.setOnClickListener(PushActivity.this);
-        layout.setOnTouchListener(mListener);
     }
 
     @Override
@@ -144,10 +134,5 @@ public class PushActivity extends ActionBarActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

@@ -25,4 +25,8 @@
 
     </style>
 
+    <style name="progressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+
+    </style>
+
 </resources>

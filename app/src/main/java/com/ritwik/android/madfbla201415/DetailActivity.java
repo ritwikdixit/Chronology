@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import org.w3c.dom.Text;
+
 public class DetailActivity extends ActionBarActivity implements View.OnClickListener{
 
     private TextView mStartDate;
@@ -31,6 +33,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private TextView mLocation;
     private TextView mDetails;
     private TextView mContactInfo;
+    private TextView mTitle;
 
     private LinearLayout layout;
 
@@ -55,7 +58,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_details_new);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,6 +79,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
             }
         });
 
+        mTitle = (TextView) findViewById(R.id.title2);
         mStartDate = (TextView) findViewById(R.id.detail_start_date);
         mEndDate = (TextView) findViewById(R.id.detail_end_date);
         mStartTime = (TextView) findViewById(R.id.detail_start_time);
@@ -92,7 +96,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
 
         //setting the action bar label to title of event
-        setTitle(getIntent().getStringExtra(HomepageFragment.TITLE_KEY));
+        mTitle.setText(getIntent().getStringExtra(HomepageFragment.TITLE_KEY));
 
         //getting the extras from the intent and putting them in the view
         mStartDate.setText("Date: " +
@@ -165,7 +169,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private Intent getDefaultIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "Chronology is so good!");
+        intent.putExtra(Intent.EXTRA_TEXT,
+                "I am using Chronology to see Homestead Events!");
         return intent;
     }
 

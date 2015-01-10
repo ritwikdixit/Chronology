@@ -85,7 +85,13 @@
 
         <activity android:name=".SettingsActivity"
             android:theme="@style/AppTheme2"
-            android:label="@string/action_settings" />
+            android:parentActivityName=".HomepageActivity"
+            android:label="@string/action_settings">
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ritwik.android.madfbla201415.HomepageActivity" />
+
+        </activity>
 
         <activity android:name=".SearchActivity">
             <intent-filter>

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -67,6 +68,7 @@ public class AllEventsActivity extends ActionBarActivity  {
         //init the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
 

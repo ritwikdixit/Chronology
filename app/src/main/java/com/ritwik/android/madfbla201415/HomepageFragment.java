@@ -1,6 +1,7 @@
 package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
+import android.app.Notification;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -125,6 +126,7 @@ public class HomepageFragment extends Fragment {
                 return true;
             }
         });
+        toolbar.setTitle("Welcome!");
 
         //init the drawer
         mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
@@ -163,6 +165,7 @@ public class HomepageFragment extends Fragment {
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mProgressBar.setMax(100);
         mProgressBar.setProgress(0);
+
         //On Creation of Homepage, store user Data
         if(DataHolder.hasUserData())
             ref.child("users").child(DataHolder.getUID())

@@ -10,8 +10,8 @@ public class DataHolder {
 
     private static Firebase ref;
     private static String UID, fullName, email, phoneNumber;
-    private static String[] mDrawerArray = { "Month View",
-            "All Events", "Home", "Help", "Settings", "Log Out" };
+    private static String[] mDrawerArray = { "Home", "Month View",
+            "All Events", "Help", "Settings", "Log Out" };
 
     private DataHolder(){} //Empty Constructor
 
@@ -47,7 +47,9 @@ public class DataHolder {
         return phoneNumber;
     }
     public static boolean hasUserData(){
-        return fullName != null && phoneNumber != null && email != null && !fullName.trim().equals("") && !email.trim().equals("") && !phoneNumber.trim().equals("");
+        return fullName != null && phoneNumber != null &&
+                email != null && !fullName.trim().equals("")
+                && !email.trim().equals("") && !phoneNumber.trim().equals("");
     }
     public static String[] getDrawerArray() {
         return mDrawerArray;
