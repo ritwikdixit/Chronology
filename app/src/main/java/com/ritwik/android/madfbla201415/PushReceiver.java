@@ -23,6 +23,7 @@ public class PushReceiver extends BroadcastReceiver
         if (action.equals(Pushbots.MSG_OPENED)) {
             HashMap<?, ?> PushdataOpen = (HashMap<?, ?>) intent.getExtras().get(Pushbots.MSG_OPEN);
             if(!LoadingActivity.isActive()) {
+
                 Intent startAppIntent = new Intent(Intent.ACTION_MAIN);
                 startAppIntent.setClass(Pushbots.getInstance().appContext, LoadingActivity.class);
                 startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -31,7 +32,11 @@ public class PushReceiver extends BroadcastReceiver
 
                 Intent viewPushIntent = new Intent(Pushbots.getInstance().appContext, PushActivity.class);
                 viewPushIntent.putExtra("Push_Message", PushdataOpen.get("message").toString());
-                viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if(PushdataOpen.containsKey("details"))
+                    viewPushIntent.putExtra("Push_Details", PushdataOpen.get("details").toString());
+                else
+                    viewPushIntent.putExtra("Push_Details", "No further details");
+                viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 Pushbots.getInstance().appContext.startActivity(viewPushIntent);
 
 
