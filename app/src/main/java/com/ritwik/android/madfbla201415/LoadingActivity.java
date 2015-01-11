@@ -3,6 +3,7 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.ritwik.android.madfbla201415.Database.DataModel;
 
 import java.util.Map;
 
@@ -30,10 +32,18 @@ public class LoadingActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-        
+
         Firebase.setAndroidContext(this);
         if(DataHolder.isNull())
-            DataHolder.setRef(new Firebase(URL_FIREBASE));
+            try{
+                DataModel dm = DataModel.load(DataModel.class, 1);
+                ref = dm.ref;
+            }
+            catch (Exception e){
+                Log.e("Failed: Loading new Firebase", e.toString());
+                DataHolder.setRef(new Firebase(URL_FIREBASE));
+            }
+
         ref = DataHolder.getRef();
         mContext = this;
 

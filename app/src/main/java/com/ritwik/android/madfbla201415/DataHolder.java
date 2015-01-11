@@ -1,7 +1,9 @@
 package com.ritwik.android.madfbla201415;
 
+import com.activeandroid.ActiveAndroid;
 import com.firebase.client.Firebase;
 import com.pushbots.push.Pushbots;
+import com.ritwik.android.madfbla201415.Database.DataModel;
 
 /**
  * Created by Soham Pardeshi on 12/31/2014.
@@ -17,6 +19,8 @@ public class DataHolder {
 
     public static void setRef(Firebase r){
         ref = r;
+        DataModel dm = DataModel.load(DataModel.class, 1);
+        dm.ref = ref;
     }
     public static Firebase getRef(){
         return ref;
