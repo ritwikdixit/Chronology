@@ -32,14 +32,14 @@ public class PushReceiver extends BroadcastReceiver
 
                 Intent startAppIntent = new Intent(Intent.ACTION_MAIN);
                 startAppIntent.setClass(Pushbots.getInstance().appContext, LoadingActivity.class);
-                startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 Pushbots.getInstance().appContext.startActivity(startAppIntent);
 
 
                 Intent viewPushIntent = new Intent(Pushbots.getInstance().appContext, PushActivity.class);
                 viewPushIntent.putExtra("Push_Details", details);
                 viewPushIntent.putExtra("Push_Message", message);
-                viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 Pushbots.getInstance().appContext.startActivity(viewPushIntent);
 
                 PushModel newPush = new PushModel(System.currentTimeMillis(), message, details);

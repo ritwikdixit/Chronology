@@ -6,7 +6,7 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "Push_Table")
 public class PushModel extends Model {
-    @Column(name = "Time_Recieved")
+    @Column(name = "Time")
     public long time;
 
     @Column(name = "Name")

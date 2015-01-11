@@ -2,6 +2,7 @@ package com.ritwik.android.madfbla201415;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.widget.CheckBox;
 
 /**
  * Created by Ritwik on 1/9/15.

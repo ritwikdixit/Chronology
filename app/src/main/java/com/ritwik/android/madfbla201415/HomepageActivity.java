@@ -1,5 +1,6 @@
 package com.ritwik.android.madfbla201415;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,14 +26,10 @@ public class HomepageActivity extends ActionBarActivity {
         //This is temporary so later this will change
         setContentView(R.layout.activity_homepage);
 
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.homepage_fragment_container, new HomepageFragment())
                     .commit();
         }
-
     }
-
-
 }

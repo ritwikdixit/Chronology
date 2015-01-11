@@ -13,6 +13,7 @@ public class PushNotif extends com.activeandroid.app.Application {
         super.onCreate();
         Pushbots.init(this, Notif_Sender_ID, Notif_App_ID);
         Pushbots.getInstance().setMsgReceiver(PushReceiver.class);
+        Pushbots.getInstance().setAlias(this, DataHolder.getName());
         ActiveAndroid.initialize(this);
     }
 }
