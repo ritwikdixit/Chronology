@@ -1,5 +1,7 @@
 package com.ritwik.android.madfbla201415;
 
+import android.util.Log;
+
 import com.activeandroid.ActiveAndroid;
 import com.firebase.client.Firebase;
 import com.pushbots.push.Pushbots;
@@ -19,8 +21,6 @@ public class DataHolder {
 
     public static void setRef(Firebase r){
         ref = r;
-        DataModel dm = DataModel.load(DataModel.class, 1);
-        dm.ref = ref;
     }
     public static Firebase getRef(){
         return ref;

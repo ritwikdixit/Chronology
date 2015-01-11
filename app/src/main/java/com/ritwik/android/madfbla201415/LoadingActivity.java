@@ -35,14 +35,8 @@ public class LoadingActivity extends ActionBarActivity {
 
         Firebase.setAndroidContext(this);
         if(DataHolder.isNull())
-            try{
-                DataModel dm = DataModel.load(DataModel.class, 1);
-                ref = dm.ref;
-            }
-            catch (Exception e){
-                Log.e("Failed: Loading new Firebase", e.toString());
-                DataHolder.setRef(new Firebase(URL_FIREBASE));
-            }
+            DataHolder.setRef(new Firebase(URL_FIREBASE));
+
 
         ref = DataHolder.getRef();
         mContext = this;
