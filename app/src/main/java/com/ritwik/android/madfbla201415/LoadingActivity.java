@@ -37,23 +37,44 @@ public class LoadingActivity extends ActionBarActivity {
         ref = DataHolder.getRef();
         mContext = this;
 
-        //Checks if authorized, starts intent to appropriate activity
-        ref.addAuthStateListener(new Firebase.AuthStateListener() {
 
-            @Override
-            public void onAuthStateChanged(AuthData authData) {
-                if (authData != null) {
-                    DataHolder.setUID(authData.getUid());
-                    Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
-                    startActivity(redirectIntent);
-                } else {
-                    Intent redirectIntent = new Intent(mContext, LoginActivity.class);
-                    startActivity(redirectIntent);
+        //get the data from the push receiver and redirect to pushActivity
+        Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+
+            Log.v(PushReceiver.TAG, "Works!");
+
+            Intent redirectIntent = new Intent(this, PushActivity.class);
+            redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+            redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+            startActivity(redirectIntent);
+            Log.v(PushReceiver.TAG, "to end here");
+            finish();
+
+        } else {
+
+            Log.v(PushReceiver.TAG, "Didn't Work on Notification :(");
+
+            //Checks if authorized, starts intent to appropriate activity
+            ref.addAuthStateListener(new Firebase.AuthStateListener() {
+
+                @Override
+                public void onAuthStateChanged(AuthData authData) {
+                    if (authData != null) {
+                        DataHolder.setUID(authData.getUid());
+                        Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
+                        startActivity(redirectIntent);
+                    } else {
+                        Intent redirectIntent = new Intent(mContext, LoginActivity.class);
+                        startActivity(redirectIntent);
+                    }
+
+                    finish();
                 }
-
-                finish();
-            }
-        });
+            });
+        }
     }
 
     @Override

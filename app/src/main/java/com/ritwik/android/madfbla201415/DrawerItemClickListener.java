@@ -116,7 +116,6 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 4) {
 
             //notifications
-            //all events
             if(!(mContext instanceof  AllPushActivity)){
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);

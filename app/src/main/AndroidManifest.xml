@@ -82,7 +82,11 @@
             android:label="@string/event" />
 
         <activity android:name=".PushActivity"
-            android:label="@string/push_notif" />
+            android:parentActivityName=".AllPushActivity"
+            android:label="@string/push_notif">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ritwik.android.madfbla201415.AllPushActivity" />
+        </activity>
 
         <activity android:name=".CalendarActivity"
             android:label="@string/calendar"/>

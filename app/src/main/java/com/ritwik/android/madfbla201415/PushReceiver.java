@@ -15,7 +15,12 @@ import android.util.Log;
 
 public class PushReceiver extends BroadcastReceiver
 {
-    private static final String TAG = "customPushReceiver";
+
+    public static final String PUSH_DETAILS_KEY = "Push_Details";
+    public static final String PUSH_MSG_KEY = "Push_Message";
+    public static final String PUSH_REDIRECT_KEY = "Push";
+
+    public static final String TAG = "customPushReceiver";
     @Override
     public void onReceive(Context context, Intent intent)
     {
@@ -33,14 +38,12 @@ public class PushReceiver extends BroadcastReceiver
                 Intent startAppIntent = new Intent(Intent.ACTION_MAIN);
                 startAppIntent.setClass(Pushbots.getInstance().appContext, LoadingActivity.class);
                 startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+
+                //giving redirect data
+                startAppIntent.putExtra(PUSH_REDIRECT_KEY, true);
+                startAppIntent.putExtra(PUSH_DETAILS_KEY, details);
+                startAppIntent.putExtra(PUSH_MSG_KEY, message);
                 Pushbots.getInstance().appContext.startActivity(startAppIntent);
-
-
-                Intent viewPushIntent = new Intent(Pushbots.getInstance().appContext, PushActivity.class);
-                viewPushIntent.putExtra("Push_Details", details);
-                viewPushIntent.putExtra("Push_Message", message);
-                viewPushIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                Pushbots.getInstance().appContext.startActivity(viewPushIntent);
 
                 PushModel newPush = new PushModel(System.currentTimeMillis(), message, details);
                 newPush.save();
