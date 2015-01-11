@@ -106,7 +106,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
             //all events
             if(!(mContext instanceof  AllEventsActivity)){
-                Intent intent = new Intent(mContext, AllPushActivity.class);
+                Intent intent = new Intent(mContext, AllEventsActivity.class);
                 mContext.startActivity(intent);
             }
 
@@ -115,12 +115,21 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 4) {
 
+            //notifications
+            //all events
+            if(!(mContext instanceof  AllPushActivity)){
+                Intent intent = new Intent(mContext, AllPushActivity.class);
+                mContext.startActivity(intent);
+            }
+
+        } else if (position == 5) {
+
             //settings
             Intent intent = new Intent(mContext, SettingsActivity.class);
             mContext.startActivity(intent);
 
-        } else if (position == 5) {
-            
+        } else if (position == 6) {
+
             //log out
             initLogOutDialog();
         }

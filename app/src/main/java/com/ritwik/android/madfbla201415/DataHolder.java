@@ -13,7 +13,7 @@ public class DataHolder {
     private static Firebase ref;
     private static String UID, fullName, email, phoneNumber;
     private static String[] mDrawerArray = { "Home", "Month View",
-            "All Events", "Help", "Settings", "Log Out" };
+            "All Events", "Help", "Notifications", "Settings", "Log Out" };
 
     private DataHolder(){} //Empty Constructor
 

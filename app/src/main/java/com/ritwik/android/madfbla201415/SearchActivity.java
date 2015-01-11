@@ -73,23 +73,23 @@ public class SearchActivity extends ActionBarActivity {
                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
-                        events.get(position).getmTitle());
+                        mData.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmStartDate()));
+                        .formatDate(mData.get(position).getmStartDate()));
                 detailIntent.putExtra(HomepageFragment.END_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmEndDate()));
+                        .formatDate(mData.get(position).getmEndDate()));
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
-                        events.get(position).getmStartTime());
+                        mData.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
-                        events.get(position).getmEndTime());
+                        mData.get(position).getmEndTime());
                 detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
-                        events.get(position).getmLocation());
+                        mData.get(position).getmLocation());
                 detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
-                        events.get(position).getmDetails());
+                        mData.get(position).getmDetails());
                 detailIntent.putExtra(HomepageFragment.URL_KEY,
-                        events.get(position).getmUrl());
+                        mData.get(position).getmUrl());
                 detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
-                        events.get(position).getmContactInfo());
+                        mData.get(position).getmContactInfo());
 
                 startActivity(detailIntent);
                 SearchActivity.this.overridePendingTransition(
@@ -102,6 +102,7 @@ public class SearchActivity extends ActionBarActivity {
         if ((intent.getAction()).equals(Intent.ACTION_SEARCH)) {
             mQuery = intent.getStringExtra(SearchManager.QUERY);
             Log.v(TAG, "success");
+            getSupportActionBar().setTitle("Search: " + mQuery);
             doTheSearch(mQuery);
         }
     }
