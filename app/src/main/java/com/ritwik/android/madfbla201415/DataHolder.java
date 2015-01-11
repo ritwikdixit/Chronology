@@ -19,8 +19,8 @@ public class DataHolder {
 
     public static void setRef(Firebase r){
         ref = r;
-        DataModel dm = DataModel.load(DataModel.class, 1);
-        dm.ref = ref;
+        //DataModel dm = DataModel.load(DataModel.class, 0);
+        //dm.ref = ref;
     }
     public static Firebase getRef(){
         return ref;

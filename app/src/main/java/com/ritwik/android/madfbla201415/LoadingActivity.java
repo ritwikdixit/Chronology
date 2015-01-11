@@ -3,7 +3,6 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -32,17 +31,17 @@ public class LoadingActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
-
+        
         Firebase.setAndroidContext(this);
-        if(DataHolder.isNull())
-            try{
-                DataModel dm = DataModel.load(DataModel.class, 1);
+        if(DataHolder.isNull()) {
+            try {
+                DataModel dm = DataModel.load(DataModel.class, 0);
                 ref = dm.ref;
-            }
-            catch (Exception e){
-                Log.e("Failed: Loading new Firebase", e.toString());
+            } catch (Exception e) {
+                Log.e("Failed: Loading new Firebase ", e.toString());
                 DataHolder.setRef(new Firebase(URL_FIREBASE));
             }
+        }
 
         ref = DataHolder.getRef();
         mContext = this;
@@ -52,20 +51,15 @@ public class LoadingActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
 
-            Log.v(PushReceiver.TAG, "Works!");
-
             Intent redirectIntent = new Intent(this, PushActivity.class);
             redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
                     intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
             redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
                     intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
             startActivity(redirectIntent);
-            Log.v(PushReceiver.TAG, "to end here");
             finish();
 
         } else {
-
-            Log.v(PushReceiver.TAG, "Didn't Work on Notification :(");
 
             //Checks if authorized, starts intent to appropriate activity
             ref.addAuthStateListener(new Firebase.AuthStateListener() {

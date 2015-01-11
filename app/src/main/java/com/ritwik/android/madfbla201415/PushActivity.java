@@ -105,9 +105,11 @@ public class PushActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        startActivity(new Intent(this, AllPushActivity.class));
         PushActivity.this.overridePendingTransition(
                 R.anim.neg_left_right, R.anim.left_to_right);
+        finish();
     }
 
     @Override

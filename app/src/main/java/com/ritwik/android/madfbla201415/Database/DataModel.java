@@ -17,6 +17,7 @@ public class DataModel extends Model {
     public DataModel(){
         super();
     }
+
     public DataModel(Firebase ref){
         super();
         this.ref = ref;
