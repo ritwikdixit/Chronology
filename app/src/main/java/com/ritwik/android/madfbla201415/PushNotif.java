@@ -1,10 +1,10 @@
 package com.ritwik.android.madfbla201415;
+
 import com.activeandroid.ActiveAndroid;
 import com.pushbots.push.Pushbots;
 import android.app.Application;
-import android.util.Log;
 
-public class PushNotif extends com.activeandroid.app.Application {
+public class PushNotif extends Application {
     public static final String Notif_App_ID = "54a346da1d0ab1b55e8b45fc";
     public static final String Notif_Sender_ID = "901400243848";
 
