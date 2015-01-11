@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
@@ -41,7 +42,7 @@ public class PushActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.push_details);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,7 +55,6 @@ public class PushActivity extends ActionBarActivity {
                 return onOptionsItemSelected(menuItem);
             }
         });
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,26 +62,19 @@ public class PushActivity extends ActionBarActivity {
             }
         });
 
-
-        Firebase.setAndroidContext(this);
-        ref = DataHolder.getRef();
-
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext());
+        layout = (LinearLayout) findViewById(R.id.root_container_detail);
 
         enabledNotifications = prefs.getBoolean(getString(R.string.notifications_key), true);
 
-
-        layout = (LinearLayout) findViewById(R.id.root_container_detail);
-
+        TextView mTitle = (TextView) findViewById(R.id.notif_title);
+        TextView mInfo = (TextView) findViewById(R.id.notif_details);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String value = extras.getString("Push_Message");
-            Log.e("Message: ", "You're viewing the stuff for " + value);
-        }
 
-
+        mTitle.setText(extras.getString("Push_Message"));
+        mInfo.setText(extras.getString("Push_Details"));
 
     }
 

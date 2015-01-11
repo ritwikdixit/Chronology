@@ -27,6 +27,7 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchActivity" />
+        <meta-data android:name="AA_DB_NAME" android:value="Notif.db" />
 
         <activity
             android:name=".LoginActivity"
@@ -73,6 +74,9 @@
 
         <activity android:name=".AllEventsActivity"
             android:label="@string/all_events" />
+
+        <activity android:name=".AllPushActivity"
+            android:label="@string/all_push" />
 
         <activity android:name=".DetailActivity"
             android:label="@string/event" />

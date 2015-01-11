@@ -106,7 +106,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
             //all events
             if(!(mContext instanceof  AllEventsActivity)){
-                Intent intent = new Intent(mContext, AllEventsActivity.class);
+                Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
             }
 
