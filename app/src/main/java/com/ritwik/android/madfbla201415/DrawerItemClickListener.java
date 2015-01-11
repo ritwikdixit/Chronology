@@ -120,7 +120,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             mContext.startActivity(intent);
 
         } else if (position == 5) {
-            
+
             //log out
             initLogOutDialog();
         }

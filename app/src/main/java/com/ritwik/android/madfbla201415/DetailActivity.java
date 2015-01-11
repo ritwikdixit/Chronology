@@ -38,6 +38,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private LinearLayout layout;
 
     private String imageUrl;
+    private String titleString;
     private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
@@ -96,7 +97,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
 
         //setting the action bar label to title of event
-        mTitle.setText(getIntent().getStringExtra(HomepageFragment.TITLE_KEY));
+        titleString = getIntent().getStringExtra(HomepageFragment.TITLE_KEY);
+        mTitle.setText(titleString);
 
         //getting the extras from the intent and putting them in the view
         mStartDate.setText("Date: " +
@@ -167,11 +169,11 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     }
 
     private Intent getDefaultIntent() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT,
-                "I am using Chronology to see Homestead Events!");
-        return intent;
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "I would like to share the event: " + titleString + " via Chronology!");
+        return shareIntent;
     }
 
     @Override
