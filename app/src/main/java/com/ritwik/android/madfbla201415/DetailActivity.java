@@ -24,7 +24,7 @@ import com.firebase.client.Firebase;
 
 import org.w3c.dom.Text;
 
-public class DetailActivity extends ActionBarActivity implements View.OnClickListener{
+public class DetailActivity extends ActionBarActivity implements View.OnClickListener {
 
     private TextView mStartDate;
     private TextView mEndDate;

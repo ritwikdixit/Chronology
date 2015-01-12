@@ -1,6 +1,8 @@
 package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -25,10 +28,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -55,8 +61,14 @@ public class HomepageFragment extends Fragment {
     private ListView mListView;
     private PagerAdapter mImageAdapter;
     private ProgressBar mProgressBar;
+    private LinearLayout mScrollerLayout;
 
     private EventListItemAdapter eventAdapter;
+
+    private int scrollY = -1;
+    private boolean scrolled = false;
+    private int beforeFirst = 0;
+    private int translationY = 0;
 
     //this is static so i can refer to it in the other class
     //detail activity
@@ -191,31 +203,20 @@ public class HomepageFragment extends Fragment {
             });
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
+        mScrollerLayout = (LinearLayout) rootView.findViewById(R.id.scroller_layout);
 
-        events = new ArrayList<EventItem>();
-        Query eventsByDate = ref.child("calendar").orderByChild("start_date");
-        eventsByDate.addChildEventListener(new ChildEventListener() {
+        if (events == null) {
 
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                events.add(new EventItem(
-                        newEvent.get("start_date").toString(),
-                        newEvent.get("end_date").toString(),
-                        newEvent.get("start_time").toString(),
-                        newEvent.get("end_time").toString(),
-                        newEvent.get("title").toString(),
-                        newEvent.get("location").toString(),
-                        newEvent.get("details").toString(),
-                        newEvent.get("url").toString(),
-                        newEvent.get("contact_info").toString(),
-                        getActivity()
-                ));
-                String id = newEvent.get("id").toString();
-                List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
-                if(ldm.size() == 0){
-                    DataModel dm = new DataModel( newEvent.get("start_date").toString(),
+            events = new ArrayList<>();
+            Query eventsByDate = ref.child("calendar").orderByChild("start_date");
+            eventsByDate.addChildEventListener(new ChildEventListener() {
+
+                // Retrieve new posts as they are added to Firebase
+                @Override
+                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                    Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                    events.add(new EventItem(
+                            newEvent.get("start_date").toString(),
                             newEvent.get("end_date").toString(),
                             newEvent.get("start_time").toString(),
                             newEvent.get("end_time").toString(),
@@ -224,31 +225,46 @@ public class HomepageFragment extends Fragment {
                             newEvent.get("details").toString(),
                             newEvent.get("url").toString(),
                             newEvent.get("contact_info").toString(),
-                            id);
-                    dm.save();
+                            getActivity()
+                    ));
+                    String id = newEvent.get("id").toString();
+                    List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
+                    if (ldm.size() == 0) {
+                        DataModel dm = new DataModel(newEvent.get("start_date").toString(),
+                                newEvent.get("end_date").toString(),
+                                newEvent.get("start_time").toString(),
+                                newEvent.get("end_time").toString(),
+                                newEvent.get("title").toString(),
+                                newEvent.get("location").toString(),
+                                newEvent.get("details").toString(),
+                                newEvent.get("url").toString(),
+                                newEvent.get("contact_info").toString(),
+                                id);
+                        dm.save();
+                    }
+                    mListView.setAdapter(eventAdapter);
+                    mImageAdapter = new BannerAdapter(getActivity(), events);
+                    mScrollBanner.setAdapter(mImageAdapter);
+
                 }
-                mListView.setAdapter(eventAdapter);
-                mImageAdapter = new BannerAdapter(getActivity(), events);
-                mScrollBanner.setAdapter(mImageAdapter);
 
-            }
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
-            }
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
-
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Loading Event Item Error", firebaseError.getMessage());
-            }
-        });
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.d("Loading Event Item Error", firebaseError.getMessage());
+                }
+            });
+        }
 
         //Banner Adapter
         mImageAdapter = new BannerAdapter(getActivity(), events);
@@ -305,7 +321,110 @@ public class HomepageFragment extends Fragment {
             }
         });
 
+        mListView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                onScrollChanged();
+                ViewTreeObserver observe = mListView.getViewTreeObserver();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+                    observe.removeOnGlobalLayoutListener(this);
+                 else
+                    observe.removeGlobalOnLayoutListener(this);
+            }
+        });
+
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                onScrollChanged();
+            }
+        });
+
         return rootView;
+    }
+
+    private void onScrollChanged() {
+
+        View itemOne = mListView.getChildAt(0);
+
+        int top;
+        if (itemOne == null)
+            top = 0;
+        else
+            top = itemOne.getTop();
+
+        if (mListView.getFirstVisiblePosition() == 0) {
+            //mProgressBar.setTranslationY(Math.max(0, mScrollBanner.getTop() + top));
+            mScrollerLayout.setTranslationY(top);
+            mListView.setVerticalScrollBarEnabled(false);
+
+        }
+
+
+    }
+
+    public static void initEvents(final Activity context) {
+
+        Firebase ref = DataHolder.getRef();
+        events = new ArrayList<EventItem>();
+        Query eventsByDate = ref.child("calendar").orderByChild("start_date");
+        eventsByDate.addChildEventListener(new ChildEventListener() {
+
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                events.add(new EventItem(
+                        newEvent.get("start_date").toString(),
+                        newEvent.get("end_date").toString(),
+                        newEvent.get("start_time").toString(),
+                        newEvent.get("end_time").toString(),
+                        newEvent.get("title").toString(),
+                        newEvent.get("location").toString(),
+                        newEvent.get("details").toString(),
+                        newEvent.get("url").toString(),
+                        newEvent.get("contact_info").toString(),
+                        context
+                ));
+                String id = newEvent.get("id").toString();
+                List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
+                if(ldm.size() == 0){
+                    DataModel dm = new DataModel( newEvent.get("start_date").toString(),
+                            newEvent.get("end_date").toString(),
+                            newEvent.get("start_time").toString(),
+                            newEvent.get("end_time").toString(),
+                            newEvent.get("title").toString(),
+                            newEvent.get("location").toString(),
+                            newEvent.get("details").toString(),
+                            newEvent.get("url").toString(),
+                            newEvent.get("contact_info").toString(),
+                            id);
+                    dm.save();
+                }
+
+            }
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d("Loading Event Item Error", firebaseError.getMessage());
+            }
+        });
     }
 
     @Override

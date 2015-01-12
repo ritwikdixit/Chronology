@@ -55,6 +55,9 @@ public class LoadingActivity extends ActionBarActivity {
                     intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
             startActivity(redirectIntent);
             Log.v(PushReceiver.TAG, "to end here");
+
+            //for activities that rely on home
+            HomepageFragment.initEvents(this);
             finish();
 
         } else {
