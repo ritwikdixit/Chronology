@@ -32,12 +32,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.activeandroid.query.Select;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.pushbots.push.Pushbots;
+import com.ritwik.android.madfbla201415.Database.DataModel;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -174,10 +176,10 @@ public class HomepageFragment extends Fragment {
                 // Retrieve new posts as they are added to Firebase
                 @Override
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                    Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                    DataHolder.setEmail(newEvent.get("email").toString());
-                    DataHolder.setName(newEvent.get("full_name").toString());
-                    DataHolder.setPhoneNumber(newEvent.get("phone_number").toString());
+                    Map<String, Object> newUser = (Map<String, Object>) snapshot.getValue();
+                    DataHolder.setEmail(newUser.get("email").toString());
+                    DataHolder.setName(newUser.get("full_name").toString());
+                    DataHolder.setPhoneNumber(newUser.get("phone_number").toString());
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -210,7 +212,21 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("contact_info").toString(),
                         getActivity()
                 ));
-
+                String id = newEvent.get("id").toString();
+                List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
+                if(ldm.size() == 0){
+                    DataModel dm = new DataModel( newEvent.get("start_date").toString(),
+                            newEvent.get("end_date").toString(),
+                            newEvent.get("start_time").toString(),
+                            newEvent.get("end_time").toString(),
+                            newEvent.get("title").toString(),
+                            newEvent.get("location").toString(),
+                            newEvent.get("details").toString(),
+                            newEvent.get("url").toString(),
+                            newEvent.get("contact_info").toString(),
+                            id);
+                    dm.save();
+                }
                 mListView.setAdapter(eventAdapter);
                 mImageAdapter = new BannerAdapter(getActivity(), events);
                 mScrollBanner.setAdapter(mImageAdapter);
