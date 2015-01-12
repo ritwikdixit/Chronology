@@ -91,6 +91,10 @@
         <activity android:name=".CalendarActivity"
             android:label="@string/calendar"/>
 
+        <activity android:name=".AdminPanelActivity"
+            android:label="@string/admin_panel">
+        </activity>
+
         <activity android:name=".SettingsActivity"
             android:theme="@style/AppTheme2"
             android:parentActivityName=".HomepageActivity"

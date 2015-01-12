@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/action_bar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="32dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/admin_start_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Start date"
+                android:textSize="11pt" />
+
+            <Button
+                android:id="@+id/admin_start_date_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="showTimePickerDialog"
+                android:text="Select start date" />
+
+            <TextView
+                android:id="@+id/admin_start_time"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Start time"
+                android:textSize="11pt" />
+
+            <Button
+                android:id="@+id/admin_start_time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="showDatePickerDialog"
+                android:text="Select start time" />
+
+
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/chronology_color"
+            android:choiceMode="singleChoice" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>
