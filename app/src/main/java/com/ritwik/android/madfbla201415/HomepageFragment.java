@@ -78,6 +78,7 @@ public class HomepageFragment extends Fragment {
     private Firebase ref = DataHolder.getRef();
 
     //keys for detail activity
+    public static final String ID_KEY = "id";
     public static final String TITLE_KEY = "title";
     public static final String START_DATE_KEY = "start_date";
     public static final String END_DATE_KEY = "end_date";

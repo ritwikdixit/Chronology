@@ -7,9 +7,7 @@ import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,8 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,12 +27,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
+import com.firebase.client.Firebase;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,10 +45,12 @@ public class AdminPanelActivity extends ActionBarActivity  {
     private Activity mContext = this;
 
     private TextView mDate, mTime;
-    private EditText mTitle, mLocation, mContact, mImage, mDetails;
-    private Button mCreateEventButton;
+    private EditText mTitle, mLocation, mContact, mImageUrl, mDetails;
+    private Button mCreateEventButton, mStartButtonDate,
+            mEndButtonDate, mStartButtonTime, mEndButtonTime;
 
     private String startDate, endDate, startTime, endTime;
+    private Firebase ref;
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -67,12 +62,14 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     private static final String STANDARD_IMAGE_URL = "http://hhsprogramming.com/img/logo-white.png";
     public static final String LOG_TAG = "AdminPanel";
+    public static final String START_KEY = "start";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        Firebase.setAndroidContext(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,13 +121,22 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mTime = (TextView)findViewById(R.id.admin_time_text);
         mLocation = (EditText) findViewById(R.id.admin_location_edit);
         mContact = (EditText) findViewById(R.id.admin_contact_edit);
-        mImage = (EditText) findViewById(R.id.admin_image_url);
+        mImageUrl = (EditText) findViewById(R.id.admin_image_url);
         mDetails = (EditText) findViewById(R.id.admin_details_edit);
         mCreateEventButton = (Button) findViewById(R.id.admin_form_submit);
+
+        mStartButtonTime = (Button) findViewById(R.id.admin_start_time_button);
+        mEndButtonTime = (Button) findViewById(R.id.admin_end_time_button);
+        mStartButtonDate = (Button) findViewById(R.id.admin_start_date_button);
+        mEndButtonDate = (Button) findViewById(R.id.admin_end_date_button);
+
+        setDialogListeners();
 
         mCreateEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ref == null)
+                    ref = DataHolder.getRef();
                 uploadEvent();
             }
         });
@@ -138,24 +144,95 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     }
 
+    private void setDialogListeners() {
+
+        mStartButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = new DatePickerFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(START_KEY, true);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "str");
+
+            }
+        });
+
+        mEndButtonDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = new DatePickerFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(START_KEY, false);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "str");
+
+            }
+        });
+
+        mStartButtonTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = new TimePickerFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(START_KEY, true);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "str");
+
+            }
+        });
+
+        mEndButtonTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment = new TimePickerFragment();
+                Bundle args = new Bundle();
+                args.putBoolean(START_KEY, false);
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "str");
+
+            }
+        });
+    }
+
     private void uploadEvent() {
 
         //get the current text fields data, and put it in the map. Then upload
+
+        String eventName = "event" + (HomepageFragment.getEvents().size() + 1);
+
+        //removes all punctuation from title, to lower case, and adds underscores
+        String id = mTitle.getText().toString()
+                .replaceAll("[^a-zA-Z ]", "").replaceAll(" ", "_").toLowerCase();
+
         Map<String, Object> eventData = new HashMap<>();
 
+        eventData.put(HomepageFragment.ID_KEY, id);
         eventData.put(HomepageFragment.TITLE_KEY, mTitle.getText().toString());
+        eventData.put(HomepageFragment.START_DATE_KEY, startDate);
+        eventData.put(HomepageFragment.END_DATE_KEY, endDate);
+        eventData.put(HomepageFragment.START_TIME_KEY, startTime);
+        eventData.put(HomepageFragment.END_TIME_KEY, endTime);
         eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
         eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
 
-        //optional image puts standard otherwise
-        if (mImage.getText().toString() == null)
+        //optional image puts standard if text is blank
+        if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
         else
-            eventData.put(HomepageFragment.URL_KEY, mImage.getText().toString());
+            eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
 
-        //TODO: finish this, and get the data from the dialogs
+        Log.v(LOG_TAG, "event = " + eventName);
+        Log.v(LOG_TAG, ">----data is " + Arrays.toString(eventData.entrySet().toArray()));
+
+        ref.child("calendar").child(eventName).updateChildren(eventData);
+
 
     }
 
@@ -187,30 +264,20 @@ public class AdminPanelActivity extends ActionBarActivity  {
         return super.onOptionsItemSelected(item);
     }
 
-    // we represent the lollipop guild
-    public void showTimePickerDialog(View v) {
-
-        String TAG = "atm i am null";
-        if (v.getId() == R.id.admin_start_time_button)
-            TAG = "start";
-        else if (v.getId() == R.id.admin_end_time_button)
-            TAG = "end";
-
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), TAG);
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    // the lollipop guild, the lollipop guild
-    public void showDatePickerDialog(View v) {
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 
-        String TAG = "atm i am null";
-        if (v.getId() == R.id.admin_start_date_button)
-            TAG = "start";
-        else if (v.getId() == R.id.admin_end_date_button)
-            TAG = "end";
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
 
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), TAG);
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -224,19 +291,27 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
         boolean isStart;
 
+        //restores what was previously set
+        static int[] prevData = {-1, -1};
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current time as the default values for the picker
+
             final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
+            int hour, minute;
 
-            Log.d(LOG_TAG, "tag = " + getTag());
+            //if no previous data, load current data, otherwise load saved data
+            if (prevData[0] == -1) {
+                hour = c.get(Calendar.HOUR_OF_DAY);
+                minute = c.get(Calendar.MINUTE);
+            } else {
+                hour = prevData[0];
+                minute = prevData[1];
+            }
 
-            if (getTag().equals("start"))
-                isStart = true;
-            else
-                isStart = false;
+            isStart = this.getArguments().getBoolean(START_KEY);
+            Log.v(LOG_TAG, "boolean " + isStart);
 
             // Create a new instance of TimePickerDialog and return it
             return new TimePickerDialog(getActivity(), this, hour, minute,
@@ -244,7 +319,36 @@ public class AdminPanelActivity extends ActionBarActivity  {
         }
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
+
+            //set data
+            prevData[0] = hourOfDay;
+            prevData[1] = minute;
+
+            //military time convert
+            String ampm = "AM";
+            String minuteStr;
+
+            if (hourOfDay >= 12) {
+                ampm = "PM";
+                if (hourOfDay > 12)
+                    hourOfDay -= 12;
+            }
+
+            if(hourOfDay == 0)
+                hourOfDay = 12;
+
+            if (minute == 0)
+                minuteStr = "00";
+            else
+                minuteStr = "" + minute;
+
+            String timeFormat = hourOfDay + ":" + minuteStr + ampm;
+            Log.v(LOG_TAG, timeFormat);
+
+            if (isStart)
+                ((AdminPanelActivity)getActivity()).setStartTime(timeFormat);
+            else
+                ((AdminPanelActivity)getActivity()).setEndTime(timeFormat);
         }
     }
 
@@ -252,33 +356,63 @@ public class AdminPanelActivity extends ActionBarActivity  {
             implements DatePickerDialog.OnDateSetListener {
 
         boolean isStart;
+        static int[] prevData = {-1, -1, -1};
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
+
             final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year, month, day;
 
-            Log.d(LOG_TAG, "tag = " + getTag());
+            if (prevData[0] == -1) {
 
-            if (getTag().equals("start"))
-                isStart = true;
-            else
-                isStart = false;
+                year = c.get(Calendar.YEAR);
+                month = c.get(Calendar.MONTH);
+                day = c.get(Calendar.DAY_OF_MONTH);
+
+            } else {
+
+                year = prevData[0];
+                month = prevData[1];
+                day = prevData[2];
+
+            }
+
+            isStart = this.getArguments().getBoolean(START_KEY);
+
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
-            if (isStart) {
+            //save the data
+            prevData[0] = year;
+            prevData[1] = month;
+            prevData[2] = day;
 
+            String dayStr, monthStr;
+            month++;
+
+            if (month < 10) {
+                monthStr = "0" + month;
             } else {
-
+                monthStr = "" + month;
             }
 
+            if (day < 10) {
+                dayStr = "0" + day;
+            } else {
+                dayStr = "" + day;
+            }
+
+            String dateFormat = year + "-" + monthStr + "-" + dayStr;
+            Log.v(LOG_TAG, dateFormat);
+
+            if (isStart)
+                ((AdminPanelActivity)getActivity()).setStartDate(dateFormat);
+            else
+                ((AdminPanelActivity)getActivity()).setEndDate(dateFormat);
         }
     }
 

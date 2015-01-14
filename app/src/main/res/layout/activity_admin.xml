@@ -47,7 +47,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
-                        android:onClick="showTimePickerDialog"
                         android:text="Select start date" />
 
                     <Button
@@ -55,7 +54,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:onClick="showTimePickerDialog"
                         android:text="Select end date" />
 
                 </LinearLayout>
@@ -80,7 +78,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
-                        android:onClick="showDatePickerDialog"
                         android:text="Select Start Time" />
 
                     <Button
@@ -88,7 +85,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:onClick="showDatePickerDialog"
                         android:text="Select End Time" />
 
                 </LinearLayout>
