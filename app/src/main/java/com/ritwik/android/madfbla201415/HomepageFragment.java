@@ -434,6 +434,7 @@ public class HomepageFragment extends Fragment {
 
     }
 
+
     public static ArrayList<EventItem> getEvents() {
         return events;
     }
@@ -442,7 +443,6 @@ public class HomepageFragment extends Fragment {
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         ImageView bmImage;
-
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }

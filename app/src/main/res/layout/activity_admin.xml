@@ -11,43 +11,128 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="32dp"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/admin_start_date"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Start date"
-                android:textSize="11pt" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/admin_start_date_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="showTimePickerDialog"
-                android:text="Select start date" />
+                <EditText
+                    android:id="@+id/admin_title_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="New Event Title" />
 
-            <TextView
-                android:id="@+id/admin_start_time"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Start time"
-                android:textSize="11pt" />
+                <TextView
+                    android:id="@+id/admin_date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Select Date"
+                    android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/admin_start_time_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="showDatePickerDialog"
-                android:text="Select start time" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/admin_start_date_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:onClick="showTimePickerDialog"
+                        android:text="Select start date" />
+
+                    <Button
+                        android:id="@+id/admin_end_date_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:onClick="showTimePickerDialog"
+                        android:text="Select end date" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/admin_time_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="Select Time"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/admin_start_time_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:onClick="showDatePickerDialog"
+                        android:text="Select Start Time" />
+
+                    <Button
+                        android:id="@+id/admin_end_time_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:onClick="showDatePickerDialog"
+                        android:text="Select End Time" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/admin_location_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Set Location" />
+
+                <EditText
+                    android:id="@+id/admin_contact_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Set Contact Information" />
+
+                <EditText
+                    android:id="@+id/admin_image_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Add Optional Image URL" />
+
+                <EditText
+                    android:id="@+id/admin_details_edit"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Details" />
+
+                <Button
+                    android:id="@+id/admin_form_submit"
+                    android:layout_margin="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Event" />
 
 
+            </LinearLayout>
 
-        </LinearLayout>
+        </ScrollView>
 
         <ListView
             android:id="@+id/left_drawer"

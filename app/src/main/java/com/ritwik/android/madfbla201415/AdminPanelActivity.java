@@ -23,7 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -36,18 +38,24 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Ritwik on 12/31/14.
+ * Created by Joshua actually.
  */
 
+//for admins to create events and send them to the server
+//quickly and efficiently, the data will be updated immediately
 public class AdminPanelActivity extends ActionBarActivity  {
 
     private Activity mContext = this;
 
-    private TextView mStartDate;
-    private TextView mStartTime;
+    private TextView mDate, mTime;
+    private EditText mTitle, mLocation, mContact, mImage, mDetails;
+    private Button mCreateEventButton;
+
+    private String startDate, endDate, startTime, endTime;
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -56,6 +64,9 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     private Toolbar toolbar;
     private SearchView mSearch;
+
+    private static final String STANDARD_IMAGE_URL = "http://hhsprogramming.com/img/logo-white.png";
+    public static final String LOG_TAG = "AdminPanel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,9 +117,45 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
-        mStartDate = (TextView)findViewById(R.id.admin_start_date);
-        mStartTime = (TextView)findViewById(R.id.admin_start_time);
+        //actual unique onCreate starts here
 
+        mTitle = (EditText) findViewById(R.id.admin_title_edit);
+        mDate = (TextView)findViewById(R.id.admin_date_text);
+        mTime = (TextView)findViewById(R.id.admin_time_text);
+        mLocation = (EditText) findViewById(R.id.admin_location_edit);
+        mContact = (EditText) findViewById(R.id.admin_contact_edit);
+        mImage = (EditText) findViewById(R.id.admin_image_url);
+        mDetails = (EditText) findViewById(R.id.admin_details_edit);
+        mCreateEventButton = (Button) findViewById(R.id.admin_form_submit);
+
+        mCreateEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadEvent();
+            }
+        });
+
+
+    }
+
+    private void uploadEvent() {
+
+        //get the current text fields data, and put it in the map. Then upload
+        Map<String, Object> eventData = new HashMap<>();
+
+        eventData.put(HomepageFragment.TITLE_KEY, mTitle.getText().toString());
+        eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
+
+        //optional image puts standard otherwise
+        if (mImage.getText().toString() == null)
+            eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+        else
+            eventData.put(HomepageFragment.URL_KEY, mImage.getText().toString());
+
+        eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
+
+        //TODO: finish this, and get the data from the dialogs
 
     }
 
@@ -142,14 +189,28 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     // we represent the lollipop guild
     public void showTimePickerDialog(View v) {
+
+        String TAG = "atm i am null";
+        if (v.getId() == R.id.admin_start_time_button)
+            TAG = "start";
+        else if (v.getId() == R.id.admin_end_time_button)
+            TAG = "end";
+
         DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
+        newFragment.show(getFragmentManager(), TAG);
     }
 
     // the lollipop guild, the lollipop guild
     public void showDatePickerDialog(View v) {
+
+        String TAG = "atm i am null";
+        if (v.getId() == R.id.admin_start_date_button)
+            TAG = "start";
+        else if (v.getId() == R.id.admin_end_date_button)
+            TAG = "end";
+
         DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
+        newFragment.show(getFragmentManager(), TAG);
     }
 
     @Override
@@ -158,8 +219,10 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mDrawerToggle.syncState();
     }
 
-    public class TimePickerFragment extends DialogFragment
+    public static class TimePickerFragment extends DialogFragment
             implements TimePickerDialog.OnTimeSetListener {
+
+        boolean isStart;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -167,6 +230,13 @@ public class AdminPanelActivity extends ActionBarActivity  {
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
+
+            Log.d(LOG_TAG, "tag = " + getTag());
+
+            if (getTag().equals("start"))
+                isStart = true;
+            else
+                isStart = false;
 
             // Create a new instance of TimePickerDialog and return it
             return new TimePickerDialog(getActivity(), this, hour, minute,
@@ -178,8 +248,10 @@ public class AdminPanelActivity extends ActionBarActivity  {
         }
     }
 
-    public class DatePickerFragment extends DialogFragment
+    public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
+
+        boolean isStart;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -189,11 +261,23 @@ public class AdminPanelActivity extends ActionBarActivity  {
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
 
+            Log.d(LOG_TAG, "tag = " + getTag());
+
+            if (getTag().equals("start"))
+                isStart = true;
+            else
+                isStart = false;
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), this, year, month, day);
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
+
+            if (isStart) {
+
+            } else {
+
+            }
 
         }
     }
