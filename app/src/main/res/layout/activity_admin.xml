@@ -47,6 +47,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
                         android:text="Select start date" />
 
                     <Button
@@ -54,6 +59,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
                         android:text="Select end date" />
 
                 </LinearLayout>
@@ -78,12 +88,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="4dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
                         android:text="Select Start Time" />
 
                     <Button
                         android:id="@+id/admin_end_time_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
                         android:layout_marginLeft="4dp"
                         android:text="Select End Time" />
 
@@ -123,6 +143,11 @@
                     android:layout_margin="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/chrono_button"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingRight="8dp"
+                    android:paddingLeft="8dp"
                     android:text="Create Event" />
 
 

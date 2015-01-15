@@ -264,20 +264,26 @@ public class AdminPanelActivity extends ActionBarActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    //in addition to setting start date, set button text
+
     public void setStartDate(String startDate) {
         this.startDate = startDate;
+        mStartButtonDate.setText(startDate);
     }
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+        mEndButtonDate.setText(endDate);
     }
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+        mStartButtonTime.setText(startTime);
     }
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+        mEndButtonTime.setText(endTime);
     }
 
     @Override

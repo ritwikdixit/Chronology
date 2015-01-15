@@ -1,15 +1,12 @@
 package com.ritwik.android.madfbla201415;
 
 import android.animation.ObjectAnimator;
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Notification;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,11 +41,12 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.pushbots.push.Pushbots;
 import com.ritwik.android.madfbla201415.Database.DataModel;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +93,8 @@ public class HomepageFragment extends Fragment {
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
     private SearchView mSearch;
+
+    private Comparator eventCompare;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -208,6 +208,14 @@ public class HomepageFragment extends Fragment {
 
         if (events == null) {
 
+            eventCompare = new Comparator<EventItem>() {
+
+                @Override
+                public int compare(EventItem event, EventItem event2) {
+                    return event.getmStartDate().compareTo(event2.getmStartDate());
+                }
+            };
+
             events = new ArrayList<>();
             Query eventsByDate = ref.child("calendar").orderByChild("start_date");
             eventsByDate.addChildEventListener(new ChildEventListener() {
@@ -243,6 +251,9 @@ public class HomepageFragment extends Fragment {
                                 id);
                         dm.save();
                     }
+
+                    Collections.sort(events, eventCompare);
+
                     mListView.setAdapter(eventAdapter);
                     mImageAdapter = new BannerAdapter(getActivity(), events);
                     mScrollBanner.setAdapter(mImageAdapter);
@@ -434,7 +445,6 @@ public class HomepageFragment extends Fragment {
         mDrawerToggle.syncState();
 
     }
-
 
     public static ArrayList<EventItem> getEvents() {
         return events;

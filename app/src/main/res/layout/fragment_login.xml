@@ -19,6 +19,11 @@
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:hint="@string/email"
             android:gravity="center"
             android:layout_marginRight="32dp"
@@ -29,6 +34,11 @@
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="9dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:inputType="textPassword"
             android:ems="10"
             android:hint="@string/password"
@@ -39,9 +49,16 @@
             android:layout_gravity="center_vertical" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_button_string"
+            android:background="@drawable/chrono_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="32dp"
             android:id="@+id/sign_in_button" />
 
         </LinearLayout>

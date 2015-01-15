@@ -20,6 +20,11 @@
             android:layout_height="wrap_content"
             android:hint="@string/fullname"
             android:gravity="center"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_gravity="center_vertical" />
@@ -30,6 +35,11 @@
             android:layout_height="wrap_content"
             android:hint="@string/email"
             android:gravity="center"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_gravity="center_vertical" />
@@ -41,6 +51,11 @@
             android:hint= "@string/phone_number"
             android:gravity="center"
             android:inputType="phone"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_gravity="center_vertical" />
@@ -54,6 +69,11 @@
             android:hint="@string/password"
             android:fontFamily="sans-serif"
             android:gravity="center"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_gravity="center_vertical" />
@@ -67,14 +87,26 @@
             android:hint="@string/repeat_pass"
             android:fontFamily="sans-serif"
             android:gravity="center"
+            android:padding="9dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/chrono_2_button"
+            android:textColorHint="@color/chronology_light_color"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_gravity="center_vertical" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_up_button_string"
+            android:background="@drawable/chrono_button"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="32dp"
             android:id="@+id/sign_up_button" />
 
     </LinearLayout>
