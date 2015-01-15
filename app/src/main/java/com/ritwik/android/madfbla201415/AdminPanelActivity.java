@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -76,7 +77,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                return true;
+                return onOptionsItemSelected(menuItem);
             }
         });
 
@@ -261,6 +262,10 @@ public class AdminPanelActivity extends ActionBarActivity  {
             return true;
         }
 
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -343,8 +348,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
             if(hourOfDay == 0)
                 hourOfDay = 12;
 
-            if (minute == 0)
-                minuteStr = "00";
+            if (minute <= 10)
+                minuteStr = "0" + minute;
             else
                 minuteStr = "" + minute;
 

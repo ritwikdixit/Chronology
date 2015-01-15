@@ -3,6 +3,7 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ public class SignupFragment extends Fragment {
             public void onClick(View v) {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(R.anim.right_to_left, R.anim.neg_right_left)
                         .replace(R.id.fragment_main_container, new LoginFragment())
                         .commit();
             }

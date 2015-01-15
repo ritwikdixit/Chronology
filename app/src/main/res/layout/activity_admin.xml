@@ -12,41 +12,53 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="24dp"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/admin_title_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
                     android:text="New Event Title" />
+
 
                 <TextView
                     android:id="@+id/admin_date_text"
-                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Select Date"
                     android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/admin_start_date_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginRight="8dp"
                         android:background="@drawable/chrono_button"
                         android:textColor="@android:color/white"
                         android:fontFamily="sans-serif-light"
@@ -58,7 +70,7 @@
                         android:id="@+id/admin_end_date_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:background="@drawable/chrono_button"
                         android:textColor="@android:color/white"
                         android:fontFamily="sans-serif-light"
@@ -70,10 +82,11 @@
 
                 <TextView
                     android:id="@+id/admin_time_text"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="Select Time"
                     android:textSize="20sp" />
 
@@ -81,13 +94,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/admin_start_time_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginRight="8dp"
                         android:background="@drawable/chrono_button"
                         android:textColor="@android:color/white"
                         android:fontFamily="sans-serif-light"
@@ -104,7 +118,7 @@
                         android:fontFamily="sans-serif-light"
                         android:paddingRight="8dp"
                         android:paddingLeft="8dp"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Select End Time" />
 
                 </LinearLayout>
@@ -113,21 +127,39 @@
                     android:id="@+id/admin_location_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
                     android:hint="Set Location" />
 
                 <EditText
                     android:id="@+id/admin_contact_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
                     android:hint="Set Contact Information" />
 
                 <EditText
                     android:id="@+id/admin_image_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
                     android:hint="Add Optional Image URL" />
 
                 <EditText
@@ -136,6 +168,12 @@
                     android:minLines="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
                     android:hint="Details" />
 
                 <Button
@@ -143,6 +181,7 @@
                     android:layout_margin="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@drawable/chrono_button"
                     android:textColor="@android:color/white"
                     android:fontFamily="sans-serif-light"

@@ -121,6 +121,10 @@ public class HomepageFragment extends Fragment {
             return true;
         }
 
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -138,7 +142,7 @@ public class HomepageFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                return true;
+                return onOptionsItemSelected(menuItem);
             }
         });
         toolbar.setTitle("Welcome!");
@@ -474,9 +478,7 @@ public class HomepageFragment extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
-            Log.v("Bitmap", "Done Loading Bitmap");
             bmImage.setImageBitmap(result);
-
         }
 
     }

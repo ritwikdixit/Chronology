@@ -53,7 +53,7 @@ public class AllPushActivity extends ActionBarActivity  {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                return true;
+                return onOptionsItemSelected(menuItem);
             }
         });
 
@@ -152,6 +152,10 @@ public class AllPushActivity extends ActionBarActivity  {
 
         if (id == R.id.chronology_search_bar) {
             return true;
+        }
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

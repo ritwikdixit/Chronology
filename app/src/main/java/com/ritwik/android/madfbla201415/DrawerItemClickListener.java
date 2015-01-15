@@ -120,19 +120,15 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 5) {
 
-            //settings
-            Intent intent = new Intent(mContext, SettingsActivity.class);
+            // admin panel create event
+            Intent intent = new Intent(mContext, AdminPanelActivity.class);
             mContext.startActivity(intent);
 
         } else if (position == 6) {
 
             //log out
             initLogOutDialog();
-        } else if (position == 7) {
 
-            // admin panel
-            Intent intent = new Intent(mContext, AdminPanelActivity.class);
-            mContext.startActivity(intent);
         }
 
     }

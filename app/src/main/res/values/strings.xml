@@ -33,7 +33,7 @@
     <string name="search_hint">Search Chronology events</string>
     <string name="share">Share</string>
 
-    <string name="admin_panel">Admin Panel</string>
+    <string name="admin_panel">Create Event</string>
 
     <!-- Settings strings -->
     <string name="notifications">Notifications</string>
