@@ -1,12 +1,14 @@
 package com.ritwik.android.madfbla201415;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -29,11 +32,17 @@ import android.widget.TimePicker;
 
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Joshua actually.
@@ -52,6 +61,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     private String startDate, endDate, startTime, endTime;
     private Firebase ref;
+    private boolean pressed = false, started = false;
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -136,9 +146,16 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mCreateEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ref == null)
-                    ref = DataHolder.getRef();
-                uploadEvent();
+                if(!pressed) {
+                    pressed = true;
+                    if (ref == null)
+                        ref = DataHolder.getRef();
+                    try {
+                        uploadEvent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -200,7 +217,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
         });
     }
 
-    private void uploadEvent() {
+    private void uploadEvent() throws IOException {
 
         //get the current text fields data, and put it in the map. Then upload
 
@@ -212,27 +229,69 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
         Map<String, Object> eventData = new HashMap<>();
 
+        if(id == null) id = UUID.randomUUID().toString();;
         eventData.put(HomepageFragment.ID_KEY, id);
-        eventData.put(HomepageFragment.TITLE_KEY, mTitle.getText().toString());
+        String tempTitle = "";
+        if(mTitle.getText().toString() != null) tempTitle = mTitle.getText().toString();
+        eventData.put(HomepageFragment.TITLE_KEY, tempTitle);
+        if(startDate == null) startDate = "0000-00-00";
         eventData.put(HomepageFragment.START_DATE_KEY, startDate);
+        if(endDate == null) endDate = "0000-00-00";
         eventData.put(HomepageFragment.END_DATE_KEY, endDate);
+        if(startTime == null) startTime = "12:00AM";
         eventData.put(HomepageFragment.START_TIME_KEY, startTime);
+        if(endTime == null) endTime = "12:00AM";
         eventData.put(HomepageFragment.END_TIME_KEY, endTime);
-        eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
-        eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
+        String tempLoc = "";
+        if(mLocation.getText().toString() != null) tempLoc = mLocation.getText().toString();
+        eventData.put(HomepageFragment.LOCATION_KEY, tempLoc);
+        String tempContact = "";
+        if(mContact.getText().toString() != null) tempContact = mContact.getText().toString();
+        eventData.put(HomepageFragment.CONTACT_INFO_KEY, tempContact);
 
         //optional image puts standard if text is blank
         if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
-        else
-            eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
+        else if(URLUtil.isValidUrl(mImageUrl.getText().toString())){
+            URLConnection connection = new URL(mImageUrl.getText().toString()).openConnection();
+            String contentType = connection.getHeaderField("Content-Type");
+            boolean image = contentType.startsWith("image/");
+            if(image)
+                eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
+            else
+                eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+        }
+        else {
+            eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+        }
+
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
 
         Log.v(LOG_TAG, "event = " + eventName);
         Log.v(LOG_TAG, ">----data is " + Arrays.toString(eventData.entrySet().toArray()));
 
-        ref.child("calendar").child(eventName).updateChildren(eventData);
+        ref.child("calendar").child(eventName).updateChildren(eventData, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                pressed = false;
+                new AlertDialog.Builder(mContext)
+                        .setTitle("Event Created")
+                        .setMessage("Congratulations! You've successfully created an event.")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
 
 
     }
