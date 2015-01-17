@@ -150,8 +150,8 @@ public class HomepageFragment extends Fragment {
         //init the drawer
         mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) rootView.findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<>(getActivity(),
-                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 getActivity(), mDrawerLayout, mDrawerList));

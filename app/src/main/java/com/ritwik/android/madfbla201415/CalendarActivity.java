@@ -15,11 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -36,13 +33,11 @@ public class CalendarActivity extends ActionBarActivity {
     private CalendarView mCalendar;
 
     private Activity mContext = this;
-    private static final long MILLIS_PER_DAY = 86400000;
 
     //drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private SimpleDateFormat mSimpleFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final String TAG = "Calendar";
 
     private Toolbar toolbar;
@@ -68,8 +63,8 @@ public class CalendarActivity extends ActionBarActivity {
         //init the drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 this, mDrawerLayout, mDrawerList));

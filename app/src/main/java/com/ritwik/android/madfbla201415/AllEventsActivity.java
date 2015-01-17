@@ -69,8 +69,8 @@ public class AllEventsActivity extends ActionBarActivity  {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 this, mDrawerLayout, mDrawerList));

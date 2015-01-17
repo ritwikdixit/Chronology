@@ -4,16 +4,31 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="24dp"
-    android:paddingBottom="24dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:background="@drawable/drawer_selector"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:layout_gravity="center_vertical"
+        android:layout_width="36dp"
+        android:layout_height="36dp" >
+
+        <ImageView
+            android:id="@+id/drawer_icon_container"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
     <TextView
         android:id="@+id/list_item_text"
         android:textColor="@android:color/white"
+        android:layout_marginLeft="16dp"
         android:fontFamily="sans-serif-light"
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -13,6 +13,16 @@ public class DataHolder {
     private static String[] mDrawerArray = { "Home", "Month View",
             "All Events", "Help", "Notifications", "Create Event", "Log Out"};
 
+    private static int[] resIds = {
+            R.drawable.ic_home,
+            R.drawable.ic_month,
+            R.drawable.ic_all_events,
+            R.drawable.ic_help,
+            R.drawable.ic_notifications,
+            R.drawable.ic_add_event,
+            R.drawable.ic_log_out
+    };
+
     private DataHolder(){} //Empty Constructor
 
     public static void setRef(Firebase r){
@@ -53,5 +63,12 @@ public class DataHolder {
     }
     public static String[] getDrawerArray() {
         return mDrawerArray;
+    }
+
+    //input -1 for settings, make sure it is last in the array
+    public static int getDrawerIdForIndex(int index) {
+
+        return resIds[index];
+
     }
 }

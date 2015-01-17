@@ -17,8 +17,7 @@ import com.firebase.client.*;
 
 public class SignupFragment extends Fragment {
 
-    private EditText mFullName, mEmail, mPhoneNumber,
-            mUsername, mPassword, mRepeatPassword;
+    private EditText mFullName, mEmail, mPhoneNumber, mPassword, mRepeatPassword;
     private Button mSignUpButton;
     private TextView mSignInButtonView;
     private Firebase ref;
@@ -50,7 +49,7 @@ public class SignupFragment extends Fragment {
         mSignInButtonView = (TextView) rootView.findViewById(R.id.sign_in_buttonview);
 
         allFields = new EditText[] {
-                mFullName, mEmail, mPhoneNumber, mUsername, mPassword, mRepeatPassword
+                mFullName, mEmail, mPhoneNumber, mPassword, mRepeatPassword
         };
 
         ref = DataHolder.getRef();
@@ -65,12 +64,10 @@ public class SignupFragment extends Fragment {
                 //check if password fields are equal and no field is empty
                 if (mPassword.getText().toString().equals(mRepeatPassword.getText().toString())
                         && !anyFieldIsNull()) {
-
                     createUserFromCurrentData();
-                    getActivity().finish();
                 } else {
 
-                    Toast.makeText(getActivity().getApplicationContext(), "Fields must not be empty, " +
+                    Toast.makeText(getActivity(), "Fields must not be empty, " +
                                     "Passwords must match.",
                             Toast.LENGTH_SHORT).show();
 
@@ -117,7 +114,7 @@ public class SignupFragment extends Fragment {
                         ref.child("users").child(authData.getUid()).child("full_name")
                                 .setValue(mFullName.getText().toString());
 
-                        Toast.makeText(getActivity().getApplicationContext(), "Success, Account Created!",
+                        Toast.makeText(getActivity(), "Success, Account Created!",
                                 Toast.LENGTH_SHORT).show();
 
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
@@ -128,7 +125,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
                         //Auth Error
-                        Toast.makeText(getActivity().getApplicationContext(),
+                        Toast.makeText(getActivity(),
                                 firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -137,7 +134,7 @@ public class SignupFragment extends Fragment {
             @Override
             public void onError(FirebaseError firebaseError) {
 
-                Toast.makeText(getActivity().getApplicationContext(),
+                Toast.makeText(getActivity(),
                         firebaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
 

@@ -1,12 +1,14 @@
 package com.ritwik.android.madfbla201415;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,10 +29,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,6 +70,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
     private SearchView mSearch;
 
     private static final String STANDARD_IMAGE_URL = "http://hhsprogramming.com/img/logo-white.png";
+    private static final String[] EXTENSIONS = {".jpg", ".png", ".tif", ".tiff", ".gif"};
+
     public static final String LOG_TAG = "AdminPanel";
     public static final String START_KEY = "start";
 
@@ -87,8 +97,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 this, mDrawerLayout, mDrawerList));
@@ -134,14 +144,53 @@ public class AdminPanelActivity extends ActionBarActivity  {
         setDialogListeners();
 
         mCreateEventButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 if (ref == null)
                     ref = DataHolder.getRef();
-                uploadEvent();
+
+                if (!fieldsAreNull()) {
+                    uploadEvent();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Fields must not be empty!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+
+    }
+
+    private void clearFields() {
+
+        mTitle.setText("New Event Title");
+        mContact.setText("");
+        mLocation.setText("");
+        mImageUrl.setText("");
+        mDetails.setText("");
+
+        mStartButtonDate.setText("Select Start Date");
+        mEndButtonDate.setText("Select End Date");
+
+        mEndButtonTime.setText("Select End Time");
+        mStartButtonTime.setText("Select Start Time");
+
+    }
+
+    private boolean fieldsAreNull() {
+
+        //checks if any necessary field is null
+
+        return mTitle.getText().toString().replaceAll("\\s", "").equals("")
+                || mStartButtonDate.getText().toString().equals("Select Start Date")
+                || mEndButtonDate.getText().toString().equals("Select End Date")
+                || mStartButtonTime.getText().toString().equals("Select Start Time")
+                || mEndButtonTime.getText().toString().equals("Select End Time")
+                || mLocation.getText().toString().replaceAll("\\s", "").equals("")
+                || mDetails.getText().toString().replaceAll("\\s", "").equals("")
+                || mContact.getText().toString().replaceAll("\\s", "").equals("");
 
     }
 
@@ -200,6 +249,18 @@ public class AdminPanelActivity extends ActionBarActivity  {
         });
     }
 
+    //checks if valid image
+    private boolean validURL(String URLStr) {
+
+        if (URLUtil.isValidUrl(URLStr)) {
+            for (String s : EXTENSIONS)
+                if (URLStr.endsWith(s))
+                    return true;
+        }
+
+        return false;
+    }
+
     private void uploadEvent() {
 
         //get the current text fields data, and put it in the map. Then upload
@@ -224,15 +285,35 @@ public class AdminPanelActivity extends ActionBarActivity  {
         //optional image puts standard if text is blank
         if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+        else if (validURL(mImageUrl.getText().toString().replaceAll("\\s", "")))
+                eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
         else
-            eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
+            eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
+        ref.child("calendar").child(eventName).updateChildren(eventData, new Firebase.CompletionListener() {
 
-        Log.v(LOG_TAG, "event = " + eventName);
-        Log.v(LOG_TAG, ">----data is " + Arrays.toString(eventData.entrySet().toArray()));
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
 
-        ref.child("calendar").child(eventName).updateChildren(eventData);
+                new AlertDialog.Builder(mContext)
+                        .setTitle("Event Created")
+                        .setMessage("Congratulations! You've successfully created an event.")
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                clearFields();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                clearFields();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
 
 
     }
@@ -426,5 +507,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
                 ((AdminPanelActivity)getActivity()).setEndDate(dateFormat);
         }
     }
+
 
 }
