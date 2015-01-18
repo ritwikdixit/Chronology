@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -16,13 +17,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.provider.CalendarContract.Events;
 
 import com.firebase.client.Firebase;
 
 import org.w3c.dom.Text;
+
+import java.util.Calendar;
 
 public class DetailActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -38,7 +43,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private LinearLayout layout;
 
     private String imageUrl;
-    private String titleString;
+    private String titleString, startDateStr, endDateStr,
+            startTimeStr, endTimeStr, locationStr, descStr;
     private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
@@ -53,6 +59,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
 
     private Toolbar toolbar;
     private SearchView mSearch;
+    private Button mCalendarButton;
 
 
     @Override
@@ -94,25 +101,26 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         ref = DataHolder.getRef();
 
         //if this was 4 you could get fire base event called event4
-        int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
+        //int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
 
         //setting the action bar label to title of event
         titleString = getIntent().getStringExtra(HomepageFragment.TITLE_KEY);
         mTitle.setText(titleString);
 
+        startDateStr = getIntent().getStringExtra(HomepageFragment.START_DATE_KEY);
+        endDateStr = getIntent().getStringExtra(HomepageFragment.END_DATE_KEY);
+        startTimeStr = getIntent().getStringExtra(HomepageFragment.START_TIME_KEY);
+        endTimeStr = getIntent().getStringExtra(HomepageFragment.END_TIME_KEY);
+        locationStr = getIntent().getStringExtra(HomepageFragment.LOCATION_KEY);
+        descStr = getIntent().getStringExtra(HomepageFragment.DETAILS_KEY);
+
         //getting the extras from the intent and putting them in the view
-        mStartDate.setText("Date: " +
-                getIntent().getStringExtra(HomepageFragment.START_DATE_KEY));
-        mEndDate.setText(
-                getIntent().getStringExtra(HomepageFragment.END_DATE_KEY));
-        mStartTime.setText("Time: " +
-                getIntent().getStringExtra(HomepageFragment.START_TIME_KEY));
-        mEndTime.setText(
-                getIntent().getStringExtra(HomepageFragment.END_TIME_KEY));
-        mLocation.setText("Location: " +
-                getIntent().getStringExtra(HomepageFragment.LOCATION_KEY));
-        mDetails.setText(
-                getIntent().getStringExtra(HomepageFragment.DETAILS_KEY));
+        mStartDate.setText("Date: " + EventItem.formatDate(startDateStr));
+        mEndDate.setText(EventItem.formatDate(endDateStr));
+        mStartTime.setText("Time: " + startTimeStr);
+        mEndTime.setText(endTimeStr);
+        mLocation.setText("Location: " + locationStr);
+        mDetails.setText(descStr);
         mContactInfo.setText("Contact: " +
                 getIntent().getStringExtra(HomepageFragment.CONTACT_INFO_KEY)
         );
@@ -148,6 +156,14 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         layout.setOnClickListener(DetailActivity.this);
         layout.setOnTouchListener(mListener);
 
+        mCalendarButton = (Button) findViewById(R.id.add_event_to_calendar_button);
+        mCalendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callCalendarIntent();
+            }
+        });
+
     }
 
     @Override
@@ -166,6 +182,52 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         mShare.setShareIntent(getDefaultIntent());
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void callCalendarIntent() {
+
+        Calendar beginTime = Calendar.getInstance();
+        Calendar endTime = Calendar.getInstance();
+
+        int[] beg = parseDateTime(startDateStr, startTimeStr);
+        int[] end = parseDateTime(endDateStr, endTimeStr);
+
+        beginTime.set(beg[0], beg[1], beg[2], beg[3], beg[4]);
+        endTime.set(end[0], end[1], end[2], end[3], end[4]);
+
+        Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
+        calendarIntent.setData(Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                .putExtra(Events.TITLE, titleString)
+                .putExtra(Events.DESCRIPTION, descStr)
+                .putExtra(Events.EVENT_LOCATION, locationStr)
+                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
+
+        startActivity(calendarIntent);
+
+    }
+
+    //function to parse into something the Intent will understand
+    public int[] parseDateTime(String date, String time) {
+
+        int hour = Integer.valueOf(time.substring(0, time.indexOf(":")));
+        int minutes = Integer.valueOf(time.substring(time.indexOf(":") + 1, time.length() - 2));
+
+        String[] data = date.split("-");
+
+        int year = Integer.valueOf(data[0]);
+        int month = Integer.valueOf(data[1]) - 1;
+        int day = Integer.valueOf(data[2]);
+
+        if (time.contains("PM") && hour != 12)
+            hour += 12;
+
+        Log.v(SettingsActivity.SQL_LOG_TAG, year + " " + month + "  " + day
+                + " /time/ " + hour + " " + minutes);
+
+        return new int[] { year, month, day, hour, minutes };
+
     }
 
     private Intent getDefaultIntent() {
