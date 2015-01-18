@@ -29,20 +29,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Joshua actually.
@@ -61,7 +60,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     private String startDate, endDate, startTime, endTime;
     private Firebase ref;
-    private boolean pressed = false, started = false;
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -72,6 +70,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
     private SearchView mSearch;
 
     private static final String STANDARD_IMAGE_URL = "http://hhsprogramming.com/img/logo-white.png";
+    private static final String[] EXTENSIONS = {".jpg", ".png", ".tif", ".tiff", ".gif"};
+
     public static final String LOG_TAG = "AdminPanel";
     public static final String START_KEY = "start";
 
@@ -97,8 +97,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.list_item_text, DataHolder.getDrawerArray()));
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 this, mDrawerLayout, mDrawerList));
@@ -144,21 +144,53 @@ public class AdminPanelActivity extends ActionBarActivity  {
         setDialogListeners();
 
         mCreateEventButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if(!pressed) {
-                    pressed = true;
-                    if (ref == null)
-                        ref = DataHolder.getRef();
-                    try {
-                        uploadEvent();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+
+                if (ref == null)
+                    ref = DataHolder.getRef();
+
+                if (!fieldsAreNull()) {
+                    uploadEvent();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Fields must not be empty!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+
+    }
+
+    private void clearFields() {
+
+        mTitle.setText("New Event Title");
+        mContact.setText("");
+        mLocation.setText("");
+        mImageUrl.setText("");
+        mDetails.setText("");
+
+        mStartButtonDate.setText("Select Start Date");
+        mEndButtonDate.setText("Select End Date");
+
+        mEndButtonTime.setText("Select End Time");
+        mStartButtonTime.setText("Select Start Time");
+
+    }
+
+    private boolean fieldsAreNull() {
+
+        //checks if any necessary field is null
+
+        return mTitle.getText().toString().replaceAll("\\s", "").equals("")
+                || mStartButtonDate.getText().toString().equals("Select Start Date")
+                || mEndButtonDate.getText().toString().equals("Select End Date")
+                || mStartButtonTime.getText().toString().equals("Select Start Time")
+                || mEndButtonTime.getText().toString().equals("Select End Time")
+                || mLocation.getText().toString().replaceAll("\\s", "").equals("")
+                || mDetails.getText().toString().replaceAll("\\s", "").equals("")
+                || mContact.getText().toString().replaceAll("\\s", "").equals("");
 
     }
 
@@ -217,7 +249,19 @@ public class AdminPanelActivity extends ActionBarActivity  {
         });
     }
 
-    private void uploadEvent() throws IOException {
+    //checks if valid image
+    private boolean validURL(String URLStr) {
+
+        if (URLUtil.isValidUrl(URLStr)) {
+            for (String s : EXTENSIONS)
+                if (URLStr.endsWith(s))
+                    return true;
+        }
+
+        return false;
+    }
+
+    private void uploadEvent() {
 
         //get the current text fields data, and put it in the map. Then upload
 
@@ -229,63 +273,41 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
         Map<String, Object> eventData = new HashMap<>();
 
-        if(id == null) id = UUID.randomUUID().toString();;
         eventData.put(HomepageFragment.ID_KEY, id);
-        String tempTitle = "";
-        if(mTitle.getText().toString() != null) tempTitle = mTitle.getText().toString();
-        eventData.put(HomepageFragment.TITLE_KEY, tempTitle);
-        if(startDate == null) startDate = "0000-00-00";
+        eventData.put(HomepageFragment.TITLE_KEY, mTitle.getText().toString());
         eventData.put(HomepageFragment.START_DATE_KEY, startDate);
-        if(endDate == null) endDate = "0000-00-00";
         eventData.put(HomepageFragment.END_DATE_KEY, endDate);
-        if(startTime == null) startTime = "12:00AM";
         eventData.put(HomepageFragment.START_TIME_KEY, startTime);
-        if(endTime == null) endTime = "12:00AM";
         eventData.put(HomepageFragment.END_TIME_KEY, endTime);
-        String tempLoc = "";
-        if(mLocation.getText().toString() != null) tempLoc = mLocation.getText().toString();
-        eventData.put(HomepageFragment.LOCATION_KEY, tempLoc);
-        String tempContact = "";
-        if(mContact.getText().toString() != null) tempContact = mContact.getText().toString();
-        eventData.put(HomepageFragment.CONTACT_INFO_KEY, tempContact);
+        eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
 
         //optional image puts standard if text is blank
         if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
-        else if(URLUtil.isValidUrl(mImageUrl.getText().toString())){
-            URLConnection connection = new URL(mImageUrl.getText().toString()).openConnection();
-            String contentType = connection.getHeaderField("Content-Type");
-            boolean image = contentType.startsWith("image/");
-            if(image)
+        else if (validURL(mImageUrl.getText().toString().replaceAll("\\s", "")))
                 eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
-            else
-                eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
-        }
-        else {
+        else
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
-        }
 
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
-
-        Log.v(LOG_TAG, "event = " + eventName);
-        Log.v(LOG_TAG, ">----data is " + Arrays.toString(eventData.entrySet().toArray()));
-
         ref.child("calendar").child(eventName).updateChildren(eventData, new Firebase.CompletionListener() {
+
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                pressed = false;
+
                 new AlertDialog.Builder(mContext)
                         .setTitle("Event Created")
                         .setMessage("Congratulations! You've successfully created an event.")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+                                clearFields();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+                                clearFields();
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -485,5 +507,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
                 ((AdminPanelActivity)getActivity()).setEndDate(dateFormat);
         }
     }
+
 
 }
