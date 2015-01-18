@@ -41,6 +41,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.ritwik.android.madfbla201415.Database.DataModel;
 
 import java.io.InputStream;
@@ -197,6 +198,18 @@ public class HomepageFragment extends Fragment {
                     DataHolder.setEmail(newUser.get("email").toString());
                     DataHolder.setName(newUser.get("full_name").toString());
                     DataHolder.setPhoneNumber(newUser.get("phone_number").toString());
+                    ref.child("admins").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            Map<String, Object> adminUsers = (Map<String, Object>) snapshot.getValue();
+                            if(adminUsers.containsKey(DataHolder.getUID())) DataHolder.setAdmin(true);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            Log.e(LOG_TAG, firebaseError.getDetails());
+                        }
+                    });
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}

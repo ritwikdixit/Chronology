@@ -12,7 +12,7 @@ public class DataHolder {
     private static String UID, fullName, email, phoneNumber;
     private static String[] mDrawerArray = { "Home", "Month View",
             "All Events", "Help", "Notifications", "Create Event", "Log Out"};
-
+    private static boolean isAdmin = false;
     private static int[] resIds = {
             R.drawable.ic_home,
             R.drawable.ic_month,
@@ -64,7 +64,16 @@ public class DataHolder {
     public static String[] getDrawerArray() {
         return mDrawerArray;
     }
-
+    public static void setAdmin(boolean x){
+        isAdmin = x;
+    }
+    public static boolean isAdmin(){
+        return isAdmin;
+    }
+    public static void resetData(){
+        isAdmin = false;
+        fullName = email = phoneNumber = UID = "";
+    }
     //input -1 for settings, make sure it is last in the array
     public static int getDrawerIdForIndex(int index) {
 

@@ -49,6 +49,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
                     dialog.dismiss();
                     ref.unauth();
+                    DataHolder.resetData();
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                     mContext.startActivity(intent);
