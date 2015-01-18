@@ -7,4 +7,8 @@
 
     <color name="title_list_black">#434343</color>
     <color name="light_grey">#A9A9A9</color>
+    <color name="almost_white">#EFEFEF</color>
+
+    <color name="chronology_secondary">#EB4747</color>
+
 </resources>

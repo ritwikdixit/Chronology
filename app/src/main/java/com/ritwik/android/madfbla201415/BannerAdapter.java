@@ -47,10 +47,10 @@ public class BannerAdapter extends PagerAdapter {
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         mEvents.get(position).getmTitle());
-                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, mEvents.get(position)
-                        .formatDate(mEvents.get(position).getmStartDate()));
-                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, mEvents.get(position)
-                        .formatDate(mEvents.get(position).getmEndDate()));
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
+                        mEvents.get(position).getmStartDate());
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
+                        mEvents.get(position).getmEndDate());
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
                         mEvents.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,

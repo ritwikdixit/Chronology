@@ -116,11 +116,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
 
         //getting the extras from the intent and putting them in the view
         mStartDate.setText("Date: " + EventItem.formatDate(startDateStr));
-        try {
-            mEndDate.setText(EventItem.formatDate(endDateStr));
-        }catch(ArrayIndexOutOfBoundsException aioobe){
-            mEndDate.setText(endDateStr);
-        }
+        mEndDate.setText(EventItem.formatDate(endDateStr));
         mStartTime.setText("Time: " + startTimeStr);
         mEndTime.setText(endTimeStr);
         mLocation.setText("Location: " + locationStr);

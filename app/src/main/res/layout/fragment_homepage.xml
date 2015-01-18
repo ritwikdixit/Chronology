@@ -32,23 +32,28 @@
                 android:layout_weight="4"
                 android:layout_gravity="center_horizontal" />
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
+            <FrameLayout
+                android:padding="12dp"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="12dp"
-                android:progressDrawable="@drawable/green_color"
-                android:id="@+id/progressBar"
-                android:layout_gravity="center" />
+                android:layout_height="wrap_content">
 
-                <ListView
-                    android:id="@+id/list_view"
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3" />
+                    android:layout_height="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:progressDrawable="@drawable/green_color"
+                    android:id="@+id/progressBar"
+                    android:layout_gravity="center" />
+
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
 
         </LinearLayout>
 

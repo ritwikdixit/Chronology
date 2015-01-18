@@ -148,6 +148,26 @@ public class HomepageFragment extends Fragment {
 
         //init the drawer
         thisRootView = rootView;
+        mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) rootView.findViewById(R.id.left_drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
+                mDrawerLayout,  toolbar, R.string.drawer_open, R.string.drawer_closed) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //set all items unchecked
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
+                    mDrawerList.setItemChecked(i, false);
+                }
+            }
+        };
+
         initDrawer();
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -175,7 +195,7 @@ public class HomepageFragment extends Fragment {
                     Log.d("Loading User Data Error", firebaseError.getMessage());
                 }
             });
-        Log.e(LOG_TAG, "Starting Admin Check");
+
         ref.child("admins").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -321,85 +341,19 @@ public class HomepageFragment extends Fragment {
             }
         });
 
-        mListView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                onScrollChanged();
-                ViewTreeObserver observe = mListView.getViewTreeObserver();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
-                    observe.removeOnGlobalLayoutListener(this);
-                 else
-                    observe.removeGlobalOnLayoutListener(this);
-            }
-        });
-
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                onScrollChanged();
-            }
-        });
-
         return rootView;
     }
 
     private void initDrawer() {
-        mDrawerLayout = (DrawerLayout) thisRootView.findViewById(R.id.navigation_drawer);
-        mDrawerList = (ListView) thisRootView.findViewById(R.id.left_drawer);
         DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
         mDrawerList.setAdapter(mDrawerAdapter);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
                 getActivity(), mDrawerLayout, mDrawerList));
 
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
-                mDrawerLayout,  toolbar, R.string.drawer_open, R.string.drawer_closed) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActivity().supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //set all items unchecked
-                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
-                    mDrawerList.setItemChecked(i, false);
-                }
-                getActivity().supportInvalidateOptionsMenu();
-            }
-        };
-
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerList.setBackgroundResource(R.color.drawer_background);
-
-    }
-
-    private void onScrollChanged() {
-
-        View itemOne = mListView.getChildAt(0);
-
-        int top;
-        if (itemOne == null)
-            top = 0;
-        else
-            top = itemOne.getTop();
-
-        if (mListView.getFirstVisiblePosition() == 0) {
-            //mProgressBar.setTranslationY(Math.max(0, mScrollBanner.getTop() + top));
-            mScrollerLayout.setTranslationY(top);
-            mListView.setVerticalScrollBarEnabled(false);
-
-        }
-
 
     }
 
