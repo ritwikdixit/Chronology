@@ -180,6 +180,26 @@
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView
+
+            card_view:cardCornerRadius="2dp"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/add_event_to_calendar_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sync Event with Google Calendar"
+                android:background="@drawable/chrono_button"
+                android:textColor="@android:color/white"
+                android:fontFamily="sans-serif-light"
+                android:layout_margin = "16dp" />
+
+        </android.support.v7.widget.CardView>
+
     </LinearLayout>
 
 </ScrollView>

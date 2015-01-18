@@ -74,10 +74,10 @@ public class SearchActivity extends ActionBarActivity {
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         mData.get(position).getmTitle());
-                detailIntent.putExtra(HomepageFragment.START_DATE_KEY, events.get(position)
-                        .formatDate(mData.get(position).getmStartDate()));
-                detailIntent.putExtra(HomepageFragment.END_DATE_KEY, events.get(position)
-                        .formatDate(mData.get(position).getmEndDate()));
+                detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
+                        events.get(position).getmStartDate());
+                detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
+                        events.get(position).getmEndDate());
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
                         mData.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,

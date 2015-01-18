@@ -94,7 +94,7 @@ public class EventItem {
 
     //formats date so it fits in the listView
 
-    public String formatDate(String mServerDateData) {
+    public static String formatDate(String mServerDateData) {
         String[] parts = mServerDateData.split("-");
 
         return theMonth(Integer.parseInt(parts[1])) + " " + parts[2] + ", " + parts[0];

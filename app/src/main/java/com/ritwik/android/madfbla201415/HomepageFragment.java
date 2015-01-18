@@ -87,6 +87,8 @@ public class HomepageFragment extends Fragment {
     public static final String URL_KEY = "url";
     public static final String CONTACT_INFO_KEY = "contact_info";
 
+    public static final String ARRAY_DATA_KEY = "data_array";
+
     //drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -320,10 +322,8 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
 
                 detailIntent.putExtra(TITLE_KEY, events.get(position).getmTitle());
-                detailIntent.putExtra(START_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmStartDate()));
-                detailIntent.putExtra(END_DATE_KEY, events.get(position)
-                        .formatDate(events.get(position).getmEndDate()));
+                detailIntent.putExtra(START_DATE_KEY, events.get(position).getmStartDate());
+                detailIntent.putExtra(END_DATE_KEY, events.get(position).getmEndDate());
                 detailIntent.putExtra(START_TIME_KEY, events.get(position).getmStartTime());
                 detailIntent.putExtra(END_TIME_KEY, events.get(position).getmEndTime());
                 detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());

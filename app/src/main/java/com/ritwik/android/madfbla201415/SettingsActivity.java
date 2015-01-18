@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 
 public class SettingsActivity extends PreferenceActivity {
 
+    public static final String SQL_LOG_TAG = "ContentUris";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
