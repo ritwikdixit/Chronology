@@ -10,8 +10,11 @@ public class DataHolder {
 
     private static Firebase ref;
     private static String UID, fullName, email, phoneNumber;
-    private static String[] mDrawerArray = { "Home", "Month View",
+    private static String[] mUserDrawerArray = { "Home", "Month View",
+            "All Events", "Help", "Notifications", "Log Out"};
+    private static String[] mAdminDrawerArray = { "Home", "Month View",
             "All Events", "Help", "Notifications", "Create Event", "Log Out"};
+
     private static boolean isAdmin = false;
     private static int[] resIds = {
             R.drawable.ic_home,
@@ -62,7 +65,10 @@ public class DataHolder {
                 && !email.trim().equals("") && !phoneNumber.trim().equals("");
     }
     public static String[] getDrawerArray() {
-        return mDrawerArray;
+        if(isAdmin)
+            return mAdminDrawerArray;
+        else
+            return mUserDrawerArray;
     }
     public static void setAdmin(boolean x){
         isAdmin = x;

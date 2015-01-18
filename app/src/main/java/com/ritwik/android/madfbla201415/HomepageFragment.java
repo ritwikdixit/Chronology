@@ -29,7 +29,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +47,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,11 +63,7 @@ public class HomepageFragment extends Fragment {
     private LinearLayout mScrollerLayout;
 
     private EventListItemAdapter eventAdapter;
-
-    private int scrollY = -1;
-    private boolean scrolled = false;
-    private int beforeFirst = 0;
-    private int translationY = 0;
+    private View thisRootView;
 
     //this is static so i can refer to it in the other class
     //detail activity
@@ -151,38 +147,8 @@ public class HomepageFragment extends Fragment {
         toolbar.setTitle("Welcome!");
 
         //init the drawer
-        mDrawerLayout = (DrawerLayout) rootView.findViewById(R.id.navigation_drawer);
-        mDrawerList = (ListView) rootView.findViewById(R.id.left_drawer);
-        DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
-        mDrawerList.setAdapter(mDrawerAdapter);
-
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
-                getActivity(), mDrawerLayout, mDrawerList));
-
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
-                mDrawerLayout,  toolbar, R.string.drawer_open, R.string.drawer_closed) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActivity().supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //set all items unchecked
-                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
-                    mDrawerList.setItemChecked(i, false);
-                }
-                getActivity().supportInvalidateOptionsMenu();
-            }
-        };
-
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerList.setBackgroundResource(R.color.drawer_background);
-
+        thisRootView = rootView;
+        initDrawer();
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mProgressBar.setMax(100);
@@ -200,27 +166,30 @@ public class HomepageFragment extends Fragment {
                     DataHolder.setEmail(newUser.get("email").toString());
                     DataHolder.setName(newUser.get("full_name").toString());
                     DataHolder.setPhoneNumber(newUser.get("phone_number").toString());
-                    ref.child("admins").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            Map<String, Object> adminUsers = (Map<String, Object>) snapshot.getValue();
-                            if(adminUsers.containsKey(DataHolder.getUID())) DataHolder.setAdmin(true);
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-                            Log.e(LOG_TAG, firebaseError.getDetails());
-                        }
-                    });
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(DataSnapshot dataSnapshot) {  }
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(FirebaseError firebaseError) {
                     Log.d("Loading User Data Error", firebaseError.getMessage());
                 }
             });
+        Log.e(LOG_TAG, "Starting Admin Check");
+        ref.child("admins").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Map<String, Object> adminUsers = (Map<String, Object>) snapshot.getValue();
+                if(adminUsers.containsKey(DataHolder.getUID()))
+                    DataHolder.setAdmin(true);
+                initDrawer();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.e(LOG_TAG, firebaseError.getDetails());
+            }
+        });
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mScrollerLayout = (LinearLayout) rootView.findViewById(R.id.scroller_layout);
@@ -244,6 +213,7 @@ public class HomepageFragment extends Fragment {
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     events.add(new EventItem(
+                            newEvent.get("id").toString(),
                             newEvent.get("start_date").toString(),
                             newEvent.get("end_date").toString(),
                             newEvent.get("start_time").toString(),
@@ -279,18 +249,19 @@ public class HomepageFragment extends Fragment {
 
                 }
 
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    String removedID = dataSnapshot.child("id").getValue().toString();
+                    Iterator<EventItem> x  = events.iterator();
+                    while(x.hasNext()) {
+                        EventItem t = x.next();
+                        if (t.getId().equals(removedID))
+                            x.remove();
+                    }
+                    mImageAdapter = new BannerAdapter(getActivity(), events);
+                    mScrollBanner.setAdapter(mImageAdapter);
                 }
-
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(FirebaseError firebaseError) {
                     Log.d("Loading Event Item Error", firebaseError.getMessage());
                 }
@@ -377,6 +348,41 @@ public class HomepageFragment extends Fragment {
         return rootView;
     }
 
+    private void initDrawer() {
+        mDrawerLayout = (DrawerLayout) thisRootView.findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) thisRootView.findViewById(R.id.left_drawer);
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
+                getActivity(), mDrawerLayout, mDrawerList));
+
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(),
+                mDrawerLayout,  toolbar, R.string.drawer_open, R.string.drawer_closed) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActivity().supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //set all items unchecked
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
+                    mDrawerList.setItemChecked(i, false);
+                }
+                getActivity().supportInvalidateOptionsMenu();
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
+
+    }
+
     private void onScrollChanged() {
 
         View itemOne = mListView.getChildAt(0);
@@ -400,7 +406,7 @@ public class HomepageFragment extends Fragment {
     public static void initEvents(final Activity context) {
 
         Firebase ref = DataHolder.getRef();
-        events = new ArrayList<EventItem>();
+        events = new ArrayList<>();
         Query eventsByDate = ref.child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
 
@@ -409,6 +415,7 @@ public class HomepageFragment extends Fragment {
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                 events.add(new EventItem(
+                        newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
                         newEvent.get("end_date").toString(),
                         newEvent.get("start_time").toString(),

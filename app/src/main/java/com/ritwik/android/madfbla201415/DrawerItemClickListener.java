@@ -12,9 +12,6 @@ import android.widget.ListView;
 
 import com.firebase.client.Firebase;
 
-/**
- * Created by Ritwik on 1/1/15.
- */
 public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
     private Activity mContext;
@@ -83,6 +80,57 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         mDrawerList.setItemChecked(mPosition, true);
         mDrawerLayout.closeDrawer(mDrawerList);
 
+        if(DataHolder.isAdmin())
+            adminPosition(position);
+        else
+            userPosition(position);
+    }
+
+    private void userPosition(int position) {
+        if (position == 0) {
+
+            //home
+            if(!(mContext instanceof  HomepageActivity)) {
+                Intent intent = new Intent(mContext, HomepageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mContext.startActivity(intent);
+            }
+
+        } else if (position == 1) {
+
+            //calendar
+            if(!(mContext instanceof  CalendarActivity)){
+                Intent intent = new Intent(mContext, CalendarActivity.class);
+                mContext.startActivity(intent);
+            }
+
+        } else if (position == 2) {
+
+            //all events
+            if(!(mContext instanceof  AllEventsActivity)){
+                Intent intent = new Intent(mContext, AllEventsActivity.class);
+                mContext.startActivity(intent);
+            }
+
+        } else if (position == 3) {
+            //help
+
+        } else if (position == 4) {
+            //notifications
+            if(!(mContext instanceof  AllPushActivity)){
+                Intent intent = new Intent(mContext, AllPushActivity.class);
+                mContext.startActivity(intent);
+            }
+
+        } else if (position == 5) {
+
+            //log out
+            initLogOutDialog();
+
+        }
+    }
+
+    private void adminPosition(int position) {
         if (position == 0) {
 
             //home
@@ -131,7 +179,6 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             initLogOutDialog();
 
         }
-
     }
 
 

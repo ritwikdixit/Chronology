@@ -3,7 +3,6 @@ package com.ritwik.android.madfbla201415;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ public class SignupFragment extends Fragment {
 
     //constants
     private static final String LOG_TAG = "LoginPhase";
-    private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
 
 
     public SignupFragment() {
@@ -113,6 +111,10 @@ public class SignupFragment extends Fragment {
 
                         ref.child("users").child(authData.getUid()).child("full_name")
                                 .setValue(mFullName.getText().toString());
+                        ref.child("users").child(authData.getUid()).child("email")
+                                .setValue(mEmail.getText().toString());
+                        ref.child("users").child(authData.getUid()).child("phone_number")
+                                .setValue(mPhoneNumber.getText().toString());
 
                         Toast.makeText(getActivity(), "Success, Account Created!",
                                 Toast.LENGTH_SHORT).show();

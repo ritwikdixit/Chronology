@@ -100,7 +100,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
 
-        //if this was 4 you could get fire base event called event4
+        //if this was the 4th event, you could get fire base event called event4
         //int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
 
         //setting the action bar label to title of event
@@ -116,7 +116,11 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
 
         //getting the extras from the intent and putting them in the view
         mStartDate.setText("Date: " + EventItem.formatDate(startDateStr));
-        mEndDate.setText(EventItem.formatDate(endDateStr));
+        try {
+            mEndDate.setText(EventItem.formatDate(endDateStr));
+        }catch(ArrayIndexOutOfBoundsException aioobe){
+            mEndDate.setText(endDateStr);
+        }
         mStartTime.setText("Time: " + startTimeStr);
         mEndTime.setText(endTimeStr);
         mLocation.setText("Location: " + locationStr);

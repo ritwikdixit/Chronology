@@ -2,8 +2,6 @@ package com.ritwik.android.madfbla201415;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -16,6 +14,7 @@ import java.util.Date;
 
 public class EventItem {
 
+    private String id;
     private String mStartDate;
     private String mEndDate;
 
@@ -30,10 +29,10 @@ public class EventItem {
     private ImageView mImage;
     private String mContactInfo;
 
-    public EventItem(String mStartDate, String mEndDate, String mStartTime,
+    public EventItem(String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
                      String mUrl, String mContactInfo, Context context) {
-
+        this.id = id;
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
         this.mEndDate = mEndDate;
@@ -91,12 +90,13 @@ public class EventItem {
         return mContactInfo;
     }
 
+    public String getId() {return id;}
+
 
     //formats date so it fits in the listView
 
     public static String formatDate(String mServerDateData) {
         String[] parts = mServerDateData.split("-");
-
         return theMonth(Integer.parseInt(parts[1])) + " " + parts[2] + ", " + parts[0];
     }
     public static String theMonth(int month){

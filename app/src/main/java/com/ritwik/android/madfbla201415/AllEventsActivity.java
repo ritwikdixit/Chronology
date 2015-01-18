@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
@@ -26,6 +24,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -66,37 +65,7 @@ public class AllEventsActivity extends ActionBarActivity  {
         toolbar.inflateMenu(R.menu.menu_main);
 
         //init the drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
-        mDrawerList.setAdapter(mDrawerAdapter);
-
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
-                this, mDrawerLayout, mDrawerList));
-
-        mDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_closed) {
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //set all items unchecked
-                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
-                    mDrawerList.setItemChecked(i, false);
-                }
-            }
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
-        mDrawerList.setBackgroundResource(R.color.drawer_background);
-
+       initDrawer();
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
         events = new ArrayList<>();
@@ -108,6 +77,7 @@ public class AllEventsActivity extends ActionBarActivity  {
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                 events.add(new EventItem(
+                        newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
                         newEvent.get("end_date").toString(),
                         newEvent.get("start_time").toString(),
@@ -127,7 +97,14 @@ public class AllEventsActivity extends ActionBarActivity  {
 
             }
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                String removedID = dataSnapshot.child("id").getValue().toString();
+                Iterator<EventItem> x  = events.iterator();
+                while(x.hasNext()) {
+                    EventItem t = x.next();
+                    if (t.getId().equals(removedID))
+                        x.remove();
+                }
+                mAllEventsView.setAdapter(adapter);
             }
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
@@ -174,6 +151,40 @@ public class AllEventsActivity extends ActionBarActivity  {
 
             }
         });
+
+    }
+
+    private void initDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
+                this, mDrawerLayout, mDrawerList));
+
+        mDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_closed) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //set all items unchecked
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
+                    mDrawerList.setItemChecked(i, false);
+                }
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
 
     }
 

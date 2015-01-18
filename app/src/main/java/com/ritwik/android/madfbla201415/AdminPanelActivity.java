@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -35,10 +34,6 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +48,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     private Activity mContext = this;
 
-    private TextView mDate, mTime;
     private EditText mTitle, mLocation, mContact, mImageUrl, mDetails;
     private Button mCreateEventButton, mStartButtonDate,
             mEndButtonDate, mStartButtonTime, mEndButtonTime;
@@ -128,8 +122,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
         //actual unique onCreate starts here
 
         mTitle = (EditText) findViewById(R.id.admin_title_edit);
-        mDate = (TextView)findViewById(R.id.admin_date_text);
-        mTime = (TextView)findViewById(R.id.admin_time_text);
         mLocation = (EditText) findViewById(R.id.admin_location_edit);
         mContact = (EditText) findViewById(R.id.admin_contact_edit);
         mImageUrl = (EditText) findViewById(R.id.admin_image_url);
@@ -300,14 +292,14 @@ public class AdminPanelActivity extends ActionBarActivity  {
                 new AlertDialog.Builder(mContext)
                         .setTitle("Event Created")
                         .setMessage("Congratulations! You've successfully created an event.")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("More Events", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 clearFields();
                             }
                         })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        .setNegativeButton("Back Home", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                clearFields();
+                                finish();
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
