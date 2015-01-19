@@ -6,11 +6,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.firebase.client.Firebase;
+import com.ritwik.android.madfbla201415.Push.SendPush;
+
+import java.io.UnsupportedEncodingException;
 
 public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
@@ -114,7 +118,12 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 3) {
             //help
-
+            try {
+                SendPush.postData("Tomato", "Test");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Log.e(LOG_TAG, "Sending Data via Push");
         } else if (position == 4) {
             //notifications
             if(!(mContext instanceof  AllPushActivity)){
@@ -158,7 +167,12 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 3) {
             //help
-
+            try {
+                SendPush.postData("Tomato", "Test");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Log.e(LOG_TAG, "Sending Data via Push");
         } else if (position == 4) {
 
             //notifications
