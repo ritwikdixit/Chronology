@@ -217,7 +217,6 @@ public class HomepageFragment extends Fragment {
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mScrollerLayout = (LinearLayout) rootView.findViewById(R.id.scroller_layout);
-        showEvents = new ArrayList<>();
 
         if (events == null) {
 
@@ -230,6 +229,8 @@ public class HomepageFragment extends Fragment {
             };
 
             events = new ArrayList<>();
+            showEvents = new ArrayList<>();
+
             Query eventsByDate = ref.child("calendar").orderByChild("start_date");
             eventsByDate.addChildEventListener(new ChildEventListener() {
 
@@ -388,6 +389,9 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("contact_info").toString(),
                         context
                 ));
+
+                extendsToday();
+
                 String id = newEvent.get("id").toString();
                 List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
                 if(ldm.size() == 0){
@@ -424,7 +428,7 @@ public class HomepageFragment extends Fragment {
         });
     }
 
-    private void extendsToday() {
+    private static void extendsToday() {
         showEvents.clear();
         String todayDate = new SimpleDateFormat("yyyy-MM-dd")
                 .format(Calendar.getInstance().getTime());
