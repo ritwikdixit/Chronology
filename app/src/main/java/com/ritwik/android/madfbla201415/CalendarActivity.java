@@ -17,7 +17,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Ritwik on 1/7/15.
@@ -30,6 +35,7 @@ public class CalendarActivity extends ActionBarActivity {
     private ArrayList<EventItem> events;
     private ArrayList<EventItem> filteredEvents;
 
+    private TextView mDataText;
     private CalendarView mCalendar;
 
     private Activity mContext = this;
@@ -38,7 +44,7 @@ public class CalendarActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private static final String TAG = "Calendar";
+    public static final String TAG = "Calendar";
 
     private Toolbar toolbar;
     private SearchView mSearch;
@@ -91,12 +97,18 @@ public class CalendarActivity extends ActionBarActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
-
         events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();
 
         mEventsList =  (ListView) findViewById(R.id.events_per_day_listView);
         adapter = new EventListItemAdapter(this, filteredEvents);
+        mEventsList.setAdapter(adapter);
+        mDataText = (TextView) findViewById(R.id.calendar_data_text);
+        mDataText.setText("Events for Today");
+
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        filterEvents(date, events);
+        setText(date);
         mEventsList.setAdapter(adapter);
 
         mCalendar = (CalendarView) findViewById(R.id.calendar_chronology);
@@ -123,6 +135,7 @@ public class CalendarActivity extends ActionBarActivity {
 
                 String date = year + "-" + monthStr + "-" + dayStr;
                 filterEvents(date, events);
+                setText(date);
                 mEventsList.setAdapter(adapter);
             }
         });
@@ -167,6 +180,17 @@ public class CalendarActivity extends ActionBarActivity {
     private void initializeCalendar() {
         mCalendar.setShowWeekNumber(false);
 
+    }
+
+    private void setText(String date) {
+
+        if (filteredEvents.size() == 0) {
+            mDataText.setText("No Events on " + EventItem.formatDate(date));
+        } else if (filteredEvents.size() == 1) {
+            mDataText.setText(1 + " Event on " + EventItem.formatDate(date));
+        } else {
+            mDataText.setText(filteredEvents.size() + " Events on " + EventItem.formatDate(date));
+        }
     }
 
     @Override
@@ -219,7 +243,5 @@ public class CalendarActivity extends ActionBarActivity {
         }
 
     }
-
-
 
 }

@@ -43,5 +43,12 @@
     <!-- SETTINGS KEYS -->
     <string name="notifications_key">notifications_check</string>
     <string name="fullname_key">full_name</string>
+    
+    <string-array name="filters">
+        <item>Filter: None (All Events)</item>
+        <item>Filter: From Today</item>
+        <item>Filter: This Week</item>
+        <item>Filter: This Month</item>
+    </string-array>
 
 </resources>

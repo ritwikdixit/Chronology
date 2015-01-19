@@ -20,22 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:padding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spinner"
-                android:padding="4dp"
-                android:layout_gravity="center_horizontal" />
-
-            </FrameLayout>
-
             <ListView
-                android:id="@+id/all_events_listView"
+                android:id="@+id/all_push_list"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />

@@ -10,12 +10,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
@@ -28,7 +26,7 @@ import java.util.List;
 
 public class AllPushActivity extends ActionBarActivity  {
 
-    private ListView mAllEventsView;
+    private ListView mAllNotificationsView;
     private PushListItemAdapter adapter;
     private ArrayList<PushItem> pushNotifs = new ArrayList<PushItem>();
 
@@ -46,7 +44,7 @@ public class AllPushActivity extends ActionBarActivity  {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_allevents);
+        setContentView(R.layout.activity_push);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,8 +89,7 @@ public class AllPushActivity extends ActionBarActivity  {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
-
-        mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
+        mAllNotificationsView =  (ListView) findViewById(R.id.all_push_list);
 
         List list = new Select().from(PushModel.class).orderBy("Time ASC").execute();
         Iterator<PushModel> x = list.iterator();
@@ -100,32 +97,31 @@ public class AllPushActivity extends ActionBarActivity  {
             pushNotifs.add(new PushItem(x.next()));
         }
         adapter = new PushListItemAdapter(this, pushNotifs);
-        mAllEventsView.setAdapter(adapter);
+        mAllNotificationsView.setAdapter(adapter);
 
-        mAllEventsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mAllNotificationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-             @Override
-             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 Log.e("", "t");
-             }
-         });
-        mAllEventsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
+        mAllNotificationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-             @Override
-             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                 //Putting data for detail activity
-                 Intent detailIntent = new Intent(mContext, PushActivity.class);
-                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-                 detailIntent.putExtra("Push_Message", pushNotifs.get(position).getMessage());
-                 detailIntent.putExtra("Push_Details", pushNotifs.get(position).getDetails());
+                //Putting data for detail activity
+                Intent pushIntent = new Intent(mContext, PushActivity.class);
+                pushIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+                pushIntent.putExtra("Push_Message", pushNotifs.get(position).getMessage());
+                pushIntent.putExtra("Push_Details", pushNotifs.get(position).getDetails());
 
-                 startActivity(detailIntent);
-                 AllPushActivity.this.overridePendingTransition(
-                         R.anim.right_to_left, R.anim.neg_right_left);
+                startActivity(pushIntent);
+                AllPushActivity.this.overridePendingTransition(
+                        R.anim.right_to_left, R.anim.neg_right_left);
 
-             }
-         });
+            }
+        });
 
     }
 

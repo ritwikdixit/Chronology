@@ -44,7 +44,9 @@ import com.firebase.client.ValueEventListener;
 import com.ritwik.android.madfbla201415.Database.DataModel;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -68,6 +70,8 @@ public class HomepageFragment extends Fragment {
     //this is static so i can refer to it in the other class
     //detail activity
     private static ArrayList<EventItem> events;
+    private static ArrayList<EventItem> showEvents;
+
 
     private static final String LOG_TAG = "EventList";
     private Firebase ref = DataHolder.getRef();
@@ -213,6 +217,7 @@ public class HomepageFragment extends Fragment {
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mScrollerLayout = (LinearLayout) rootView.findViewById(R.id.scroller_layout);
+        showEvents = new ArrayList<>();
 
         if (events == null) {
 
@@ -262,9 +267,10 @@ public class HomepageFragment extends Fragment {
                     }
 
                     Collections.sort(events, eventCompare);
+                    extendsToday();
 
                     mListView.setAdapter(eventAdapter);
-                    mImageAdapter = new BannerAdapter(getActivity(), events);
+                    mImageAdapter = new BannerAdapter(getActivity(), showEvents);
                     mScrollBanner.setAdapter(mImageAdapter);
 
                 }
@@ -278,7 +284,7 @@ public class HomepageFragment extends Fragment {
                         if (t.getId().equals(removedID))
                             x.remove();
                     }
-                    mImageAdapter = new BannerAdapter(getActivity(), events);
+                    mImageAdapter = new BannerAdapter(getActivity(), showEvents);
                     mScrollBanner.setAdapter(mImageAdapter);
                 }
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -289,7 +295,7 @@ public class HomepageFragment extends Fragment {
         }
 
         //Banner Adapter
-        mImageAdapter = new BannerAdapter(getActivity(), events);
+        mImageAdapter = new BannerAdapter(getActivity(), showEvents);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
 
@@ -302,7 +308,7 @@ public class HomepageFragment extends Fragment {
 
                 //set the progress bar accordingly
                 int bar = (int) (position *
-                        (double) mProgressBar.getMax() / (events.size() - 1) + 0.5);
+                        (double) mProgressBar.getMax() / (showEvents.size() - 1) + 0.5);
                 ObjectAnimator anim = ObjectAnimator.ofInt(mProgressBar, "progress", bar);
                 anim.setDuration(350);
                 anim.setInterpolator(new DecelerateInterpolator());
@@ -312,7 +318,7 @@ public class HomepageFragment extends Fragment {
         });
 
         eventAdapter
-                = new EventListItemAdapter(getActivity(), events);
+                = new EventListItemAdapter(getActivity(), showEvents);
 
         mListView.setAdapter(eventAdapter);
 
@@ -325,15 +331,15 @@ public class HomepageFragment extends Fragment {
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
 
-                detailIntent.putExtra(TITLE_KEY, events.get(position).getmTitle());
-                detailIntent.putExtra(START_DATE_KEY, events.get(position).getmStartDate());
-                detailIntent.putExtra(END_DATE_KEY, events.get(position).getmEndDate());
-                detailIntent.putExtra(START_TIME_KEY, events.get(position).getmStartTime());
-                detailIntent.putExtra(END_TIME_KEY, events.get(position).getmEndTime());
-                detailIntent.putExtra(LOCATION_KEY, events.get(position).getmLocation());
-                detailIntent.putExtra(DETAILS_KEY, events.get(position).getmDetails());
-                detailIntent.putExtra(URL_KEY, events.get(position).getmUrl());
-                detailIntent.putExtra(CONTACT_INFO_KEY, events.get(position).getmContactInfo());
+                detailIntent.putExtra(TITLE_KEY, showEvents.get(position).getmTitle());
+                detailIntent.putExtra(START_DATE_KEY, showEvents.get(position).getmStartDate());
+                detailIntent.putExtra(END_DATE_KEY, showEvents.get(position).getmEndDate());
+                detailIntent.putExtra(START_TIME_KEY, showEvents.get(position).getmStartTime());
+                detailIntent.putExtra(END_TIME_KEY, showEvents.get(position).getmEndTime());
+                detailIntent.putExtra(LOCATION_KEY, showEvents.get(position).getmLocation());
+                detailIntent.putExtra(DETAILS_KEY, showEvents.get(position).getmDetails());
+                detailIntent.putExtra(URL_KEY, showEvents.get(position).getmUrl());
+                detailIntent.putExtra(CONTACT_INFO_KEY, showEvents.get(position).getmContactInfo());
 
                 startActivity(detailIntent);
                 ((HomepageActivity) getActivity()).animToDetail();
@@ -361,6 +367,7 @@ public class HomepageFragment extends Fragment {
 
         Firebase ref = DataHolder.getRef();
         events = new ArrayList<>();
+        showEvents = new ArrayList<>();
         Query eventsByDate = ref.child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
 
@@ -416,6 +423,18 @@ public class HomepageFragment extends Fragment {
             }
         });
     }
+
+    private void extendsToday() {
+        showEvents.clear();
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd")
+                .format(Calendar.getInstance().getTime());
+        for (EventItem thisEvent : events) {
+            if (thisEvent.getmStartDate().compareTo(todayDate) > -1) {
+                showEvents.add(thisEvent);
+            }
+        }
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 
 import com.firebase.client.ChildEventListener;
@@ -23,7 +26,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,6 +41,7 @@ public class AllEventsActivity extends ActionBarActivity  {
     private ListView mAllEventsView;
     private EventListItemAdapter adapter;
     private ArrayList<EventItem> events;
+    private ArrayList<EventItem> filteredEvents;
 
     private Activity mContext = this;
 
@@ -43,6 +49,7 @@ public class AllEventsActivity extends ActionBarActivity  {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private Spinner filterChooser;
 
     private Toolbar toolbar;
     private SearchView mSearch;
@@ -69,6 +76,8 @@ public class AllEventsActivity extends ActionBarActivity  {
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
         events = new ArrayList<>();
+        filteredEvents = new ArrayList<>();
+
         Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
 
@@ -89,6 +98,7 @@ public class AllEventsActivity extends ActionBarActivity  {
                         newEvent.get("contact_info").toString(),
                         getApplicationContext()
                 ));
+                filteredEvents = new ArrayList<>(events);
                 mAllEventsView.setAdapter(adapter);
 
             }
@@ -113,6 +123,27 @@ public class AllEventsActivity extends ActionBarActivity  {
                 Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
         });
+
+        filterChooser = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.filters, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterChooser.setAdapter(spinnerAdapter);
+        filterChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterForCode(position);
+                adapter = new EventListItemAdapter(mContext, filteredEvents);
+                mAllEventsView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         adapter = new EventListItemAdapter(this, events);
         mAllEventsView.setAdapter(adapter);
@@ -186,6 +217,99 @@ public class AllEventsActivity extends ActionBarActivity  {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
+    }
+
+    public void filterForCode(int code) {
+
+        filteredEvents.clear();
+        String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        Log.v(CalendarActivity.TAG, todayDate);
+
+        //0 none , 1 from today, 2 this week, 3 this month
+        if (code == 0) {
+            filteredEvents = new ArrayList<>(events);
+
+        } else if (code == 1) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getmStartDate().compareTo(todayDate) > -1) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 2) {
+            for (EventItem thisEvent : events) {
+                if (isInThisWeek(thisEvent.getmStartDate())) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+
+        } else if (code == 3) {
+            for (EventItem thisEvent : events) {
+                if (isInThisMonth(thisEvent.getmStartDate())) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        }
+
+    }
+
+    private boolean isInThisWeek(String date) {
+
+        String[] values = date.split("-");
+        Calendar c = Calendar.getInstance();
+
+        c.set(Integer.valueOf(values[0]),
+                Integer.valueOf(values[1]) - 1,
+                Integer.valueOf(values[2]));
+
+        Calendar today = Calendar.getInstance();
+
+        int year = c.get(Calendar.YEAR);
+        int week = c.get(Calendar.WEEK_OF_YEAR);
+
+        int year2 = today.get(Calendar.YEAR);
+        int week2 = today.get(Calendar.WEEK_OF_YEAR);
+
+        if (year == year2) {
+            if (week == week2)
+                return true;
+
+        } else if (Math.abs(year - year2) == 1) {
+            //this is for example Dec 31 and Jan 2
+            if (Math.abs(week2 - week) == 51 && (week == 0 || week2 == 0))
+                return true;
+        }
+
+        return false;
+    }
+
+    private boolean isInThisMonth(String date) {
+
+        String[] values = date.split("-");
+        Calendar c = Calendar.getInstance();
+
+        c.set(Integer.valueOf(values[0]),
+                Integer.valueOf(values[1]) - 1,
+                Integer.valueOf(values[2]));
+
+        Calendar today = Calendar.getInstance();
+
+        int year = c.get(c.YEAR);
+        int month = c.get(c.MONTH);
+
+        int year2 = today.get(today.YEAR);
+        int month2 = today.get(today.MONTH);
+
+        if (year == year2) {
+            if (month == month2)
+                return true;
+
+        } else if (Math.abs(year - year2) == 1) {
+            //this is for example Dec 31 and Jan 30
+            if (Math.abs(month2 - month) == 11 && (month == 0 || month2 == 0))
+                return true;
+        }
+
+        return false;
     }
 
     @Override
