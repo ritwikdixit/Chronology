@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
     private EditText mTitle, mLocation, mContact, mImageUrl, mDetails;
     private Button mCreateEventButton, mStartButtonDate,
             mEndButtonDate, mStartButtonTime, mEndButtonTime;
+    private RadioButton mSports, mClubs, mHoliday, mAcademics, mFun;
 
     private String startDate, endDate, startTime, endTime;
     private Firebase ref;
@@ -132,6 +134,14 @@ public class AdminPanelActivity extends ActionBarActivity  {
         mEndButtonTime = (Button) findViewById(R.id.admin_end_time_button);
         mStartButtonDate = (Button) findViewById(R.id.admin_start_date_button);
         mEndButtonDate = (Button) findViewById(R.id.admin_end_date_button);
+
+        mSports = (RadioButton) findViewById(R.id.admin_radio_sports);
+        mClubs = (RadioButton) findViewById(R.id.admin_radio_clubs);
+        mHoliday = (RadioButton) findViewById(R.id.admin_radio_holiday);
+        mFun = (RadioButton) findViewById(R.id.admin_radio_fun);
+        mAcademics = (RadioButton) findViewById(R.id.admin_radio_academics);
+
+        mSports.setChecked(true);
 
         setDialogListeners();
 
@@ -271,8 +281,9 @@ public class AdminPanelActivity extends ActionBarActivity  {
         eventData.put(HomepageFragment.END_DATE_KEY, endDate);
         eventData.put(HomepageFragment.START_TIME_KEY, startTime);
         eventData.put(HomepageFragment.END_TIME_KEY, endTime);
-        eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.LOCATION_KEY, mContact.getText().toString());
         eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.CATEGORY_KEY, getTheCategory());
 
         //optional image puts standard if text is blank
         if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
@@ -307,6 +318,25 @@ public class AdminPanelActivity extends ActionBarActivity  {
             }
         });
 
+
+    }
+
+    public String getTheCategory() {
+
+        if (mClubs.isChecked()) {
+            return HomepageFragment.CAT_CLUB_KEY;
+        } else if (mAcademics.isChecked()) {
+            return HomepageFragment.CAT_ACADEMICS_KEY;
+        } else if (mSports.isChecked()) {
+            return HomepageFragment.CAT_SPORTS_KEY;
+        } else if (mFun.isChecked()) {
+            return HomepageFragment.CAT_FUN_KEY;
+        } else if (mHoliday.isChecked()) {
+            return HomepageFragment.CAT_HOLIDAY_KEY;
+        }
+
+        //this should never happen
+        return "error ?maybe";
 
     }
 

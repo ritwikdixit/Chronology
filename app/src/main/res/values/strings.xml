@@ -18,10 +18,6 @@
     <string name="sign_in_button_string">Sign In</string>
     <string name="sign_up_button_string">Sign Up</string>
 
-    <string name="temporary">This is the homepage. Later it will host
-    multiple fragments, including a "Scrolling Image Banner", and ListView.
-    We can also think of some cool stuff to populate the action bar later. </string>
-
     <string name="loading">Loading... Please Wait.</string>
     <string name="all_events">All Events</string>
     <string name="all_push">All Push Notifications</string>
@@ -49,6 +45,11 @@
         <item>Filter: From Today</item>
         <item>Filter: This Week</item>
         <item>Filter: This Month</item>
+        <item>Filter: Sports</item>
+        <item>Filter: Clubs</item>
+        <item>Filter: Academics</item>
+        <item>Filter: Holiday</item>
+        <item>Filter: Fun Event</item>
     </string-array>
 
 </resources>

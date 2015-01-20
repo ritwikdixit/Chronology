@@ -90,6 +90,8 @@ public class SearchActivity extends ActionBarActivity {
                         mData.get(position).getmUrl());
                 detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
                         mData.get(position).getmContactInfo());
+                detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
+                        mData.get(position).getCategory());
 
                 startActivity(detailIntent);
                 SearchActivity.this.overridePendingTransition(
@@ -116,7 +118,8 @@ public class SearchActivity extends ActionBarActivity {
                 EventItem event = iterator.next();
                 if (event.getmLocation().toLowerCase().contains(query) ||
                         event.getmTitle().toLowerCase().contains(query) ||
-                        event.getmDetails().toLowerCase().contains(query))
+                        event.getmDetails().toLowerCase().contains(query) ||
+                        event.getCategory().toLowerCase().contains(query))
                     mData.add(event);
             }
             presentData();

@@ -28,10 +28,11 @@ public class EventItem {
     private String mUrl;
     private ImageView mImage;
     private String mContactInfo;
+    private String category;
 
     public EventItem(String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl, String mContactInfo, Context context) {
+                     String mUrl, String mContactInfo, String category, Context context) {
         this.id = id;
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -42,6 +43,7 @@ public class EventItem {
         this.mDetails = mDetails;
         this.mUrl = mUrl;
         this.mContactInfo = mContactInfo;
+        this.category = category;
 
         mImage = new ImageView(context);
         mImage.setImageResource(R.drawable.load_horiz_anim);
@@ -92,6 +94,10 @@ public class EventItem {
 
     public String getId() {return id;}
 
+    public String getCategory() {
+        return category;
+    }
+
 
     //formats date so it fits in the listView
 
@@ -99,12 +105,17 @@ public class EventItem {
         String[] parts = mServerDateData.split("-");
         return theMonth(Integer.parseInt(parts[1])) + " " + parts[2] + ", " + parts[0];
     }
+
+    public static String formatDateCondense(String mServerDateData) {
+        String[] parts = mServerDateData.split("-");
+        return theMonth(Integer.parseInt(parts[1])) + " " + parts[2];
+    }
+
     public static String theMonth(int month){
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June",
                 "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         return monthNames[month - 1];
     }
-
 
     //this is for debugging do not delete
     @Override
@@ -113,7 +124,8 @@ public class EventItem {
                 + mStartDate + "-" + mEndDate
                 + " " + mStartTime + "-" + mEndTime
                 + " locate @" + mLocation + " " + " details=" + mDetails
-                + " img src=" + mUrl + " contact @" + mContactInfo;
+                + " img src=" + mUrl + " contact @" + mContactInfo
+                + " @category " + category;
 
     }
 }

@@ -87,8 +87,16 @@ public class HomepageFragment extends Fragment {
     public static final String DETAILS_KEY = "details";
     public static final String URL_KEY = "url";
     public static final String CONTACT_INFO_KEY = "contact_info";
+    public static final String CATEGORY_KEY = "category";
 
     public static final String ARRAY_DATA_KEY = "data_array";
+
+    public static final String CAT_SPORTS_KEY = "Sports";
+    public static final String CAT_HOLIDAY_KEY = "Holiday";
+    public static final String CAT_CLUB_KEY = "Clubs";
+    public static final String CAT_FUN_KEY = "Fun Event";
+    public static final String CAT_ACADEMICS_KEY = "Academics";
+
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -249,6 +257,7 @@ public class HomepageFragment extends Fragment {
                             newEvent.get("details").toString(),
                             newEvent.get("url").toString(),
                             newEvent.get("contact_info").toString(),
+                            newEvent.get("category").toString(),
                             getActivity()
                     ));
                     String id = newEvent.get("id").toString();
@@ -263,6 +272,7 @@ public class HomepageFragment extends Fragment {
                                 newEvent.get("details").toString(),
                                 newEvent.get("url").toString(),
                                 newEvent.get("contact_info").toString(),
+                                newEvent.get("category").toString(),
                                 id);
                         dm.save();
                     }
@@ -341,6 +351,7 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(DETAILS_KEY, showEvents.get(position).getmDetails());
                 detailIntent.putExtra(URL_KEY, showEvents.get(position).getmUrl());
                 detailIntent.putExtra(CONTACT_INFO_KEY, showEvents.get(position).getmContactInfo());
+                detailIntent.putExtra(CATEGORY_KEY, showEvents.get(position).getCategory());
 
                 startActivity(detailIntent);
                 ((HomepageActivity) getActivity()).animToDetail();
@@ -387,6 +398,7 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("details").toString(),
                         newEvent.get("url").toString(),
                         newEvent.get("contact_info").toString(),
+                        newEvent.get("category").toString(),
                         context
                 ));
 
@@ -404,6 +416,7 @@ public class HomepageFragment extends Fragment {
                             newEvent.get("details").toString(),
                             newEvent.get("url").toString(),
                             newEvent.get("contact_info").toString(),
+                            newEvent.get("category").toString(),
                             id);
                     dm.save();
                 }

@@ -96,6 +96,7 @@ public class AllEventsActivity extends ActionBarActivity  {
                         newEvent.get("details").toString(),
                         newEvent.get("url").toString(),
                         newEvent.get("contact_info").toString(),
+                        newEvent.get("category").toString(),
                         getApplicationContext()
                 ));
                 filteredEvents = new ArrayList<>(events);
@@ -158,23 +159,25 @@ public class AllEventsActivity extends ActionBarActivity  {
                 detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
-                        events.get(position).getmTitle());
+                        filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
-                        events.get(position).getmStartDate());
+                        filteredEvents.get(position).getmStartDate());
                 detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
-                        events.get(position).getmEndDate());
+                        filteredEvents.get(position).getmEndDate());
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
-                        events.get(position).getmStartTime());
+                        filteredEvents.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
-                        events.get(position).getmEndTime());
+                        filteredEvents.get(position).getmEndTime());
                 detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
-                        events.get(position).getmLocation());
+                        filteredEvents.get(position).getmLocation());
                 detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
-                        events.get(position).getmDetails());
+                        filteredEvents.get(position).getmDetails());
                 detailIntent.putExtra(HomepageFragment.URL_KEY,
-                        events.get(position).getmUrl());
+                        filteredEvents.get(position).getmUrl());
                 detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
-                        events.get(position).getmContactInfo());
+                        filteredEvents.get(position).getmContactInfo());
+                detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
+                        filteredEvents.get(position).getCategory());
 
                 startActivity(detailIntent);
                 AllEventsActivity.this.overridePendingTransition(
@@ -245,6 +248,36 @@ public class AllEventsActivity extends ActionBarActivity  {
         } else if (code == 3) {
             for (EventItem thisEvent : events) {
                 if (isInThisMonth(thisEvent.getmStartDate())) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 4) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getCategory().equals(HomepageFragment.CAT_SPORTS_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 5) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getCategory().equals(HomepageFragment.CAT_CLUB_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 6) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getCategory().equals(HomepageFragment.CAT_ACADEMICS_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 7) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getCategory().equals(HomepageFragment.CAT_HOLIDAY_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        }else if (code == 8) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.getCategory().equals(HomepageFragment.CAT_FUN_KEY)) {
                     filteredEvents.add(thisEvent);
                 }
             }

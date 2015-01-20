@@ -37,7 +37,6 @@
                     android:textColorHint="@color/chronology_light_color"
                     android:text="New Event Title" />
 
-
                 <TextView
                     android:id="@+id/admin_date_text"
                     android:layout_gravity="center"
@@ -175,6 +174,55 @@
                     android:background="@drawable/chrono_2_button"
                     android:textColorHint="@color/chronology_light_color"
                     android:hint="Details" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Select Category"
+                    android:textSize="20sp" />
+
+
+                <RadioGroup
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_sports"
+                        android:text="Sports"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_holiday"
+                        android:text="Holiday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_clubs"
+                        android:text="Sports"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_fun"
+                        android:text="Fun Event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_academics"
+                        android:text="Academics"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </RadioGroup>
 
                 <Button
                     android:id="@+id/admin_form_submit"

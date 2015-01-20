@@ -39,6 +39,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private TextView mDetails;
     private TextView mContactInfo;
     private TextView mTitle;
+    private TextView mCategory;
 
     private LinearLayout layout;
 
@@ -96,6 +97,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         mDetails = (TextView) findViewById(R.id.detail_details);
         mImage = (ImageView) findViewById(R.id.detail_image);
         mContactInfo = (TextView) findViewById(R.id.detail_contact_info);
+        mCategory = (TextView) findViewById(R.id.details_category);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
@@ -124,6 +126,8 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         mContactInfo.setText("Contact: " +
                 getIntent().getStringExtra(HomepageFragment.CONTACT_INFO_KEY)
         );
+
+        mCategory.setText(getIntent().getStringExtra(HomepageFragment.CATEGORY_KEY));
 
         // This is the image URL
         imageUrl = getIntent().getStringExtra(HomepageFragment.URL_KEY);
@@ -200,7 +204,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
                 .putExtra(Events.TITLE, titleString)
-                .putExtra(Events.DESCRIPTION, descStr)
+                .putExtra(Events.DESCRIPTION, descStr + " " + mContactInfo)
                 .putExtra(Events.EVENT_LOCATION, locationStr)
                 .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
 

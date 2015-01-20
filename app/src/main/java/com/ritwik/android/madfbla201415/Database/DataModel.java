@@ -31,12 +31,14 @@ public class DataModel extends Model {
     public String title;
     @Column(name = "URL")
     public String url;
+    @Column(name = "category")
+    public String category;
 
     public DataModel(){
         super();
     }
     public DataModel(String startDate, String endDate, String startTime,String endTime, String title,
-                     String location, String details, String url, String contact, String id){
+                     String location, String details, String url, String contact, String category, String id){
         super();
         this.contact = contact;
         this.details = details;
@@ -48,5 +50,6 @@ public class DataModel extends Model {
         this.startTime = startTime;
         this.title = title;
         this.url = url;
+        this.category = category;
     }
 }
