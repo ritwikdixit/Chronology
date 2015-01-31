@@ -1,31 +1,28 @@
 package com.ritwik.android.madfbla201415;
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.roomorama.caldroid.*;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.*;
 
-public class CalendarActivity extends ActionBarActivity {
 
+public class ImprovedCalendarActivity extends ActionBarActivity {
     private ListView mEventsList;
     private EventListItemAdapter adapter;
 
@@ -33,9 +30,7 @@ public class CalendarActivity extends ActionBarActivity {
     private ArrayList<EventItem> filteredEvents;
 
     private TextView mDataText;
-    private CalendarView mCalendar;
-
-    private Activity mContext = this;
+    private CaldroidFragment caldroidFragment;
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -48,9 +43,8 @@ public class CalendarActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar);
+        setContentView(R.layout.activity_calendar_list);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,107 +97,39 @@ public class CalendarActivity extends ActionBarActivity {
         mDataText = (TextView) findViewById(R.id.calendar_data_text);
         mDataText.setText("Events for Today");
 
+
         String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
         filterEvents(date, events);
         setText(date);
         mEventsList.setAdapter(adapter);
 
-        mCalendar = (CalendarView) findViewById(R.id.calendar_chronology);
-        initializeCalendar();
-        mCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        caldroidFragment = new CaldroidFragment();
+        Bundle args = new Bundle();
+            Calendar cal = Calendar.getInstance();
+            args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+            args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        caldroidFragment.setArguments(args);
 
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+        caldroidFragment.setBackgroundResourceForDate(R.color.calendar_blue, new Date());
 
-                month++;
-                String monthStr = "", dayStr = "";
-
-                if (month < 10) {
-                    monthStr = "0"+month;
-                } else {
-                    monthStr = ""+month;
-                }
-
-                if (dayOfMonth < 10) {
-                    dayStr = "0"+dayOfMonth;
-                } else {
-                    dayStr = ""+dayOfMonth;
-                }
-
-                String date = year + "-" + monthStr + "-" + dayStr;
-                filterEvents(date, events);
-                setText(date);
-                mEventsList.setAdapter(adapter);
-            }
-        });
-
-        mEventsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                //Putting data for detail activity
-                Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-
-                detailIntent.putExtra(HomepageFragment.TITLE_KEY,
-                        filteredEvents.get(position).getmTitle());
-                detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
-                        events.get(position).getmStartDate());
-                detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
-                        events.get(position).getmEndDate());
-                detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
-                        filteredEvents.get(position).getmStartTime());
-                detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
-                        filteredEvents.get(position).getmEndTime());
-                detailIntent.putExtra(HomepageFragment.LOCATION_KEY,
-                        filteredEvents.get(position).getmLocation());
-                detailIntent.putExtra(HomepageFragment.DETAILS_KEY,
-                        filteredEvents.get(position).getmDetails());
-                detailIntent.putExtra(HomepageFragment.URL_KEY,
-                        filteredEvents.get(position).getmUrl());
-                detailIntent.putExtra(HomepageFragment.CONTACT_INFO_KEY,
-                        filteredEvents.get(position).getmContactInfo());
-                detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
-                        filteredEvents.get(position).getCategory());
-
-                startActivity(detailIntent);
-                CalendarActivity.this.overridePendingTransition(
-                        R.anim.right_to_left, R.anim.neg_right_left);
-
-            }
-        });
-
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+            t.replace(R.id.calendar_chronology, caldroidFragment);
+        t.commit();
     }
 
-    private void initializeCalendar() {
-        mCalendar.setShowWeekNumber(false);
-
-    }
-
-    private void setText(String date) {
-
-        if (filteredEvents.size() == 0) {
-            mDataText.setText("No Events on " + EventItem.formatDate(date));
-        } else if (filteredEvents.size() == 1) {
-            mDataText.setText(1 + " Event on " + EventItem.formatDate(date));
-        } else {
-            mDataText.setText(filteredEvents.size() + " Events on " + EventItem.formatDate(date));
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        //android library API 11+ standard search
-        SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
-        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
-        mSearch.setIconifiedByDefault(true);
-
         return true;
+    }
+
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -223,13 +149,6 @@ public class CalendarActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
     public void filterEvents(String todayDate, ArrayList<EventItem> allEvents) {
 
         filteredEvents.clear();
@@ -237,10 +156,26 @@ public class CalendarActivity extends ActionBarActivity {
         for (EventItem thisEvent : allEvents) {
             if (thisEvent.getmStartDate().compareTo(todayDate) < 1
                     && thisEvent.getmEndDate().compareTo(todayDate) > -1) {
+                DateFormat d = new SimpleDateFormat("yyy-MM-dd", Locale.ENGLISH);
+                try {
+                    Date x = d.parse(todayDate);
+                    caldroidFragment.setBackgroundResourceForDate(R.color.calendar_blue, x);
+
+                } catch (ParseException e) {}
                 filteredEvents.add(thisEvent);
+
             }
         }
 
     }
+    private void setText(String date) {
 
+        if (filteredEvents.size() == 0) {
+            mDataText.setText("No Events on " + EventItem.formatDate(date));
+        } else if (filteredEvents.size() == 1) {
+            mDataText.setText(1 + " Event on " + EventItem.formatDate(date));
+        } else {
+            mDataText.setText(filteredEvents.size() + " Events on " + EventItem.formatDate(date));
+        }
+    }
 }
