@@ -164,7 +164,7 @@ ADDED from AndroidManifest.xml:75:9
 		ADDED from AndroidManifest.xml:76:13
 	android:name
 		ADDED from AndroidManifest.xml:75:19
-activity#com.ritwik.android.madfbla201415.AllPushActivity
+activity#com.ritwik.android.madfbla201415.Push.AllPushActivity
 ADDED from AndroidManifest.xml:78:9
 	android:label
 		ADDED from AndroidManifest.xml:79:13
@@ -176,7 +176,7 @@ ADDED from AndroidManifest.xml:81:9
 		ADDED from AndroidManifest.xml:82:13
 	android:name
 		ADDED from AndroidManifest.xml:81:19
-activity#com.ritwik.android.madfbla201415.PushActivity
+activity#com.ritwik.android.madfbla201415.Push.PushActivity
 ADDED from AndroidManifest.xml:84:9
 	android:label
 		ADDED from AndroidManifest.xml:86:13
@@ -228,7 +228,7 @@ ADDED from AndroidManifest.xml:112:13
 		ADDED from AndroidManifest.xml:114:17
 	android:name
 		ADDED from AndroidManifest.xml:113:17
-receiver#com.ritwik.android.madfbla201415.PushReceiver
+receiver#com.ritwik.android.madfbla201415.Push.PushReceiver
 ADDED from AndroidManifest.xml:116:9
 	android:name
 		ADDED from AndroidManifest.xml:116:19

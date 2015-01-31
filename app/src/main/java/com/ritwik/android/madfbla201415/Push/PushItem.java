@@ -1,9 +1,5 @@
-package com.ritwik.android.madfbla201415;
+package com.ritwik.android.madfbla201415.Push;
 
-
-import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
-import android.widget.ImageView;
 
 import com.ritwik.android.madfbla201415.Database.PushModel;
 

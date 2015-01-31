@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.firebase.client.Firebase;
+import com.ritwik.android.madfbla201415.Push.AllPushActivity;
 import com.ritwik.android.madfbla201415.Push.SendPush;
 
 import java.io.UnsupportedEncodingException;
@@ -176,7 +177,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 4) {
 
             //notifications
-            if(!(mContext instanceof  AllPushActivity)){
+            if(!(mContext instanceof AllPushActivity)){
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
             }

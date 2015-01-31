@@ -3,20 +3,15 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.ritwik.android.madfbla201415.Database.DataModel;
-
-import java.util.Map;
+import com.ritwik.android.madfbla201415.Push.PushActivity;
+import com.ritwik.android.madfbla201415.Push.PushReceiver;
 
 //this class will redirect to the appropriate page
 public class LoadingActivity extends ActionBarActivity {

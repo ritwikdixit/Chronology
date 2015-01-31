@@ -1,4 +1,4 @@
-package com.ritwik.android.madfbla201415;
+package com.ritwik.android.madfbla201415.Push;
 
 
 import android.app.Activity;
@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.ritwik.android.madfbla201415.Database.PushModel;
+import com.ritwik.android.madfbla201415.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class PushListItemAdapter extends ArrayAdapter<PushItem> {

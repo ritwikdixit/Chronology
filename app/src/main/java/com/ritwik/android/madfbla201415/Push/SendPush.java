@@ -33,7 +33,7 @@ public class SendPush {
 
         // Add your data
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("title", title ));
+        nameValuePairs.add(new BasicNameValuePair("msg", title ));
         nameValuePairs.add(new BasicNameValuePair("details", details));
         httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -41,6 +41,7 @@ public class SendPush {
         httppost.setHeader("X-PUSHBOTS-SECRET:", Notif_Secret_ID);
         httppost.setHeader("Content-Type:", "application/json");
         httppost.setHeader("Content-Length: ", nameValuePairs.toString().length() + "");
+        String json = "{ \"notification\" : {  \"android\" : { \"msg\" : \"" + title + "\",\"details\" : \"" + details + "\"} }";
 
 
         // Execute HTTP Post Request

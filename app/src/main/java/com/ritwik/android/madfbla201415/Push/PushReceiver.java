@@ -1,4 +1,4 @@
-package com.ritwik.android.madfbla201415;
+package com.ritwik.android.madfbla201415.Push;
 
 /**
  * Created by Soham Pardeshi on 1/9/2015.
@@ -7,6 +7,7 @@ package com.ritwik.android.madfbla201415;
 import java.util.HashMap;
 import com.pushbots.push.Pushbots;
 import com.ritwik.android.madfbla201415.Database.PushModel;
+import com.ritwik.android.madfbla201415.LoadingActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
