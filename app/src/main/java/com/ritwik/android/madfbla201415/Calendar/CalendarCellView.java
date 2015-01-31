@@ -5,7 +5,7 @@ package com.ritwik.android.madfbla201415.Calendar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import com.squareup.timessquare.MonthCellDescriptor.RangeState;
+import com.ritwik.android.madfbla201415.R;
 
 public class CalendarCellView extends TextView {
   private static final int[] STATE_SELECTABLE = {
@@ -34,7 +34,7 @@ public class CalendarCellView extends TextView {
   private boolean isCurrentMonth = false;
   private boolean isToday = false;
   private boolean isHighlighted = false;
-  private RangeState rangeState = RangeState.NONE;
+  private MonthCellDescriptor.RangeState rangeState = MonthCellDescriptor.RangeState.NONE;
 
   @SuppressWarnings("UnusedDeclaration") //
   public CalendarCellView(Context context, AttributeSet attrs) {
@@ -89,7 +89,7 @@ public class CalendarCellView extends TextView {
       mergeDrawableStates(drawableState, STATE_RANGE_FIRST);
     } else if (rangeState == MonthCellDescriptor.RangeState.MIDDLE) {
       mergeDrawableStates(drawableState, STATE_RANGE_MIDDLE);
-    } else if (rangeState == RangeState.LAST) {
+    } else if (rangeState == MonthCellDescriptor.RangeState.LAST) {
       mergeDrawableStates(drawableState, STATE_RANGE_LAST);
     }
 
