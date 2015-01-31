@@ -145,6 +145,7 @@ public class HomepageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_homepage, container, false);
+        
         setHasOptionsMenu(true);
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
@@ -247,7 +248,7 @@ public class HomepageFragment extends Fragment {
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     events.add(new EventItem(
-                            newEvent.get("id").toString(),
+                            newEvent.get("id").toString()                                                     ,
                             newEvent.get("start_date").toString(),
                             newEvent.get("end_date").toString(),
                             newEvent.get("start_time").toString(),

@@ -36,7 +36,7 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    public static final String TAG = "Calendar";
+    public static final String TAG = "Calendar Improved";
 
     private Toolbar toolbar;
     private SearchView mSearch;
