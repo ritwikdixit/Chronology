@@ -104,8 +104,8 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 1) {
 
             //calendar
-            if(!(mContext instanceof  CalendarActivity)){
-                Intent intent = new Intent(mContext, CalendarActivity.class);
+            if(!(mContext instanceof  ImprovedCalendarActivity)){
+                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
                 mContext.startActivity(intent);
             }
 
@@ -153,8 +153,8 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 1) {
 
             //calendar
-            if(!(mContext instanceof  CalendarActivity)){
-                Intent intent = new Intent(mContext, CalendarActivity.class);
+            if(!(mContext instanceof  ImprovedCalendarActivity)){
+                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
                 mContext.startActivity(intent);
             }
 

@@ -24,9 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by Ritwik on 1/7/15.
- */
 public class CalendarActivity extends ActionBarActivity {
 
     private ListView mEventsList;
