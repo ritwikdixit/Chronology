@@ -166,6 +166,8 @@ public class CalendarActivity extends ActionBarActivity {
                         filteredEvents.get(position).getmContactInfo());
                 detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
                         filteredEvents.get(position).getCategory());
+                detailIntent.putExtra(HomepageFragment.RSVP_KEY,
+                        filteredEvents.get(position).isAttending());
 
                 startActivity(detailIntent);
                 CalendarActivity.this.overridePendingTransition(

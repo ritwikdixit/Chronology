@@ -85,6 +85,7 @@ public class AllEventsActivity extends ActionBarActivity  {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                boolean isGoing = snapshot.child("rsvp").child(DataHolder.getUID()).getValue() == true;
                 events.add(new EventItem(
                         newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
@@ -97,6 +98,7 @@ public class AllEventsActivity extends ActionBarActivity  {
                         newEvent.get("url").toString(),
                         newEvent.get("contact_info").toString(),
                         newEvent.get("category").toString(),
+                        isGoing,
                         getApplicationContext()
                 ));
                 filteredEvents = new ArrayList<>(events);
@@ -156,7 +158,8 @@ public class AllEventsActivity extends ActionBarActivity  {
 
                 //Putting data for detail activity
                 Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+                int real_index = events.indexOf(filteredEvents.get(position)) - 1;
+                detailIntent.putExtra(Intent.EXTRA_TEXT, real_index);
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
@@ -178,6 +181,8 @@ public class AllEventsActivity extends ActionBarActivity  {
                         filteredEvents.get(position).getmContactInfo());
                 detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
                         filteredEvents.get(position).getCategory());
+                detailIntent.putExtra(HomepageFragment.RSVP_KEY,
+                        filteredEvents.get(position).isAttending());
 
                 startActivity(detailIntent);
                 AllEventsActivity.this.overridePendingTransition(

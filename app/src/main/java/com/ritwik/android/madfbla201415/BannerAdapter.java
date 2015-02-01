@@ -65,6 +65,8 @@ public class BannerAdapter extends PagerAdapter {
                         mEvents.get(position).getmContactInfo());
                 detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
                         mEvents.get(position).getCategory());
+                detailIntent.putExtra(HomepageFragment.RSVP_KEY,
+                        mEvents.get(position).isAttending());
 
                 mContext.startActivity(detailIntent);
             }

@@ -92,6 +92,8 @@ public class SearchActivity extends ActionBarActivity {
                         mData.get(position).getmContactInfo());
                 detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
                         mData.get(position).getCategory());
+                detailIntent.putExtra(HomepageFragment.RSVP_KEY,
+                        mData.get(position).isAttending());
 
                 startActivity(detailIntent);
                 SearchActivity.this.overridePendingTransition(

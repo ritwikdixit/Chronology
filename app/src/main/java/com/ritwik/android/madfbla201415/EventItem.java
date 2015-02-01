@@ -8,9 +8,17 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class EventItem {
 
@@ -30,9 +38,15 @@ public class EventItem {
     private String mContactInfo;
     private String category;
 
+    private boolean isAttending;
+    private HashMap<String, Object> rsvp;
+    private Firebase ref = DataHolder.getRef();
+
     public EventItem(String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl, String mContactInfo, String category, Context context) {
+                     String mUrl, String mContactInfo, String category, boolean attending,
+                     Context context) {
+
         this.id = id;
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -44,11 +58,50 @@ public class EventItem {
         this.mUrl = mUrl;
         this.mContactInfo = mContactInfo;
         this.category = category;
+        this.isAttending = attending;
 
         mImage = new ImageView(context);
         mImage.setImageResource(R.drawable.load_horiz_anim);
         AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
         loadAnimation.start();
+        rsvp = new HashMap<String, Object>();
+
+        ref.child("calendar").child(id).child("rsvp").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+                isAttending = rsvp.containsKey(DataHolder.getUID());
+                Log.v(HomepageFragment.LOG_TAG, "isAttending Changed >>"
+                        + rsvp.containsKey(DataHolder.getUID()));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+                isAttending = rsvp.containsKey(DataHolder.getUID());
+                Log.v(HomepageFragment.LOG_TAG, "isAttending Changed >>"
+                        + rsvp.containsKey(DataHolder.getUID()));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+                isAttending = rsvp.containsKey(DataHolder.getUID());
+                Log.v(HomepageFragment.LOG_TAG, "isAttending Changed >>"
+                        + rsvp.containsKey(DataHolder.getUID()));
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+                isAttending = rsvp.containsKey(DataHolder.getUID());
+                Log.v(HomepageFragment.LOG_TAG, "isAttending Changed >>"
+                        + rsvp.containsKey(DataHolder.getUID()));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
 
          new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
     }
@@ -98,6 +151,10 @@ public class EventItem {
         return category;
     }
 
+    public boolean isAttending() {
+        return isAttending;
+    }
+
 
     //formats date so it fits in the listView
 
@@ -115,6 +172,10 @@ public class EventItem {
         String[] monthNames = {"Jan", "Feb", "Mar", "Apr", "May", "June",
                 "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
         return monthNames[month - 1];
+    }
+
+    public HashMap<String, Object> getRSVP(){
+        return rsvp;
     }
 
     //this is for debugging do not delete
