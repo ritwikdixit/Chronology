@@ -143,6 +143,23 @@ public class EventItem {
         return monthNames[month - 1];
     }
 
+    public Date dateStart(){
+        String[] sd = getmStartDate().split("-");
+        Date date  = new Date();
+        date.setMonth(Integer.parseInt(sd[1]));
+        date.setDate(Integer.parseInt(sd[2]));
+        date.setYear(Integer.parseInt(sd[0]) - 1900);
+        return date;
+    }
+    public Date dateEnd(){
+        String[] sd = getmEndDate().split("-");
+        Date date  = new Date();
+        date.setMonth(Integer.parseInt(sd[1]));
+        date.setDate(Integer.parseInt(sd[2]));
+        date.setYear(Integer.parseInt(sd[0]) - 1900);
+        return date;
+    }
+
     //this is for debugging do not delete
     @Override
     public String toString() {

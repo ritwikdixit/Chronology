@@ -78,57 +78,6 @@ public class AllEventsActivity extends ActionBarActivity  {
         events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();
 
-        /*Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
-        eventsByDate.addChildEventListener(new ChildEventListener() {
-
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                boolean isGoing = snapshot.child("rsvp")
-                        .child(DataHolder.getUID()).getValue() != null;
-                events.add(new EventItem(
-                        snapshot.getKey(),
-                        newEvent.get("id").toString(),
-                        newEvent.get("start_date").toString(),
-                        newEvent.get("end_date").toString(),
-                        newEvent.get("start_time").toString(),
-                        newEvent.get("end_time").toString(),
-                        newEvent.get("title").toString(),
-                        newEvent.get("location").toString(),
-                        newEvent.get("details").toString(),
-                        newEvent.get("url").toString(),
-                        newEvent.get("contact_info").toString(),
-                        newEvent.get("category").toString(),
-                        isGoing,
-                        getApplicationContext()
-                ));
-                filteredEvents = new ArrayList<>(events);
-                mAllEventsView.setAdapter(adapter);
-
-            }
-
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String removedID = dataSnapshot.child("id").getValue().toString();
-                Iterator<EventItem> x  = events.iterator();
-                while(x.hasNext()) {
-                    EventItem t = x.next();
-                    if (t.getId().equals(removedID))
-                        x.remove();
-                }
-                mAllEventsView.setAdapter(adapter);
-            }
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Loading Event Item Error", firebaseError.getMessage());
-            }
-        });*/
-
         filterChooser = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.filters, android.R.layout.simple_spinner_item);
@@ -281,9 +230,15 @@ public class AllEventsActivity extends ActionBarActivity  {
                     filteredEvents.add(thisEvent);
                 }
             }
-        }else if (code == 8) {
+        } else if (code == 8) {
             for (EventItem thisEvent : events) {
                 if (thisEvent.getCategory().equals(HomepageFragment.CAT_FUN_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 9) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.isAttending()) {
                     filteredEvents.add(thisEvent);
                 }
             }

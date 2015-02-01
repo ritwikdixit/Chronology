@@ -45,9 +45,14 @@
         <item>Academics</item>
         <item>Holiday</item>
         <item>Fun Event</item>
+        <item>My RSVPs</item>
     </string-array>
 
     <string name="title_activity_improved_calendar">ImprovedCalendarActivity</string>
     <string name="hello_world">Hello world!</string>
+
+    <string name="green_auto_key">auto_green</string>
+    <string name="auto_login_key">auto_login</string>
+
 
 </resources>

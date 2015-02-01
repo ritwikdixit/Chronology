@@ -2,7 +2,9 @@ package com.ritwik.android.madfbla201415;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,11 +24,18 @@ public class LoadingActivity extends ActionBarActivity {
     private static final String LOG_TAG =  "Loading";
     private static boolean active = false;
 
+    //private SharedPreferences prefs;
+    //private static boolean autoLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
+
+        /*prefs = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+
+        autoLogin = prefs.getBoolean(getString(R.string.auto_login_key), true);*/
 
         Firebase.setAndroidContext(this);
         if(DataHolder.isNull())
@@ -41,23 +50,18 @@ public class LoadingActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
 
-            Log.v(PushReceiver.TAG, "Works!");
-
             Intent redirectIntent = new Intent(this, PushActivity.class);
             redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
                     intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
             redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
                     intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
             startActivity(redirectIntent);
-            Log.v(PushReceiver.TAG, "to end here");
 
             //for activities that rely on home
             HomepageFragment.initEvents(this);
             finish();
 
-        } else {
-
-            Log.v(PushReceiver.TAG, "Didn't Work on Notification :(");
+        } else /*if (autoLogin)*/ {
 
             //Checks if authorized, starts intent to appropriate activity
             ref.addAuthStateListener(new Firebase.AuthStateListener() {
@@ -77,6 +81,7 @@ public class LoadingActivity extends ActionBarActivity {
                 }
             });
         }
+
     }
 
     @Override

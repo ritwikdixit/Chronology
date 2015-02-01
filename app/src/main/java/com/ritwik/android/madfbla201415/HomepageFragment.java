@@ -251,7 +251,8 @@ public class HomepageFragment extends Fragment {
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     boolean isGoing = snapshot.child("rsvp")
                             .child(DataHolder.getUID()).getValue() != null;
-                    Log.v(LOG_TAG, newEvent.get("id") + " is?" + isGoing + " " + snapshot.getKey());
+                    Log.v(LOG_TAG, "OK GO");
+                    Log.v(LOG_TAG, DataHolder.getUID());
 
                     events.add(new EventItem(
                             snapshot.getKey(),
