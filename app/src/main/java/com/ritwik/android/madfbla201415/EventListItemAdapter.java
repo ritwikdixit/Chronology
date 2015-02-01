@@ -72,6 +72,13 @@ public class EventListItemAdapter extends ArrayAdapter<EventItem> {
             mDetails.setText(thisEvent.getmDetails().substring(0, 25) + "...");
         }
 
+        if (thisEvent.isAttending()) {
+            mTitle.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+            mDetails.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+            mDate.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+            mTime.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+        }
+
         return convertView;
 
     }

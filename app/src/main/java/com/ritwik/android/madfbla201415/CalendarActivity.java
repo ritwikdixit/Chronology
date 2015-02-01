@@ -144,8 +144,8 @@ public class CalendarActivity extends ActionBarActivity {
 
                 //Putting data for detail activity
                 Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT,
+                        filteredEvents.get(position).getNumber());
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,

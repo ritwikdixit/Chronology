@@ -70,7 +70,7 @@ public class SearchActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent detailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
+                detailIntent.putExtra(Intent.EXTRA_TEXT, mData.get(position).getNumber());
 
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         mData.get(position).getmTitle());

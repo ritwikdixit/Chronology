@@ -249,10 +249,12 @@ public class HomepageFragment extends Fragment {
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
 
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                    Map<String, Object> rsvpMap = (Map<String, Object>) snapshot.child("rsvp").getValue();
-                    boolean isGoing = rsvpMap.containsKey(DataHolder.getUID());
+                    boolean isGoing = snapshot.child("rsvp")
+                            .child(DataHolder.getUID()).getValue() != null;
+                    Log.v(LOG_TAG, newEvent.get("id") + " is?" + isGoing + " " + snapshot.getKey());
 
                     events.add(new EventItem(
+                            snapshot.getKey(),
                             newEvent.get("id").toString()                                                     ,
                             newEvent.get("start_date").toString(),
                             newEvent.get("end_date").toString(),
@@ -313,6 +315,8 @@ public class HomepageFragment extends Fragment {
             });
         }
 
+        extendsToday();
+
         //Banner Adapter
         mImageAdapter = new BannerAdapter(getActivity(), showEvents);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
@@ -347,9 +351,7 @@ public class HomepageFragment extends Fragment {
 
                 //Intent to detail activity with position extra and data
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
-                int real_index = events.indexOf(showEvents.get(position)) - 1;
-                detailIntent.putExtra(Intent.EXTRA_TEXT, real_index);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT, showEvents.get(position).getNumber());
                 detailIntent.putExtra(TITLE_KEY, showEvents.get(position).getmTitle());
                 detailIntent.putExtra(START_DATE_KEY, showEvents.get(position).getmStartDate());
                 detailIntent.putExtra(END_DATE_KEY, showEvents.get(position).getmEndDate());
@@ -404,9 +406,11 @@ public class HomepageFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                boolean isGoing = snapshot.child("rsvp").child(DataHolder.getUID()).getValue() == true;
-                Log.v(LOG_TAG, snapshot.toString());
+                boolean isGoing = snapshot.child("rsvp")
+                        .child(DataHolder.getUID()).getValue() != null;
+                Log.v(LOG_TAG, "is?" + isGoing);
                 events.add(new EventItem(
+                        snapshot.getKey(),
                         newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
                         newEvent.get("end_date").toString(),
@@ -462,7 +466,7 @@ public class HomepageFragment extends Fragment {
         });
     }
 
-    private static void extendsToday() {
+    public static void extendsToday() {
         showEvents.clear();
         String todayDate = new SimpleDateFormat("yyyy-MM-dd")
                 .format(Calendar.getInstance().getTime());
@@ -485,6 +489,15 @@ public class HomepageFragment extends Fragment {
         return events;
     }
 
+    public static int getEventsPositionForNumQuery(String numQuery) {
+
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getNumber().equals(numQuery))
+                return i;
+        }
+
+        return -1;
+    }
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 

@@ -37,14 +37,14 @@
 
     <string-array name="filters">
         <item>Filter: None (All Events)</item>
-        <item>Filter: From Today</item>
-        <item>Filter: This Week</item>
-        <item>Filter: This Month</item>
-        <item>Filter: Sports</item>
-        <item>Filter: Clubs</item>
-        <item>Filter: Academics</item>
-        <item>Filter: Holiday</item>
-        <item>Filter: Fun Event</item>
+        <item>From Today</item>
+        <item>This Week</item>
+        <item>This Month</item>
+        <item>Sports</item>
+        <item>Clubs</item>
+        <item>Academics</item>
+        <item>Holiday</item>
+        <item>Fun Event</item>
     </string-array>
 
     <string name="title_activity_improved_calendar">ImprovedCalendarActivity</string>

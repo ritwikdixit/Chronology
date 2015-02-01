@@ -44,7 +44,8 @@ public class BannerAdapter extends PagerAdapter {
             public void onClick(View v) {
 
                 Intent detailIntent = new Intent(mContext, DetailActivity.class);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT,
+                        mEvents.get(position).getNumber());
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         mEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,

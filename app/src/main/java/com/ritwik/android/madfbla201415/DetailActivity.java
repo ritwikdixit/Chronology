@@ -58,7 +58,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private SwipeListener mFlinglistener;
 
     private ShareActionProvider mShare;
-    private int eventNum = -1;
+    private String eventNum;
 
     private Toolbar toolbar;
     private SearchView mSearch;
@@ -106,7 +106,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         ref = DataHolder.getRef();
 
         //if this was the 4th event, you could get fire base event called event4
-        eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
+        eventNum = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
         //setting the action bar label to title of event
         titleString = getIntent().getStringExtra(HomepageFragment.TITLE_KEY);
@@ -207,14 +207,18 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     public void rsvpToEvent() {
 
         if (isRSVPtoEvent) {
-            RSVP.rsvp("event" + eventNum, RSVP.NOT_GOING);
+            RSVP.rsvp(eventNum, RSVP.NOT_GOING);
             mRSVPButton.setText("You have Cancelled your RSVP");
             isRSVPtoEvent = false;
         } else {
-            RSVP.rsvp("event" + eventNum, RSVP.GOING);
+            RSVP.rsvp(eventNum, RSVP.GOING);
             mRSVPButton.setText("You have RSVP'd");
             isRSVPtoEvent = true;
         }
+
+        HomepageFragment.getEvents().get(HomepageFragment
+                .getEventsPositionForNumQuery(eventNum)).setAttending(isRSVPtoEvent);
+        HomepageFragment.extendsToday();
     }
 
     public void callCalendarIntent() {

@@ -75,18 +75,20 @@ public class AllEventsActivity extends ActionBarActivity  {
        initDrawer();
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
-        events = new ArrayList<>();
+        events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();
 
-        Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
+        /*Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
         eventsByDate.addChildEventListener(new ChildEventListener() {
 
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                boolean isGoing = snapshot.child("rsvp").child(DataHolder.getUID()).getValue() == true;
+                boolean isGoing = snapshot.child("rsvp")
+                        .child(DataHolder.getUID()).getValue() != null;
                 events.add(new EventItem(
+                        snapshot.getKey(),
                         newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
                         newEvent.get("end_date").toString(),
@@ -125,7 +127,7 @@ public class AllEventsActivity extends ActionBarActivity  {
             public void onCancelled(FirebaseError firebaseError) {
                 Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
-        });
+        });*/
 
         filterChooser = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -158,9 +160,8 @@ public class AllEventsActivity extends ActionBarActivity  {
 
                 //Putting data for detail activity
                 Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                int real_index = events.indexOf(filteredEvents.get(position)) - 1;
-                detailIntent.putExtra(Intent.EXTRA_TEXT, real_index);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT,
+                        filteredEvents.get(position).getNumber());
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
