@@ -100,6 +100,9 @@
             android:name=".CalendarActivity"
             android:label="@string/calendar" />
         <activity
+            android:name=".HelpActivity"
+            android:label="Help" />
+        <activity
             android:name=".AdminPanelActivity"
             android:label="@string/admin_panel" >
         </activity>

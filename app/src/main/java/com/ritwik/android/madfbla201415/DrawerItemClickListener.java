@@ -119,12 +119,17 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 3) {
             //help
-            try {
-                SendPush.postData("Tomato", "Test");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+//            try {
+//                SendPush.postData("Tomato", "Test");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e(LOG_TAG, "Sending Data via Push");
+
+            if (!(mContext instanceof HelpActivity)) {
+                Intent intent = new Intent(mContext, HelpActivity.class);
+                mContext.startActivity(intent);
             }
-            Log.e(LOG_TAG, "Sending Data via Push");
         } else if (position == 4) {
             //notifications
             if(!(mContext instanceof  AllPushActivity)){
@@ -168,12 +173,17 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         } else if (position == 3) {
             //help
-            try {
-                SendPush.postData("Tomato", "Test");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+//            try {
+//                SendPush.postData("Tomato", "Test");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e(LOG_TAG, "Sending Data via Push");
+
+            if (!(mContext instanceof HelpActivity)) {
+                Intent intent = new Intent(mContext, HelpActivity.class);
+                mContext.startActivity(intent);
             }
-            Log.e(LOG_TAG, "Sending Data via Push");
         } else if (position == 4) {
 
             //notifications

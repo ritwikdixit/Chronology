@@ -35,6 +35,11 @@
     <string name="notifications_key">notifications_check</string>
     <string name="fullname_key">full_name</string>
 
+    <string name="help_text">Hallo!</string>
+    <string-array name="features">
+        <item>abc</item>
+    </string-array>
+
     <string-array name="filters">
         <item>Filter: None (All Events)</item>
         <item>Filter: From Today</item>
