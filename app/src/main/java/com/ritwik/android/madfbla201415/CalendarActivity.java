@@ -178,7 +178,6 @@ public class CalendarActivity extends ActionBarActivity {
 
     private void initializeCalendar() {
         mCalendar.setShowWeekNumber(false);
-
     }
 
     private void setText(String date) {

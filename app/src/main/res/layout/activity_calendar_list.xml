@@ -19,9 +19,7 @@
 
             <CalendarView
                 android:id="@+id/calendar_chronology"
-                android:showWeekNumber="false"
-                android:selectedWeekBackgroundColor="@android:color/transparent"
-                android:shownWeekCount="5"
+                android:shownWeekCount="4"
                 android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
