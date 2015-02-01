@@ -7,7 +7,6 @@
         <item name="actionBarStyle">@style/actionBarStyle1</item>
     </style>
 
-
     <style name="AppTheme2" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarStyle">@style/actionBarStyle1</item>
     </style>

@@ -17,9 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.provider.CalendarContract.Events;
 
@@ -37,6 +39,7 @@ public class HelpActivity extends ActionBarActivity {
     private TextView mContents;
 
     private LinearLayout layout;
+    private ListView features;
 
     private static final String LOG_TAG = "Help";
     private Firebase ref;
@@ -76,10 +79,11 @@ public class HelpActivity extends ActionBarActivity {
         });
 
         mContents = (TextView)findViewById(R.id.help_contents);
-        List<String> features = Arrays.asList(getResources().getStringArray(R.array.features));
-        for (String feature : features) {
+        List<String> featureStrings = Arrays.asList(getResources().getStringArray(R.array.features));
+        mContents.setText(mContents.getText() + "\n");
+        for (String feature : featureStrings) {
             Log.d(LOG_TAG, "" + (mContents == null));
-            mContents.setText(mContents.getText() + "\n * " + feature);
+            mContents.setText(mContents.getText() + "\n •  " + feature);
         }
 
 
@@ -89,7 +93,7 @@ public class HelpActivity extends ActionBarActivity {
         //if this was the 4th event, you could get fire base event called event4
         //int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
 
-        layout = (LinearLayout) findViewById(R.id.root_container_detail);
+        layout = (LinearLayout) findViewById(R.id.help_root);
 
         mFlinglistener = new SwipeListener();
         mLeftDetector = new GestureDetectorCompat(this, mFlinglistener);
@@ -107,6 +111,7 @@ public class HelpActivity extends ActionBarActivity {
             }
         };
 
+        Log.d(LOG_TAG, layout + "," + mListener);
         layout.setOnTouchListener(mListener);
 
     }
@@ -117,28 +122,6 @@ public class HelpActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_detail, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    //function to parse into something the Intent will understand
-    public int[] parseDateTime(String date, String time) {
-
-        int hour = Integer.valueOf(time.substring(0, time.indexOf(":")));
-        int minutes = Integer.valueOf(time.substring(time.indexOf(":") + 1, time.length() - 2));
-
-        String[] data = date.split("-");
-
-        int year = Integer.valueOf(data[0]);
-        int month = Integer.valueOf(data[1]) - 1;
-        int day = Integer.valueOf(data[2]);
-
-        if (time.contains("PM") && hour != 12)
-            hour += 12;
-
-        Log.v(SettingsActivity.SQL_LOG_TAG, year + " " + month + "  " + day
-                + " /time/ " + hour + " " + minutes);
-
-        return new int[] { year, month, day, hour, minutes };
-
     }
 
     @Override

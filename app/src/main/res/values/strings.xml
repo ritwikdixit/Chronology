@@ -35,9 +35,11 @@
     <string name="notifications_key">notifications_check</string>
     <string name="fullname_key">full_name</string>
 
-    <string name="help_text">Hallo!</string>
+    <string name="help_text">Hallo! Here\'s what you can do on Chronology:</string>
     <string-array name="features">
-        <item>abc</item>
+        <item><ul><li>View things on a calendar</li></ul></item>
+        <item><ul><li>Create new events (for approved admins)</li></ul></item>
+        <item></item>
     </string-array>
 
     <string-array name="filters">
