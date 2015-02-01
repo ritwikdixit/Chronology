@@ -164,7 +164,6 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             }
 
         } else if (position == 2) {
-
             //all events
             if(!(mContext instanceof  AllEventsActivity)){
                 Intent intent = new Intent(mContext, AllEventsActivity.class);
