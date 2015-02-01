@@ -8,12 +8,20 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class EventItem {
 
+    public static HashMap<String, EventItem> allEvents = new HashMap<String, EventItem>();
     private String id;
     private String mStartDate;
     private String mEndDate;
@@ -29,6 +37,8 @@ public class EventItem {
     private ImageView mImage;
     private String mContactInfo;
     private String category;
+    private HashMap<String, Object> rsvp;
+    private Firebase ref = DataHolder.getRef();
 
     public EventItem(String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
@@ -44,6 +54,32 @@ public class EventItem {
         this.mUrl = mUrl;
         this.mContactInfo = mContactInfo;
         this.category = category;
+        rsvp = new HashMap<String, Object>();
+
+        ref.child("calendar").child(id).child("rsvp").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
 
         mImage = new ImageView(context);
         mImage.setImageResource(R.drawable.load_horiz_anim);
@@ -51,6 +87,7 @@ public class EventItem {
         loadAnimation.start();
 
          new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
+        allEvents.put(id, this);
     }
 
 
@@ -126,7 +163,6 @@ public class EventItem {
                 + " locate @" + mLocation + " " + " details=" + mDetails
                 + " img src=" + mUrl + " contact @" + mContactInfo
                 + " @category " + category;
-
     }
 
     public Date dateStart(){
@@ -144,5 +180,11 @@ public class EventItem {
         date.setDate(Integer.parseInt(sd[2]));
         date.setYear(Integer.parseInt(sd[0]) - 1900);
         return date;
+    }
+    public void delete(){
+        allEvents.remove(this);
+    }
+    public HashMap<String, Object> getRSVP(){
+        return rsvp;
     }
 }

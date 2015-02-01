@@ -38,22 +38,7 @@ public class RSVP {
             }
         }
 
-        public static boolean isGoing(String eventID){
-
-            final AtomicBoolean ab = new AtomicBoolean(false);
-            final AtomicReference<DataSnapshot> ar = new AtomicReference<DataSnapshot>();
-
-            ref.child("calendar").child(eventID).child("rsvp").addValueEventListener(new ValueEventListener() {
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                   ar.set(dataSnapshot);
-                }
-                public void onCancelled(FirebaseError firebaseError) {}
-            });
-
-            while(ar.get() == null){}
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            if(map.containsKey(DataHolder.getUID()))
-                return true;
-            return false;
+        public static boolean isGoing(String eventID) {
+            return EventItem.allEvents.get(eventID).getRSVP().containsKey(DataHolder.getUID());
         }
 }
