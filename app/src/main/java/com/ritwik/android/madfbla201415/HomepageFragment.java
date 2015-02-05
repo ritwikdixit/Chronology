@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -72,8 +73,7 @@ public class HomepageFragment extends Fragment {
     private static ArrayList<EventItem> events;
     private static ArrayList<EventItem> showEvents;
 
-
-    private static final String LOG_TAG = "EventList";
+    public static final String LOG_TAG = "EventList";
     private Firebase ref = DataHolder.getRef();
 
     //keys for detail activity
@@ -88,6 +88,7 @@ public class HomepageFragment extends Fragment {
     public static final String URL_KEY = "url";
     public static final String CONTACT_INFO_KEY = "contact_info";
     public static final String CATEGORY_KEY = "category";
+    public static final String RSVP_KEY = "rsvp";
 
     public static final String ARRAY_DATA_KEY = "data_array";
 
@@ -105,7 +106,7 @@ public class HomepageFragment extends Fragment {
     private Toolbar toolbar;
     private SearchView mSearch;
 
-    private Comparator eventCompare;
+    private static Comparator eventCompare;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -246,8 +247,15 @@ public class HomepageFragment extends Fragment {
                 // Retrieve new posts as they are added to Firebase
                 @Override
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                    boolean isGoing = snapshot.child("rsvp")
+                            .child(DataHolder.getUID()).getValue() != null;
+                    Log.v(LOG_TAG, "OK GO");
+                    Log.v(LOG_TAG, DataHolder.getUID());
+
                     events.add(new EventItem(
+                            snapshot.getKey(),
                             newEvent.get("id").toString()                                                     ,
                             newEvent.get("start_date").toString(),
                             newEvent.get("end_date").toString(),
@@ -259,8 +267,10 @@ public class HomepageFragment extends Fragment {
                             newEvent.get("url").toString(),
                             newEvent.get("contact_info").toString(),
                             newEvent.get("category").toString(),
+                            isGoing,
                             getActivity()
                     ));
+
                     String id = newEvent.get("id").toString();
                     List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
                     if (ldm.size() == 0) {
@@ -306,6 +316,8 @@ public class HomepageFragment extends Fragment {
             });
         }
 
+        extendsToday();
+
         //Banner Adapter
         mImageAdapter = new BannerAdapter(getActivity(), showEvents);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
@@ -329,8 +341,7 @@ public class HomepageFragment extends Fragment {
 
         });
 
-        eventAdapter
-                = new EventListItemAdapter(getActivity(), showEvents);
+        eventAdapter = new EventListItemAdapter(getActivity(), showEvents);
 
         mListView.setAdapter(eventAdapter);
 
@@ -341,8 +352,7 @@ public class HomepageFragment extends Fragment {
 
                 //Intent to detail activity with position extra and data
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT, showEvents.get(position).getNumber());
                 detailIntent.putExtra(TITLE_KEY, showEvents.get(position).getmTitle());
                 detailIntent.putExtra(START_DATE_KEY, showEvents.get(position).getmStartDate());
                 detailIntent.putExtra(END_DATE_KEY, showEvents.get(position).getmEndDate());
@@ -353,6 +363,7 @@ public class HomepageFragment extends Fragment {
                 detailIntent.putExtra(URL_KEY, showEvents.get(position).getmUrl());
                 detailIntent.putExtra(CONTACT_INFO_KEY, showEvents.get(position).getmContactInfo());
                 detailIntent.putExtra(CATEGORY_KEY, showEvents.get(position).getCategory());
+                detailIntent.putExtra(RSVP_KEY, showEvents.get(position).isAttending());
 
                 startActivity(detailIntent);
                 ((HomepageActivity) getActivity()).animToDetail();
@@ -379,6 +390,14 @@ public class HomepageFragment extends Fragment {
     public static void initEvents(final Activity context) {
 
         Firebase ref = DataHolder.getRef();
+        eventCompare = new Comparator<EventItem>() {
+
+            @Override
+            public int compare(EventItem event, EventItem event2) {
+                return event.getmStartDate().compareTo(event2.getmStartDate());
+            }
+        };
+
         events = new ArrayList<>();
         showEvents = new ArrayList<>();
         Query eventsByDate = ref.child("calendar").orderByChild("start_date");
@@ -388,7 +407,11 @@ public class HomepageFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
+                boolean isGoing = snapshot.child("rsvp")
+                        .child(DataHolder.getUID()).getValue() != null;
+                Log.v(LOG_TAG, "is?" + isGoing);
                 events.add(new EventItem(
+                        snapshot.getKey(),
                         newEvent.get("id").toString(),
                         newEvent.get("start_date").toString(),
                         newEvent.get("end_date").toString(),
@@ -400,9 +423,11 @@ public class HomepageFragment extends Fragment {
                         newEvent.get("url").toString(),
                         newEvent.get("contact_info").toString(),
                         newEvent.get("category").toString(),
+                        isGoing,
                         context
                 ));
 
+                Collections.sort(events, eventCompare);
                 extendsToday();
 
                 String id = newEvent.get("id").toString();
@@ -442,7 +467,7 @@ public class HomepageFragment extends Fragment {
         });
     }
 
-    private static void extendsToday() {
+    public static void extendsToday() {
         showEvents.clear();
         String todayDate = new SimpleDateFormat("yyyy-MM-dd")
                 .format(Calendar.getInstance().getTime());
@@ -465,6 +490,15 @@ public class HomepageFragment extends Fragment {
         return events;
     }
 
+    public static int getEventsPositionForNumQuery(String numQuery) {
+
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getNumber().equals(numQuery))
+                return i;
+        }
+
+        return -1;
+    }
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 

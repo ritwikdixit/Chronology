@@ -109,8 +109,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".HomepageActivity"
-            android:theme="@style/AppTheme2" >
+            android:parentActivityName=".HomepageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ritwik.android.madfbla201415.HomepageActivity" />

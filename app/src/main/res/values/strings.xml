@@ -5,7 +5,7 @@
     <string name="HomepageLabel">Home</string>
     <string name="app_name">Chronology</string>
     <string name="action_settings">Settings</string>
-    <string name="username">Username</string>
+    <string name="username">Username</string>z
     <string name="password">Password</string>
     <string name="create_account"><u>Sign Up!</u></string>
     <string name="fullname">Full Name</string>
@@ -44,17 +44,22 @@
 
     <string-array name="filters">
         <item>Filter: None (All Events)</item>
-        <item>Filter: From Today</item>
-        <item>Filter: This Week</item>
-        <item>Filter: This Month</item>
-        <item>Filter: Sports</item>
-        <item>Filter: Clubs</item>
-        <item>Filter: Academics</item>
-        <item>Filter: Holiday</item>
-        <item>Filter: Fun Event</item>
+        <item>From Today</item>
+        <item>This Week</item>
+        <item>This Month</item>
+        <item>Sports</item>
+        <item>Clubs</item>
+        <item>Academics</item>
+        <item>Holiday</item>
+        <item>Fun Event</item>
+        <item>My RSVPs</item>
     </string-array>
 
     <string name="title_activity_improved_calendar">ImprovedCalendarActivity</string>
     <string name="hello_world">Hello world!</string>
+
+    <string name="green_auto_key">auto_green</string>
+    <string name="auto_login_key">auto_login</string>
+
 
 </resources>

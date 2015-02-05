@@ -46,6 +46,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private String imageUrl;
     private String titleString, startDateStr, endDateStr,
             startTimeStr, endTimeStr, locationStr, descStr;
+    private boolean isRSVPtoEvent;
     private ImageView mImage;
 
     private static final String LOG_TAG = "EventList";
@@ -57,10 +58,11 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private SwipeListener mFlinglistener;
 
     private ShareActionProvider mShare;
+    private String eventNum;
 
     private Toolbar toolbar;
     private SearchView mSearch;
-    private Button mCalendarButton;
+    private Button mCalendarButton, mRSVPButton;
 
 
     @Override
@@ -98,12 +100,13 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         mImage = (ImageView) findViewById(R.id.detail_image);
         mContactInfo = (TextView) findViewById(R.id.detail_contact_info);
         mCategory = (TextView) findViewById(R.id.details_category);
+        mRSVPButton = (Button) findViewById(R.id.rsvp_button);
 
         Firebase.setAndroidContext(this);
         ref = DataHolder.getRef();
 
         //if this was the 4th event, you could get fire base event called event4
-        //int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
+        eventNum = getIntent().getStringExtra(Intent.EXTRA_TEXT);
 
         //setting the action bar label to title of event
         titleString = getIntent().getStringExtra(HomepageFragment.TITLE_KEY);
@@ -115,6 +118,12 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         endTimeStr = getIntent().getStringExtra(HomepageFragment.END_TIME_KEY);
         locationStr = getIntent().getStringExtra(HomepageFragment.LOCATION_KEY);
         descStr = getIntent().getStringExtra(HomepageFragment.DETAILS_KEY);
+        isRSVPtoEvent = getIntent().getBooleanExtra(HomepageFragment.RSVP_KEY, false);
+
+        if (isRSVPtoEvent) {
+            Log.v(HomepageFragment.LOG_TAG, "It works until detail activity onCreate");
+            mRSVPButton.setText("Cancel RSVP");
+        }
 
         //getting the extras from the intent and putting them in the view
         mStartDate.setText("Date: " + EventItem.formatDate(startDateStr));
@@ -168,6 +177,13 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
             }
         });
 
+        mRSVPButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rsvpToEvent();
+            }
+        });
+
     }
 
     @Override
@@ -186,6 +202,23 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         mShare.setShareIntent(getDefaultIntent());
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void rsvpToEvent() {
+
+        if (isRSVPtoEvent) {
+            RSVP.rsvp(eventNum, RSVP.NOT_GOING);
+            mRSVPButton.setText("You have Cancelled your RSVP");
+            isRSVPtoEvent = false;
+        } else {
+            RSVP.rsvp(eventNum, RSVP.GOING);
+            mRSVPButton.setText("You have RSVP'd");
+            isRSVPtoEvent = true;
+        }
+
+        HomepageFragment.getEvents().get(HomepageFragment
+                .getEventsPositionForNumQuery(eventNum)).setAttending(isRSVPtoEvent);
+        HomepageFragment.extendsToday();
     }
 
     public void callCalendarIntent() {

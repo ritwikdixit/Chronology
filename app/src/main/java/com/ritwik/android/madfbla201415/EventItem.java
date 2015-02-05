@@ -14,6 +14,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 
 public class EventItem {
 
-    public static HashMap<String, EventItem> allEvents = new HashMap<String, EventItem>();
+    private String number;
     private String id;
     private String mStartDate;
     private String mEndDate;
@@ -37,12 +38,15 @@ public class EventItem {
     private ImageView mImage;
     private String mContactInfo;
     private String category;
-    private HashMap<String, Object> rsvp;
-    private Firebase ref = DataHolder.getRef();
 
-    public EventItem(String id, String mStartDate, String mEndDate, String mStartTime,
+    private boolean isAttending;
+
+    public EventItem(String number, String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
-                     String mUrl, String mContactInfo, String category, Context context) {
+                     String mUrl, String mContactInfo, String category, boolean attending,
+                     Context context) {
+
+        this.number = number;
         this.id = id;
         this.mTitle = mTitle;
         this.mStartDate = mStartDate;
@@ -54,32 +58,7 @@ public class EventItem {
         this.mUrl = mUrl;
         this.mContactInfo = mContactInfo;
         this.category = category;
-        rsvp = new HashMap<String, Object>();
-
-        ref.child("calendar").child(id).child("rsvp").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                rsvp = (HashMap<String, Object>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {}
-        });
+        this.isAttending = attending;
 
         mImage = new ImageView(context);
         mImage.setImageResource(R.drawable.load_horiz_anim);
@@ -87,7 +66,6 @@ public class EventItem {
         loadAnimation.start();
 
          new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
-        allEvents.put(id, this);
     }
 
 
@@ -135,6 +113,17 @@ public class EventItem {
         return category;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public boolean isAttending() {
+        return isAttending;
+    }
+
+    public void setAttending(boolean set) {
+        this.isAttending = set;
+    }
 
     //formats date so it fits in the listView
 
@@ -154,17 +143,6 @@ public class EventItem {
         return monthNames[month - 1];
     }
 
-    //this is for debugging do not delete
-    @Override
-    public String toString() {
-        return mTitle + "---"
-                + mStartDate + "-" + mEndDate
-                + " " + mStartTime + "-" + mEndTime
-                + " locate @" + mLocation + " " + " details=" + mDetails
-                + " img src=" + mUrl + " contact @" + mContactInfo
-                + " @category " + category;
-    }
-
     public Date dateStart(){
         String[] sd = getmStartDate().split("-");
         Date date  = new Date();
@@ -181,10 +159,16 @@ public class EventItem {
         date.setYear(Integer.parseInt(sd[0]) - 1900);
         return date;
     }
-    public void delete(){
-        allEvents.remove(this);
-    }
-    public HashMap<String, Object> getRSVP(){
-        return rsvp;
+
+    //this is for debugging do not delete
+    @Override
+    public String toString() {
+        return mTitle + "---"
+                + mStartDate + "-" + mEndDate
+                + " " + mStartTime + "-" + mEndTime
+                + " locate @" + mLocation + " " + " details=" + mDetails
+                + " img src=" + mUrl + " contact @" + mContactInfo
+                + " @category " + category;
+
     }
 }

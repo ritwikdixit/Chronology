@@ -81,12 +81,11 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
 
         caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
-            Calendar cal = Calendar.getInstance();
-            args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-            args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-            args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, false);
+        Calendar cal = Calendar.getInstance();
+        args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+        args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+        args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, false);
         caldroidFragment.setArguments(args);
-        Log.e("Troll", events.size() + "");
         for(EventItem ei : events){
             ArrayList<Date> ald = between(ei.dateStart(), ei.dateEnd());
             for(Date d : ald) {
@@ -114,7 +113,7 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
         caldroidFragment.setCaldroidListener(listener);
         caldroidFragment.refreshView();
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-            t.replace(R.id.calendar_chronology, caldroidFragment);
+        t.replace(R.id.calendar_chronology, caldroidFragment);
         t.commit();
     }
 
@@ -185,7 +184,6 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
     private void setText(Date date) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String todayDate = df.format(date);
-        Log.e("Travis", todayDate);
         if (filteredEvents.size() == 0) {
             mDataText.setText("No Events on " + EventItem.formatDate(todayDate));
 

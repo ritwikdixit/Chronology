@@ -75,55 +75,8 @@ public class AllEventsActivity extends ActionBarActivity  {
        initDrawer();
 
         mAllEventsView =  (ListView) findViewById(R.id.all_events_listView);
-        events = new ArrayList<>();
+        events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();
-
-        Query eventsByDate = DataHolder.getRef().child("calendar").orderByChild("start_date");
-        eventsByDate.addChildEventListener(new ChildEventListener() {
-
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                events.add(new EventItem(
-                        newEvent.get("id").toString(),
-                        newEvent.get("start_date").toString(),
-                        newEvent.get("end_date").toString(),
-                        newEvent.get("start_time").toString(),
-                        newEvent.get("end_time").toString(),
-                        newEvent.get("title").toString(),
-                        newEvent.get("location").toString(),
-                        newEvent.get("details").toString(),
-                        newEvent.get("url").toString(),
-                        newEvent.get("contact_info").toString(),
-                        newEvent.get("category").toString(),
-                        getApplicationContext()
-                ));
-                filteredEvents = new ArrayList<>(events);
-                mAllEventsView.setAdapter(adapter);
-
-            }
-
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String removedID = dataSnapshot.child("id").getValue().toString();
-                Iterator<EventItem> x  = events.iterator();
-                while(x.hasNext()) {
-                    EventItem t = x.next();
-                    if (t.getId().equals(removedID))
-                        x.remove();
-                }
-                mAllEventsView.setAdapter(adapter);
-            }
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Loading Event Item Error", firebaseError.getMessage());
-            }
-        });
 
         filterChooser = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
@@ -156,8 +109,8 @@ public class AllEventsActivity extends ActionBarActivity  {
 
                 //Putting data for detail activity
                 Intent detailIntent = new Intent(mContext, DetailActivity.class);
-                detailIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-
+                detailIntent.putExtra(Intent.EXTRA_TEXT,
+                        filteredEvents.get(position).getNumber());
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
@@ -178,6 +131,8 @@ public class AllEventsActivity extends ActionBarActivity  {
                         filteredEvents.get(position).getmContactInfo());
                 detailIntent.putExtra(HomepageFragment.CATEGORY_KEY,
                         filteredEvents.get(position).getCategory());
+                detailIntent.putExtra(HomepageFragment.RSVP_KEY,
+                        filteredEvents.get(position).isAttending());
 
                 startActivity(detailIntent);
                 AllEventsActivity.this.overridePendingTransition(
@@ -275,9 +230,15 @@ public class AllEventsActivity extends ActionBarActivity  {
                     filteredEvents.add(thisEvent);
                 }
             }
-        }else if (code == 8) {
+        } else if (code == 8) {
             for (EventItem thisEvent : events) {
                 if (thisEvent.getCategory().equals(HomepageFragment.CAT_FUN_KEY)) {
+                    filteredEvents.add(thisEvent);
+                }
+            }
+        } else if (code == 9) {
+            for (EventItem thisEvent : events) {
+                if (thisEvent.isAttending()) {
                     filteredEvents.add(thisEvent);
                 }
             }

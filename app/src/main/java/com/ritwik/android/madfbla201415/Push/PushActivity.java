@@ -33,10 +33,6 @@ public class PushActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private SearchView mSearch;
 
-    //This is the boolean to hold whether notifications is checked in settings
-    private boolean enabledNotifications;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,11 +57,8 @@ public class PushActivity extends ActionBarActivity {
             }
         });
 
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
         layout = (LinearLayout) findViewById(R.id.root_container_detail);
 
-        enabledNotifications = prefs.getBoolean(getString(R.string.notifications_key), true);
 
         TextView mTitle = (TextView) findViewById(R.id.notif_title);
         TextView mInfo = (TextView) findViewById(R.id.notif_details);

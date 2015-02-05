@@ -3,7 +3,10 @@ package com.ritwik.android.madfbla201415;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,10 +18,15 @@ import java.util.ArrayList;
 public class EventListItemAdapter extends ArrayAdapter<EventItem> {
 
     private Activity mActivity;
+    private static SharedPreferences prefs;
+    private static boolean enabledHighlight;
 
     public EventListItemAdapter(Activity activity, ArrayList<EventItem> events) {
         super(activity, 0, events);
         mActivity = activity;
+        prefs = PreferenceManager
+                .getDefaultSharedPreferences(activity.getApplicationContext());
+        enabledHighlight = prefs.getBoolean(activity.getString(R.string.green_auto_key), true);
     }
 
     @Override
@@ -37,7 +45,7 @@ public class EventListItemAdapter extends ArrayAdapter<EventItem> {
         TextView mDetails = (TextView) convertView.findViewById(R.id.event_list_item_details);
         ImageView mCatIcon = (ImageView) convertView.findViewById(R.id.category_icon_container);
 
-        mDate.setText(thisEvent.formatDateCondense(thisEvent.getmStartDate()));
+        mDate.setText(EventItem.formatDateCondense(thisEvent.getmStartDate()));
         mTime.setText(thisEvent.getmStartTime());
 
         String category = thisEvent.getCategory();
@@ -72,7 +80,24 @@ public class EventListItemAdapter extends ArrayAdapter<EventItem> {
             mDetails.setText(thisEvent.getmDetails().substring(0, 25) + "...");
         }
 
+        //highlights text if they enabled it
+        if (enabledHighlight) {
+            if (thisEvent.isAttending()) {
+                mTitle.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+                mDetails.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+                mDate.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+                mTime.setTextColor(getContext().getResources().getColor(R.color.chronology_color));
+            } else {
+                //THIS IS NOT redundant, if you delete this android will not behave properly.
+                mTitle.setTextColor(getContext().getResources().getColor(R.color.title_list_black));
+                mDetails.setTextColor(getContext().getResources().getColor(R.color.drawer_select));
+                mDate.setTextColor(getContext().getResources().getColor(R.color.title_list_black));
+                mTime.setTextColor(getContext().getResources().getColor(R.color.drawer_select));
+            }
+        }
+
         return convertView;
 
     }
+
 }
