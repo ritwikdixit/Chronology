@@ -1,22 +1,31 @@
 package com.ritwik.android.madfbla201415;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,22 +33,31 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.provider.CalendarContract.Events;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 // joshua zhou
 public class HelpActivity extends ActionBarActivity {
 
-    private TextView mContents;
+    private List<String> features = Arrays.asList(new String[] {
+            "Calendar", "check cal",
+            "Search", "search events",
+            "Help", "help thangs"
+    });
+
+    private ViewPager mPager;
+    private PagerAdapter mPagerAdapter;
 
     private LinearLayout layout;
-    private ListView features;
 
     private static final String LOG_TAG = "Help";
     private Firebase ref;
@@ -78,22 +96,7 @@ public class HelpActivity extends ActionBarActivity {
             }
         });
 
-        mContents = (TextView)findViewById(R.id.help_contents);
-        List<String> featureStrings = Arrays.asList(getResources().getStringArray(R.array.features));
-        mContents.setText(mContents.getText() + "\n");
-        for (String feature : featureStrings) {
-            Log.d(LOG_TAG, "" + (mContents == null));
-            mContents.setText(mContents.getText() + "\n •  " + feature);
-        }
-
-
-        Firebase.setAndroidContext(this);
-        ref = DataHolder.getRef();
-
-        //if this was the 4th event, you could get fire base event called event4
-        //int eventNum = getIntent().getIntExtra(Intent.EXTRA_TEXT, 1);
-
-        layout = (LinearLayout) findViewById(R.id.help_root);
+//        layout = (LinearLayout) findViewById(R.id.help_root);
 
         mFlinglistener = new SwipeListener();
         mLeftDetector = new GestureDetectorCompat(this, mFlinglistener);
@@ -111,9 +114,34 @@ public class HelpActivity extends ActionBarActivity {
             }
         };
 
-        Log.d(LOG_TAG, layout + "," + mListener);
-        layout.setOnTouchListener(mListener);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        List<Fragment> fragments = getFragments();
+        mPager.setAdapter(new ScreenSlidePagerAdapter(
+                        getSupportFragmentManager(), fragments)
+        );
 
+    }
+
+    private List<Fragment> getFragments() {
+        Bundle b1 = new Bundle();
+        b1.putString("name", "abc");
+
+        Bundle b2 = new Bundle();
+        b2.putString("name", "faaaaafooo");
+
+        Bundle b3 = new Bundle();
+        b3.putString("name", "egggg");
+
+        Fragment f1 = new HelpScreenSlidePageFragment();
+        f1.setArguments(b1);
+
+        Fragment f2 = new HelpScreenSlidePageFragment();
+        f2.setArguments(b2);
+
+        Fragment f3 = new HelpScreenSlidePageFragment();
+        f2.setArguments(b3);
+
+        return Arrays.asList(new Fragment[] { f1, f2, f3 });
     }
 
     @Override
@@ -126,9 +154,14 @@ public class HelpActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        HelpActivity.this.overridePendingTransition(
-                R.anim.neg_left_right, R.anim.left_to_right);
+        // go back through slides. if at front, go back to whatever you came from
+        if (mPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+            HelpActivity.this.overridePendingTransition(
+                    R.anim.neg_left_right, R.anim.left_to_right);
+        } else {
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
     }
 
     @Override
@@ -148,6 +181,33 @@ public class HelpActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Slide pager
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+        List<Fragment> fragments;
+
+        public ScreenSlidePagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm);
+            this.fragments = fragments;
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Log.e("GET", i + "");
+
+            return HelpScreenSlidePageFragment.instance(features.get(2 * i), features.get(2 * i + 1));
+        }
+
+        @Override
+        public int getCount() {
+            return features.size();
+        }
+
+        public CharSequence getPageTitle(int position) {
+            return "OBJECT " + (position + 1);
+        }
     }
 
 
