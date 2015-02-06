@@ -12,6 +12,8 @@
     <color name="calendar_blue">#3498db</color>
     <color name="calendar_red">#e74c3c</color>
     <color name="calendar_green">#4CAF50</color>
+    <color name="calendar_orange">#F47143</color>
+
 
 
     <color name="chronology_secondary">#EB4747</color>
