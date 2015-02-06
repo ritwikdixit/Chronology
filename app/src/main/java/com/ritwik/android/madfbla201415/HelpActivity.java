@@ -55,9 +55,9 @@ public class HelpActivity extends ActionBarActivity {
             HelpScreenSlidePageFragment.instance(
                     "How to use this app",
                     "At home, browse events with the scrolling image banner or events list. Click on " +
-                            "an event to see details. You can see events through the calendar, or see" +
-                            "all events as a list. Other features include Search, Voice Search, RSVP," +
-                            "Sync events with Calendar, and Notifications. Chronology is the best way" +
+                            "an event to see details. You can see events through the calendar, or see " +
+                            "all events as a list. Other features include Search, Voice Search, RSVP, " +
+                            "Sync events with Calendar, and Notifications. Chronology is the best way " +
                             "to keep track of Homestead High School Events!",
                     R.drawable.sc_home
             ),
@@ -71,9 +71,9 @@ public class HelpActivity extends ActionBarActivity {
 
             HelpScreenSlidePageFragment.instance(
                     "RSVP and Sync with Calendar",
-                    "RSVP to events by clicking the RSVP Button. Your RSVP'd events will be highlighted" +
+                    "RSVP to events by clicking the RSVP Button. Your RSVP'd events will be highlighted " +
                             "green, you can cancel your RSVP at any time. You can sync the events in " +
-                            "Chronology with the Calendar app, and therefore Google Calendar. Simply press" +
+                            "Chronology with the Calendar app, and therefore Google Calendar. Simply press " +
                             "the button, and you will be redirected to the Calendar App with all information " +
                             "already filled out. Make any required changes.",
                     R.drawable.sc_rsvp_sync
@@ -81,7 +81,7 @@ public class HelpActivity extends ActionBarActivity {
 
             HelpScreenSlidePageFragment.instance(
                     "Notifications",
-                    "Homestead High School can send out notifications for events. CLick on a notification" +
+                    "Homestead High School can send out notifications for events. CLick on a notification " +
                             "to see more details. You can see all your notifications at any time.",
                     R.drawable.sc_notifications
 
