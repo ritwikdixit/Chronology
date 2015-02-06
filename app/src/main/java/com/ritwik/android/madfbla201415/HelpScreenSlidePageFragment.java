@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,19 +16,22 @@ public class HelpScreenSlidePageFragment extends Fragment {
 
     public static final String ARG_FEATURE = "feature";
     public static final String ARG_TEXT = "text";
+    public static final String ARG_IMAGE = "image";
 
     private TextView mFeature;
     private TextView mText;
+    private ImageView mImage;
 
     public HelpScreenSlidePageFragment() {
 
     }
 
-    public static Fragment instance(String feature, String text) {
+    public static Fragment instance(String feature, String text, int imageResource) {
         Fragment fragment = new HelpScreenSlidePageFragment();
         Bundle args = new Bundle();
         args.putString(HelpScreenSlidePageFragment.ARG_FEATURE, feature);
         args.putString(HelpScreenSlidePageFragment.ARG_TEXT, text);
+        args.putInt(HelpScreenSlidePageFragment.ARG_IMAGE, imageResource);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +48,9 @@ public class HelpScreenSlidePageFragment extends Fragment {
 
         mText = (TextView)rootView.findViewById(R.id.help_name);
         mText.setText(getArguments().getString(ARG_TEXT));
+
+        mImage = (ImageView)rootView.findViewById(R.id.help_image);
+        mImage.setImageResource(getArguments().getInt(ARG_IMAGE));
 
         return rootView;
     }

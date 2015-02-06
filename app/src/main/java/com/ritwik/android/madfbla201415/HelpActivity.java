@@ -48,11 +48,12 @@ import java.util.Map;
 // joshua zhou
 public class HelpActivity extends ActionBarActivity {
 
-    private int itemsPer = 2;
+    private int itemsPer = 3;
     private List<String> features = Arrays.asList(new String[] {
-            "Calendar", "check cal",
-            "Search", "search events",
-            "Help", "help thangs",
+            "Calendar", "" + R.drawable.calendar, "check cal",
+
+
+            "Search", "" + R.drawable.search, "search events",
     });
 
     private ViewPager mPager;
@@ -200,7 +201,8 @@ public class HelpActivity extends ActionBarActivity {
 
             return HelpScreenSlidePageFragment.instance(
                     features.get(itemsPer * i),
-                    features.get(itemsPer * i + 1)
+                    features.get(itemsPer * i + 2),
+                    Integer.parseInt(features.get(itemsPer * i + 1))
             );
         }
 
