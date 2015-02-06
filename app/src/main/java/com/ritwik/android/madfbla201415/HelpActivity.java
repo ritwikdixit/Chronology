@@ -67,19 +67,11 @@ public class HelpActivity extends ActionBarActivity {
     };
 
     private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
-
-    private LinearLayout layout;
-
     private static final String LOG_TAG = "Help";
-    private Firebase ref;
 
     private GestureDetectorCompat mLeftDetector;
     private View.OnTouchListener mListener;
     private SwipeListener mFlinglistener;
-
-    private ShareActionProvider mShare;
-
     private Toolbar toolbar;
 
 
@@ -204,7 +196,6 @@ public class HelpActivity extends ActionBarActivity {
 
         @Override
         public Fragment getItem(int i) {
-            Log.e("GET", i + "");
 
             return features[i];
         }

@@ -237,7 +237,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
                 .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
                 .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
                 .putExtra(Events.TITLE, titleString)
-                .putExtra(Events.DESCRIPTION, descStr + " " + mContactInfo)
+                .putExtra(Events.DESCRIPTION, descStr + " " + mContactInfo.getText())
                 .putExtra(Events.EVENT_LOCATION, locationStr)
                 .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
 
