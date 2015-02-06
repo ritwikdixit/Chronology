@@ -158,7 +158,8 @@ public class HomepageFragment extends Fragment {
                 return onOptionsItemSelected(menuItem);
             }
         });
-        toolbar.setTitle("Welcome!");
+        toolbar.setTitle("Welcome " + DataHolder.getName());
+        ((HomepageActivity) getActivity()).getSupportActionBar().setTitle("ggs"+DataHolder.getName());
 
         //init the drawer
         thisRootView = rootView;
