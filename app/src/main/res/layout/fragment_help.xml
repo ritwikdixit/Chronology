@@ -24,9 +24,11 @@
                 <TextView
                     android:id="@+id/feature_name"
                     android:textStyle="bold"
-                    android:textSize="22dp"
+                    android:textSize="22sp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Lorem Ipsum"
+                    android:text="new help feature"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
                     />
@@ -42,8 +44,10 @@
                 <TextView
                     android:id="@+id/help_name"
                     android:text="abc"
-                    android:textSize="16dp"
-                    android:lineSpacingMultiplier="1.2"
+                    android:textSize="16sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:layout_margin="12dp"
+                    android:textColor="@android:color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

@@ -104,8 +104,8 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 1) {
 
             //calendar
-            if(!(mContext instanceof  ImprovedCalendarActivity)){
-                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
+            if(!(mContext instanceof  CalendarActivity)){
+                Intent intent = new Intent(mContext, CalendarActivity.class);
                 mContext.startActivity(intent);
             }
 
@@ -118,13 +118,6 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             }
 
         } else if (position == 3) {
-            //help
-//            try {
-//                SendPush.postData("Tomato", "Test");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//            Log.e(LOG_TAG, "Sending Data via Push");
 
             if (!(mContext instanceof HelpActivity)) {
                 Intent intent = new Intent(mContext, HelpActivity.class);
@@ -158,8 +151,8 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 1) {
 
             //calendar
-            if(!(mContext instanceof  ImprovedCalendarActivity)){
-                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
+            if(!(mContext instanceof  CalendarActivity)){
+                Intent intent = new Intent(mContext, CalendarActivity.class);
                 mContext.startActivity(intent);
             }
 

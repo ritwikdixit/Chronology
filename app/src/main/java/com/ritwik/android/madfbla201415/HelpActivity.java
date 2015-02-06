@@ -5,40 +5,20 @@ import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.provider.CalendarContract.Events;
-import android.widget.Toast;
-
-import com.firebase.client.Firebase;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -60,13 +40,6 @@ public class HelpActivity extends ActionBarActivity {
                             "Sync events with Calendar, and Notifications. Chronology is the best way " +
                             "to keep track of Homestead High School Events!",
                     R.drawable.sc_home
-            ),
-
-            //calendar
-            HelpScreenSlidePageFragment.instance(
-                    "Calendar",
-                    "View events on a Calendar. The days with events are indicated in... ",
-                    R.drawable.sc_cal
             ),
 
             HelpScreenSlidePageFragment.instance(
@@ -99,7 +72,7 @@ public class HelpActivity extends ActionBarActivity {
                     "Search",
                     "Search events using the Search Widget in the Action Bar. Search for the title" +
                             "location, or details of an event. Voice Search is also available.",
-                    R.drawable.sc_cal
+                    R.drawable.sc_home
             )
 
 
@@ -113,6 +86,9 @@ public class HelpActivity extends ActionBarActivity {
     private SwipeListener mFlinglistener;
     private Toolbar toolbar;
     private SearchView mSearch;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
 
 
 
@@ -124,24 +100,14 @@ public class HelpActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 return onOptionsItemSelected(menuItem);
             }
         });
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-//        layout = (LinearLayout) findViewById(R.id.help_root);
+        toolbar.inflateMenu(R.menu.menu_main);
+        initDrawer();
 
         mFlinglistener = new SwipeListener();
         mLeftDetector = new GestureDetectorCompat(this, mFlinglistener);
@@ -186,9 +152,6 @@ public class HelpActivity extends ActionBarActivity {
         Bundle b5 = new Bundle();
         b5.putString("name", "aq4");
 
-        Bundle b6 = new Bundle();
-        b6.putString("name", "aq5");
-
         Fragment f1 = new HelpScreenSlidePageFragment();
         f1.setArguments(b1);
 
@@ -204,43 +167,72 @@ public class HelpActivity extends ActionBarActivity {
         Fragment f5 = new HelpScreenSlidePageFragment();
         f5.setArguments(b5);
 
-        Fragment f6 = new HelpScreenSlidePageFragment();
-        f6.setArguments(b6);
 
 
+        return Arrays.asList(new Fragment[] { f1, f2, f3, f4, f5 });
+    }
 
-        return Arrays.asList(new Fragment[] { f1, f2, f3, f4, f5, f6 });
+    private void initDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(this, DataHolder.getDrawerArray());
+        mDrawerList.setAdapter(mDrawerAdapter);
+
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
+                this, mDrawerLayout, mDrawerList));
+
+        mDrawerToggle = new ActionBarDrawerToggle(this,
+                mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_closed) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                //set all items unchecked
+                for (int i = 0; i < DataHolder.getDrawerArray().length; i++) {
+                    mDrawerList.setItemChecked(i, false);
+                }
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerList.setBackgroundResource(R.color.drawer_background);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        //android library API 11+ standard search
         SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
-        mSearch.setSearchableInfo(
-                managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
         mSearch.setIconifiedByDefault(true);
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        if (id == R.id.chronology_search_bar
-                || id == R.id.chronology_share_action) {
+        if (id == R.id.chronology_search_bar) {
             return true;
         }
 
@@ -249,6 +241,7 @@ public class HelpActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
     // Slide pager

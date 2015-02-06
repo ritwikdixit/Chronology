@@ -52,6 +52,7 @@
                 android:textSize="18sp"
                 android:layout_gravity="center"
                 android:text="Event Title"
+                android:textColor="@android:color/black"
                 android:paddingTop="24dp"
                 android:paddingBottom="24dp"
                 android:layout_width="wrap_content"
@@ -80,12 +81,14 @@
                     android:id="@+id/detail_start_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text="12/20/14" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text=" - " />
 
@@ -93,6 +96,7 @@
                     android:id="@+id/detail_end_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text="12/25/14" />
 
@@ -120,12 +124,14 @@
                     android:id="@+id/detail_start_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text="4:00PM" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text=" - " />
 
@@ -133,6 +139,7 @@
                     android:id="@+id/detail_end_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text="5:00PM" />
 
@@ -154,6 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@android:color/black"
                 android:padding="24dp"
                 android:textSize="16sp"
                 android:text="Serra Park" />
@@ -173,6 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@android:color/black"
                 android:padding="24dp"
                 android:textSize="16sp"
                 android:text="contact@info.com" />
@@ -192,6 +201,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@android:color/black"
                 android:padding="24dp"
                 android:textSize="16sp"
                 android:text="This is test description." />

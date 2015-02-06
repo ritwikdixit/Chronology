@@ -284,6 +284,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
         eventData.put(HomepageFragment.LOCATION_KEY, mContact.getText().toString());
         eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
         eventData.put(HomepageFragment.CATEGORY_KEY, getTheCategory());
+        eventData.put(HomepageFragment.RSVP_KEY, "");
 
         //optional image puts standard if text is blank
         if (mImageUrl.getText().toString().replaceAll("\\s", "").equals(""))
@@ -317,6 +318,11 @@ public class AdminPanelActivity extends ActionBarActivity  {
                         .show();
             }
         });
+
+        Map rsvpInit = new HashMap<String, Object>();
+        rsvpInit.put("count", "0");
+        ref.child("calendar").child(eventName).child(HomepageFragment.RSVP_KEY)
+                .updateChildren(rsvpInit);
 
 
     }
