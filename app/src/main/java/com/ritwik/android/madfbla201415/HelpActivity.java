@@ -48,11 +48,13 @@ import java.util.Map;
 // joshua zhou
 public class HelpActivity extends ActionBarActivity {
 
+    // add fragments for features
     private Fragment[] features = new Fragment[] {
             HelpScreenSlidePageFragment.instance(
                     "Calendar",
-                    "With this, you can check calendars and shit like that" +
-                            " with the comfort of knowing that your events are there!!",
+                    "View events on a calendar. The days with events are indicated. " +
+                    "You can also sync events to Google Calendar " +
+                            "and share events.",
                     R.drawable.sc_cal
             ),
 
