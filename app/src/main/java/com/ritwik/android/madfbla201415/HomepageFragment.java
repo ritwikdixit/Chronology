@@ -191,24 +191,20 @@ public class HomepageFragment extends Fragment {
         //On Creation of Homepage, store user Data
         if(DataHolder.hasUserData())
             ref.child("users").child(DataHolder.getUID())
-                    .addChildEventListener(new ChildEventListener() {
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Object> newUser = (Map<String, Object>) dataSnapshot.getValue();
+                        DataHolder.setEmail(newUser.get("email").toString());
+                        DataHolder.setName(newUser.get("full_name").toString());
+                        DataHolder.setPhoneNumber(newUser.get("phone_number").toString());
+                    }
 
-                // Retrieve new posts as they are added to Firebase
-                @Override
-                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                    Map<String, Object> newUser = (Map<String, Object>) snapshot.getValue();
-                    DataHolder.setEmail(newUser.get("email").toString());
-                    DataHolder.setName(newUser.get("full_name").toString());
-                    DataHolder.setPhoneNumber(newUser.get("phone_number").toString());
-                }
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
 
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                public void onChildRemoved(DataSnapshot dataSnapshot) {  }
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.d("Loading User Data Error", firebaseError.getMessage());
-                }
-            });
+                    }
+                });
 
         ref.child("admins").addValueEventListener(new ValueEventListener() {
             @Override

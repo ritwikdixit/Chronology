@@ -9,6 +9,9 @@ import com.firebase.client.Firebase;
  * Created by Soham Pardeshi on 1/11/2015.
  */
 
+/*
+*   This represents an Event in our ActiveAndroid Database
+*/
 @Table(name = "Events")
 public class DataModel extends Model {
     @Column(name = "Contact")

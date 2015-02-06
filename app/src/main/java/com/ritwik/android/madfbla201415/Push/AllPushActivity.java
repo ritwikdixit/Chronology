@@ -51,6 +51,7 @@ public class AllPushActivity extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push);
 
+        // Add a toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -96,6 +97,8 @@ public class AllPushActivity extends ActionBarActivity  {
 
         mAllNotificationsView =  (ListView) findViewById(R.id.all_push_list);
 
+
+
         List list = new Select().from(PushModel.class).orderBy("Time ASC").execute();
         Iterator<PushModel> x = list.iterator();
         while(x.hasNext()){
@@ -127,7 +130,6 @@ public class AllPushActivity extends ActionBarActivity  {
 
             }
         });
-
     }
 
     @Override
@@ -154,7 +156,6 @@ public class AllPushActivity extends ActionBarActivity  {
         if (id == R.id.chronology_search_bar) {
             return true;
         }
-
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }
@@ -167,6 +168,4 @@ public class AllPushActivity extends ActionBarActivity  {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
     }
-
-
 }
