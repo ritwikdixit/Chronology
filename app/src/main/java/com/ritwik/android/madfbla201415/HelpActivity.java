@@ -50,20 +50,59 @@ public class HelpActivity extends ActionBarActivity {
 
     // add fragments for features
     private Fragment[] features = new Fragment[] {
+
+            //Home Basics
+            HelpScreenSlidePageFragment.instance(
+                    "How to use this app",
+                    "At home, browse events with the scrolling image banner or events list. Click on " +
+                            "an event to see details. You can see events through the calendar, or see" +
+                            "all events as a list. Other features include Search, Voice Search, RSVP," +
+                            "Sync events with Calendar, and Notifications. Chronology is the best way" +
+                            "to keep track of Homestead High School Events!",
+                    R.drawable.sc_home
+            ),
+
+            //calendar
             HelpScreenSlidePageFragment.instance(
                     "Calendar",
-                    "View events on a calendar. The days with events are indicated. " +
-                    "You can also sync events to Google Calendar " +
-                            "and share events.",
+                    "View events on a Calendar. The days with events are indicated in... ",
                     R.drawable.sc_cal
             ),
 
+            HelpScreenSlidePageFragment.instance(
+                    "RSVP and Sync with Calendar",
+                    "RSVP to events by clicking the RSVP Button. Your RSVP'd events will be highlighted" +
+                            "green, you can cancel your RSVP at any time. You can sync the events in " +
+                            "Chronology with the Calendar app, and therefore Google Calendar. Simply press" +
+                            "the button, and you will be redirected to the Calendar App with all information " +
+                            "already filled out. Make any required changes.",
+                    R.drawable.sc_rsvp_sync
+            ),
 
             HelpScreenSlidePageFragment.instance(
+                    "Notifications",
+                    "Homestead High School can send out notifications for events. CLick on a notification" +
+                            "to see more details. You can see all your notifications at any time.",
+                    R.drawable.sc_notifications
+
+            ),
+
+            HelpScreenSlidePageFragment.instance(
+                    "Event Filters",
+                    "Filter events in All Events",
+                    R.drawable.sc_filters
+
+            ),
+
+            //Search
+            HelpScreenSlidePageFragment.instance(
                     "Search",
-                    "search events",
+                    "Search events using the Search Widget in the Action Bar. Search for the title" +
+                            "location, or details of an event. Voice Search is also available.",
                     R.drawable.sc_cal
             )
+
+
     };
 
     private ViewPager mPager;
@@ -73,6 +112,8 @@ public class HelpActivity extends ActionBarActivity {
     private View.OnTouchListener mListener;
     private SwipeListener mFlinglistener;
     private Toolbar toolbar;
+    private SearchView mSearch;
+
 
 
     @Override
@@ -83,7 +124,7 @@ public class HelpActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_detail);
+        toolbar.inflateMenu(R.menu.menu_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -134,10 +175,19 @@ public class HelpActivity extends ActionBarActivity {
         b1.putString("name", "abc");
 
         Bundle b2 = new Bundle();
-        b2.putString("name", "faaaaafooo");
+        b2.putString("name", "d");
 
         Bundle b3 = new Bundle();
-        b3.putString("name", "egggg");
+        b3.putString("name", "aq");
+
+        Bundle b4 = new Bundle();
+        b4.putString("name", "aq3");
+
+        Bundle b5 = new Bundle();
+        b5.putString("name", "aq4");
+
+        Bundle b6 = new Bundle();
+        b6.putString("name", "aq5");
 
         Fragment f1 = new HelpScreenSlidePageFragment();
         f1.setArguments(b1);
@@ -146,15 +196,32 @@ public class HelpActivity extends ActionBarActivity {
         f2.setArguments(b2);
 
         Fragment f3 = new HelpScreenSlidePageFragment();
-        f2.setArguments(b3);
+        f3.setArguments(b3);
 
-        return Arrays.asList(new Fragment[] { f1, f2, f3 });
+        Fragment f4 = new HelpScreenSlidePageFragment();
+        f4.setArguments(b4);
+
+        Fragment f5 = new HelpScreenSlidePageFragment();
+        f5.setArguments(b5);
+
+        Fragment f6 = new HelpScreenSlidePageFragment();
+        f6.setArguments(b6);
+
+
+
+        return Arrays.asList(new Fragment[] { f1, f2, f3, f4, f5, f6 });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
+        mSearch.setSearchableInfo(
+                managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setIconifiedByDefault(true);
 
         return super.onCreateOptionsMenu(menu);
     }

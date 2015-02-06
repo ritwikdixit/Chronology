@@ -140,7 +140,6 @@ public class HomepageFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -158,8 +157,6 @@ public class HomepageFragment extends Fragment {
                 return onOptionsItemSelected(menuItem);
             }
         });
-        toolbar.setTitle("Welcome " + DataHolder.getName());
-        ((HomepageActivity) getActivity()).getSupportActionBar().setTitle("ggs"+DataHolder.getName());
 
         //init the drawer
         thisRootView = rootView;
@@ -190,7 +187,7 @@ public class HomepageFragment extends Fragment {
         mProgressBar.setProgress(0);
 
         //On Creation of Homepage, store user Data
-        if(DataHolder.hasUserData())
+        if(!DataHolder.hasUserData())
             ref.child("users").child(DataHolder.getUID())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -248,8 +245,6 @@ public class HomepageFragment extends Fragment {
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     boolean isGoing = snapshot.child("rsvp")
                             .child(DataHolder.getUID()).getValue() != null;
-                    Log.v(LOG_TAG, "OK GO");
-                    Log.v(LOG_TAG, DataHolder.getUID());
 
                     events.add(new EventItem(
                             snapshot.getKey(),
@@ -269,7 +264,8 @@ public class HomepageFragment extends Fragment {
                     ));
 
                     String id = newEvent.get("id").toString();
-                    List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
+                    List<DataModel> ldm = new Select().from(DataModel.class)
+                            .where("myID = ?", id).execute();
                     if (ldm.size() == 0) {
                         DataModel dm = new DataModel(newEvent.get("start_date").toString(),
                                 newEvent.get("end_date").toString(),

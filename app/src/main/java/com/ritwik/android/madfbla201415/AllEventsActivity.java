@@ -177,6 +177,11 @@ public class AllEventsActivity extends ActionBarActivity  {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void filterForCode(int code) {
 
         filteredEvents.clear();
