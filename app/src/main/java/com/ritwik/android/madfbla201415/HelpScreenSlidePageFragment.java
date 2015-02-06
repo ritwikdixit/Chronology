@@ -1,13 +1,19 @@
 package com.ritwik.android.madfbla201415;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by joshuazhou on 2015-02-01.
@@ -49,8 +55,9 @@ public class HelpScreenSlidePageFragment extends Fragment {
         mText = (TextView)rootView.findViewById(R.id.help_name);
         mText.setText(getArguments().getString(ARG_TEXT));
 
+        int imageResource = getArguments().getInt(ARG_IMAGE);
         mImage = (ImageView)rootView.findViewById(R.id.help_image);
-        mImage.setImageResource(getArguments().getInt(ARG_IMAGE));
+        Picasso.with(getActivity()).load(imageResource).into(mImage);
 
         return rootView;
     }

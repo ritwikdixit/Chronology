@@ -48,13 +48,21 @@ import java.util.Map;
 // joshua zhou
 public class HelpActivity extends ActionBarActivity {
 
-    private int itemsPer = 3;
-    private List<String> features = Arrays.asList(new String[] {
-            "Calendar", "" + R.drawable.calendar, "check cal",
+    private Fragment[] features = new Fragment[] {
+            HelpScreenSlidePageFragment.instance(
+                    "Calendar",
+                    "With this, you can check calendars and shit like that" +
+                            " with the comfort of knowing that your events are there!!",
+                    R.drawable.sc_cal
+            ),
 
 
-            "Search", "" + R.drawable.search, "search events",
-    });
+            HelpScreenSlidePageFragment.instance(
+                    "Search",
+                    "search events",
+                    R.drawable.sc_cal
+            )
+    };
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
@@ -118,8 +126,11 @@ public class HelpActivity extends ActionBarActivity {
 
         mPager = (ViewPager) findViewById(R.id.pager);
         List<Fragment> fragments = getFragments();
-        mPager.setAdapter(new ScreenSlidePagerAdapter(
-                        getSupportFragmentManager(), fragments)
+        mPager.setAdapter(
+                new ScreenSlidePagerAdapter(
+                        getSupportFragmentManager(),
+                        fragments
+                )
         );
 
     }
@@ -156,14 +167,8 @@ public class HelpActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        // go back through slides. if at front, go back to whatever you came from
-        if (mPager.getCurrentItem() == 0) {
-            super.onBackPressed();
-            HelpActivity.this.overridePendingTransition(
-                    R.anim.neg_left_right, R.anim.left_to_right);
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
+        super.onBackPressed();
+        this.finish();
     }
 
     @Override
@@ -199,16 +204,12 @@ public class HelpActivity extends ActionBarActivity {
         public Fragment getItem(int i) {
             Log.e("GET", i + "");
 
-            return HelpScreenSlidePageFragment.instance(
-                    features.get(itemsPer * i),
-                    features.get(itemsPer * i + 2),
-                    Integer.parseInt(features.get(itemsPer * i + 1))
-            );
+            return features[i];
         }
 
         @Override
         public int getCount() {
-            return features.size() / itemsPer;
+            return features.length;
         }
 
         public CharSequence getPageTitle(int position) {
