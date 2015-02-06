@@ -22,7 +22,7 @@
     <application
         android:name=".Push.PushNotif"
         android:allowBackup="true"
-        android:icon="@drawable/chrono_icon"
+        android:icon="@drawable/chronology_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
