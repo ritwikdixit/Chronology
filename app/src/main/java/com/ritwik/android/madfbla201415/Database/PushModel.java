@@ -4,6 +4,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+/*
+*   This represents an Push Notification in our ActiveAndroid Database
+*/
 @Table(name = "Push_Table")
 public class PushModel extends Model {
     @Column(name = "Time")
