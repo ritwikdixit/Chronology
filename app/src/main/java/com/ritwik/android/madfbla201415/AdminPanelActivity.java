@@ -281,8 +281,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
         eventData.put(HomepageFragment.END_DATE_KEY, endDate);
         eventData.put(HomepageFragment.START_TIME_KEY, startTime);
         eventData.put(HomepageFragment.END_TIME_KEY, endTime);
-        eventData.put(HomepageFragment.LOCATION_KEY, mContact.getText().toString());
-        eventData.put(HomepageFragment.CONTACT_INFO_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.LOCATION_KEY, mLocation.getText().toString());
+        eventData.put(HomepageFragment.CONTACT_INFO_KEY, mContact.getText().toString());
         eventData.put(HomepageFragment.CATEGORY_KEY, getTheCategory());
         eventData.put(HomepageFragment.RSVP_KEY, "");
 
