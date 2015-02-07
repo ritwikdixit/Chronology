@@ -65,6 +65,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
     private Toolbar toolbar;
     private SearchView mSearch;
 
+
+    //part of the checking system to see if valid image url
     private static final String STANDARD_IMAGE_URL = "http://hhsprogramming.com/img/logo-white.png";
     private static final String[] EXTENSIONS = {".jpg", ".png", ".tif", ".tiff", ".gif"};
 
@@ -153,6 +155,7 @@ public class AdminPanelActivity extends ActionBarActivity  {
                 if (ref == null)
                     ref = DataHolder.getRef();
 
+                //make sure they filled all fields
                 if (!fieldsAreNull()) {
                     uploadEvent();
                 } else {
@@ -197,6 +200,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
     }
 
     private void setDialogListeners() {
+
+        //for the corresponding buttons, pop a fragment showing the chooser
 
         mStartButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,7 +301,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
-        ref.child("calendar").child(eventName).updateChildren(eventData, new Firebase.CompletionListener() {
+        ref.child("calendar").child(eventName)
+                .updateChildren(eventData, new Firebase.CompletionListener() {
 
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
@@ -362,9 +368,9 @@ public class AdminPanelActivity extends ActionBarActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
+        // Handles action bar item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.chronology_search_bar) {
@@ -412,6 +418,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
         boolean isStart;
 
         //restores what was previously set
+        //this is for convenience, saves data
+        //-1 is code for nothing saved, sets current date
         static int[] prevData = {-1, -1};
 
         @Override

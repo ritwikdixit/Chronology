@@ -42,6 +42,7 @@ public class HelpActivity extends ActionBarActivity {
                     R.drawable.sc_home
             ),
 
+            //RSVP
             HelpScreenSlidePageFragment.instance(
                     "RSVP and Sync with Calendar",
                     "RSVP to events by clicking the RSVP Button. Your RSVP'd events will be highlighted " +
@@ -54,7 +55,7 @@ public class HelpActivity extends ActionBarActivity {
 
             HelpScreenSlidePageFragment.instance(
                     "Notifications",
-                    "Homestead High School can send out notifications for events. CLick on a notification " +
+                    "Homestead High School can send out notifications for events. Click on a notification " +
                             "to see more details. You can see all your notifications at any time.",
                     R.drawable.sc_notifications
 
@@ -62,7 +63,7 @@ public class HelpActivity extends ActionBarActivity {
 
             HelpScreenSlidePageFragment.instance(
                     "Event Filters",
-                    "Filter events in All Events",
+                    "Filter events in All Events by Category, time, or RSVP status",
                     R.drawable.sc_filters
 
             ),
@@ -70,7 +71,7 @@ public class HelpActivity extends ActionBarActivity {
             //Search
             HelpScreenSlidePageFragment.instance(
                     "Search",
-                    "Search events using the Search Widget in the Action Bar. Search for the title" +
+                    "Search events using the Search Widget in the Action Bar. Search for the title, " +
                             "location, or details of an event. Voice Search is also available.",
                     R.drawable.sc_home
             )
@@ -98,6 +99,7 @@ public class HelpActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
+        //initialize the drawer
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -136,6 +138,7 @@ public class HelpActivity extends ActionBarActivity {
 
     }
 
+    //instantiate
     private List<Fragment> getFragments() {
         Bundle b1 = new Bundle();
         b1.putString("name", "abc");

@@ -94,6 +94,10 @@ public class CalendarActivity extends ActionBarActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
+        //each day the events will only show the events for that specific day
+        //for that reason we hold all days in events and just for selected day
+        //in filteredEvents, to make transitions smooth
+
         events = new ArrayList<>(HomepageFragment.getEvents());
         filteredEvents = new ArrayList<>();
 
@@ -234,6 +238,9 @@ public class CalendarActivity extends ActionBarActivity {
     public void filterEvents(String todayDate, ArrayList<EventItem> allEvents) {
 
         filteredEvents.clear();
+
+        //reinitialize the filtered events such that the start date is in
+        //the given selected date
 
         for (EventItem thisEvent : allEvents) {
             if (thisEvent.getmStartDate().compareTo(todayDate) < 1

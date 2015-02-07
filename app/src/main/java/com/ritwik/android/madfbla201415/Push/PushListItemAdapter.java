@@ -40,7 +40,7 @@ public class PushListItemAdapter extends ArrayAdapter<PushItem> {
         TextView mTitle = (TextView) convertView.findViewById(R.id.event_list_item_title);
         TextView mDetails = (TextView) convertView.findViewById(R.id.event_list_item_details);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
         SimpleDateFormat hdf = new SimpleDateFormat("hh:mm a");
         Date resultdate = new Date(thisPush.getTime());
 

@@ -5,16 +5,15 @@ import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Created by Ritwik on 1/9/15.
  */
 
 //don't worry about the methods being deprecated
-//they work standard on most devices.
+//they work better on old devices.
 
 public class SettingsActivity extends PreferenceActivity {
 
@@ -37,6 +36,14 @@ public class SettingsActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(36, 0, 0, 36);
+        TextView name = new TextView(this);
+        name.setText("Logged in as " + DataHolder.getName());
+        name.setTextColor(getResources().getColor(android.R.color.black));
+        root.addView(name, layoutParams);
 
     }
 }

@@ -38,6 +38,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //initialize the server
         final View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         Firebase.setAndroidContext(getActivity());
         DataHolder.setRef(new Firebase(URL_FIREBASE));
