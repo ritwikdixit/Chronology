@@ -153,9 +153,9 @@ public class CalendarActivity extends ActionBarActivity {
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
-                        events.get(position).getmStartDate());
+                        filteredEvents.get(position).getmStartDate());
                 detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
-                        events.get(position).getmEndDate());
+                        filteredEvents.get(position).getmEndDate());
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
                         filteredEvents.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
