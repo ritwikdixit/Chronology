@@ -296,8 +296,11 @@ public class AdminPanelActivity extends ActionBarActivity  {
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
         else if (validURL(mImageUrl.getText().toString().replaceAll("\\s", "")))
             eventData.put(HomepageFragment.URL_KEY, mImageUrl.getText().toString());
-        else
+        else {
+            Toast.makeText(getApplicationContext(),
+                    "Invalid Image URL, used standard image", Toast.LENGTH_SHORT).show();
             eventData.put(HomepageFragment.URL_KEY, STANDARD_IMAGE_URL);
+        }
 
         eventData.put(HomepageFragment.DETAILS_KEY, mDetails.getText().toString());
 
