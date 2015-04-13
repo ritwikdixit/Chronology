@@ -2,13 +2,11 @@ package com.ritwik.android.madfbla201415;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.ritwik.android.madfbla201415.R;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -84,7 +82,6 @@ public class LoadingActivity extends ActionBarActivity {
 
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Maybe have a different action bar menu file later
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -103,7 +100,6 @@ public class LoadingActivity extends ActionBarActivity {
         return active;
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

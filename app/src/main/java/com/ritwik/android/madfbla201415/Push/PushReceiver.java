@@ -6,7 +6,7 @@ package com.ritwik.android.madfbla201415.Push;
 
 import java.util.HashMap;
 import com.pushbots.push.Pushbots;
-import com.ritwik.android.madfbla201415.Database.PushModel;
+import com.pushbots.push.utils.PBConstants;
 import com.ritwik.android.madfbla201415.LoadingActivity;
 
 import android.content.BroadcastReceiver;
@@ -28,7 +28,7 @@ public class PushReceiver extends BroadcastReceiver
         String action = intent.getAction();
         Log.d(TAG, "action=" + action);
         // Handle Push Message when opened
-        if (action.equals(Pushbots.MSG_OPENED)) {
+        if (action.equals(PBConstants.EVENT_MSG_OPEN)) {
             HashMap<?, ?> PushdataOpen = (HashMap<?, ?>) intent.getExtras().get(Pushbots.MSG_OPEN);
             String message = PushdataOpen.get("message").toString();
             String details = "No further details";
@@ -37,21 +37,18 @@ public class PushReceiver extends BroadcastReceiver
             if(!LoadingActivity.isActive()) {
 
                 Intent startAppIntent = new Intent(Intent.ACTION_MAIN);
-                startAppIntent.setClass(Pushbots.getInstance().appContext, LoadingActivity.class);
+                startAppIntent.setClass(context, LoadingActivity.class);
                 startAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
 
                 //giving redirect data
                 startAppIntent.putExtra(PUSH_REDIRECT_KEY, true);
                 startAppIntent.putExtra(PUSH_DETAILS_KEY, details);
                 startAppIntent.putExtra(PUSH_MSG_KEY, message);
-                Pushbots.getInstance().appContext.startActivity(startAppIntent);
-
-                PushModel newPush = new PushModel(System.currentTimeMillis(), message, details);
-                newPush.save();
+                Pushbots.sharedInstance().startActivity(startAppIntent);
 
             }
         // Handle Push Message when received
-        }else if(action.equals(Pushbots.MSG_RECEIVE)){
+        }else if(action.equals(PBConstants.EVENT_MSG_RECEIVE)){
             //They received the message
         }
     }

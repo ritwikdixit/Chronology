@@ -16,17 +16,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.activeandroid.query.Select;
 import com.ritwik.android.madfbla201415.DataHolder;
-import com.ritwik.android.madfbla201415.Database.PushModel;
 import com.ritwik.android.madfbla201415.DrawerAdapter;
 import com.ritwik.android.madfbla201415.DrawerItemClickListener;
 import com.ritwik.android.madfbla201415.R;
 import com.ritwik.android.madfbla201415.SettingsActivity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class AllPushActivity extends ActionBarActivity  {
@@ -98,12 +94,6 @@ public class AllPushActivity extends ActionBarActivity  {
         mAllNotificationsView =  (ListView) findViewById(R.id.all_push_list);
 
 
-
-        List list = new Select().from(PushModel.class).orderBy("Time ASC").execute();
-        Iterator<PushModel> x = list.iterator();
-        while(x.hasNext()){
-            pushNotifs.add(new PushItem(x.next()));
-        }
         adapter = new PushListItemAdapter(this, pushNotifs);
         mAllNotificationsView.setAdapter(adapter);
 

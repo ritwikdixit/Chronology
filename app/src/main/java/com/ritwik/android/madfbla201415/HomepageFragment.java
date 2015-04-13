@@ -3,56 +3,28 @@ package com.ritwik.android.madfbla201415;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.content.*;
+import android.graphics.*;
+import android.os.*;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.*;
+import android.support.v4.widget.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.activeandroid.query.Select;
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
-import com.ritwik.android.madfbla201415.Database.DataModel;
+import com.firebase.client.*;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HomepageFragment extends Fragment {
 
@@ -263,23 +235,6 @@ public class HomepageFragment extends Fragment {
                             getActivity()
                     ));
 
-                    String id = newEvent.get("id").toString();
-                    List<DataModel> ldm = new Select().from(DataModel.class)
-                            .where("myID = ?", id).execute();
-                    if (ldm.size() == 0) {
-                        DataModel dm = new DataModel(newEvent.get("start_date").toString(),
-                                newEvent.get("end_date").toString(),
-                                newEvent.get("start_time").toString(),
-                                newEvent.get("end_time").toString(),
-                                newEvent.get("title").toString(),
-                                newEvent.get("location").toString(),
-                                newEvent.get("details").toString(),
-                                newEvent.get("url").toString(),
-                                newEvent.get("contact_info").toString(),
-                                newEvent.get("category").toString(),
-                                id);
-                        dm.save();
-                    }
 
                     Collections.sort(events, eventCompare);
                     extendsToday();
@@ -423,22 +378,6 @@ public class HomepageFragment extends Fragment {
                 Collections.sort(events, eventCompare);
                 extendsToday();
 
-                String id = newEvent.get("id").toString();
-                List<DataModel> ldm = new Select().from(DataModel.class).where("myID = ?", id).execute();
-                if(ldm.size() == 0){
-                    DataModel dm = new DataModel( newEvent.get("start_date").toString(),
-                            newEvent.get("end_date").toString(),
-                            newEvent.get("start_time").toString(),
-                            newEvent.get("end_time").toString(),
-                            newEvent.get("title").toString(),
-                            newEvent.get("location").toString(),
-                            newEvent.get("details").toString(),
-                            newEvent.get("url").toString(),
-                            newEvent.get("contact_info").toString(),
-                            newEvent.get("category").toString(),
-                            id);
-                    dm.save();
-                }
 
             }
 

@@ -1,8 +1,5 @@
 package com.ritwik.android.madfbla201415.Push;
 
-
-import com.ritwik.android.madfbla201415.Database.PushModel;
-
 public class PushItem {
 
     private long recieveTime;
@@ -18,11 +15,6 @@ public class PushItem {
         this.recieveTime = x.recieveTime;
         this.message = x.message;
         this.details = x.details;
-    }
-    public PushItem(PushModel m) {
-        this.recieveTime = m.time;
-        this.message = m.name;
-        this.details = m.details;
     }
 
     public long getTime(){ return recieveTime; }

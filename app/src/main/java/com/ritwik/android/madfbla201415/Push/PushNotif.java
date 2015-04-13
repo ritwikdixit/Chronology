@@ -1,6 +1,4 @@
 package com.ritwik.android.madfbla201415.Push;
-
-import com.activeandroid.ActiveAndroid;
 import com.pushbots.push.Pushbots;
 import com.ritwik.android.madfbla201415.DataHolder;
 
@@ -13,9 +11,10 @@ public class PushNotif extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Pushbots.init(this, Notif_Sender_ID, Notif_App_ID);
-        Pushbots.getInstance().setMsgReceiver(PushReceiver.class);
-        Pushbots.getInstance().setAlias(this, DataHolder.getName());
-        ActiveAndroid.initialize(this);
+        Pushbots.sharedInstance().init(this);
+        Pushbots.sharedInstance().setCustomHandler(PushReceiver.class);
+        if(DataHolder.getName() != null)
+            Pushbots.sharedInstance().setAlias(DataHolder.getName());
+
     }
 }

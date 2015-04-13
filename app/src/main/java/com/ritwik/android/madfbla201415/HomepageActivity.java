@@ -1,13 +1,8 @@
 package com.ritwik.android.madfbla201415;
 
-import android.content.Intent;
+import com.ritwik.android.madfbla201415.R;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-
 public class HomepageActivity extends ActionBarActivity {
 
     public HomepageActivity() {

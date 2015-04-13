@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
-import com.ritwik.android.madfbla201415.Database.PushModel;
 import com.ritwik.android.madfbla201415.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PushListItemAdapter extends ArrayAdapter<PushItem> {
 
@@ -33,7 +30,7 @@ public class PushListItemAdapter extends ArrayAdapter<PushItem> {
                     .inflate(R.layout.list_item_push, null);
         }
 
-        PushItem thisPush = new PushItem(getRecord(position));
+        PushItem thisPush = new PushItem(10, "to fix", "sorry");
 
         TextView mDate =  (TextView) convertView.findViewById(R.id.event_list_item_date);
         TextView mTime = (TextView) convertView.findViewById(R.id.event_list_item_time);
@@ -58,9 +55,5 @@ public class PushListItemAdapter extends ArrayAdapter<PushItem> {
 
         return convertView;
 
-    }
-    public static PushModel getRecord(int position) {
-        List<PushModel> x = new Select().from(PushModel.class).orderBy("Time ASC").execute();
-        return x.get(position);
     }
 }
