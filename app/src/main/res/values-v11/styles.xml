@@ -1,0 +1,11 @@
+<resources>
+    
+    <style name="AppTheme2" parent="@android:style/Theme.Holo.Light">
+        <item name="actionBarStyle">@style/actionBarStyle2</item>
+    </style>
+
+    <style name="actionBarStyle2" parent="@android:style/Theme.Holo.Light">
+        <item name="android:background">@color/chronology_color</item>
+    </style>
+
+</resources>

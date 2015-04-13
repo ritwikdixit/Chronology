@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="LoginLabel">Login</string>
+    <string name="HomepageLabel">Home</string>
+    <string name="app_name">Chronology</string>
+    <string name="action_settings">Settings</string>
+    <string name="username">Username</string>z
+    <string name="password">Password</string>
+    <string name="create_account"><u>Sign Up!</u></string>
+    <string name="fullname">Full Name</string>
+    <string name="email">Email</string>
+    <string name="repeat_pass">Repeat Password</string>
+    <string name="sign_in"><u>Sign In!</u></string>
+    <string name="phone_number">Phone Number</string>
+    <string name="sign_in_button_string">Sign In</string>
+    <string name="sign_up_button_string">Sign Up</string>
+    <string name="loading">Loading... Please Wait.</string>
+    <string name="all_events">All Events</string>
+    <string name="all_push">All Push Notifications</string>
+    <string name="event">Event</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_closed">Closed</string>
+    <string name="calendar">Calendar</string>
+    <string name="search_hint">Search Chronology events</string>
+    <string name="share">Share</string>
+    <string name="admin_panel">Create Event</string>
+
+    <!-- Settings strings -->
+    <string name="notifications">Notifications</string>
+    <string name="notifications_summary">Enable Notifications</string>
+    <string name="push_notif">Push Notifications</string>
+
+    <!-- SETTINGS KEYS -->
+    <string name="notifications_key">notifications_check</string>
+    <string name="fullname_key">full_name</string>
+
+    <string name="help_text">Hallo! Here\'s what you can do on Chronology:</string>
+    <string-array name="features">
+        <item><ul><li>View things on a calendar</li></ul></item>
+        <item><ul><li>Create new events (for approved admins)</li></ul></item>
+        <item></item>
+    </string-array>
+
+    <string-array name="filters">
+        <item>Filter: None (All Events)</item>
+        <item>From Today</item>
+        <item>This Week</item>
+        <item>This Month</item>
+        <item>Sports</item>
+        <item>Clubs</item>
+        <item>Academics</item>
+        <item>Holiday</item>
+        <item>Fun Event</item>
+        <item>My RSVPs</item>
+    </string-array>
+
+    <string name="title_activity_improved_calendar">ImprovedCalendarActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="green_auto_key">auto_green</string>
+    <string name="auto_login_key">auto_login</string>
+
+
+</resources>

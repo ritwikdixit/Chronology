@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/action_bar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="24dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/admin_title_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
+                    android:text="New Event Title" />
+
+                <TextView
+                    android:id="@+id/admin_date_text"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Select Date"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/admin_start_date_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
+                        android:text="Select Start Date" />
+
+                    <Button
+                        android:id="@+id/admin_end_date_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
+                        android:text="Select End Date" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/admin_time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Select Time"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/admin_start_time_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
+                        android:text="Select Start Time" />
+
+                    <Button
+                        android:id="@+id/admin_end_time_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/chrono_button"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="sans-serif-light"
+                        android:paddingRight="8dp"
+                        android:paddingLeft="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="Select End Time" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/admin_location_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
+                    android:hint="Set Location" />
+
+                <EditText
+                    android:id="@+id/admin_contact_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
+                    android:hint="Set Contact Information" />
+
+                <EditText
+                    android:id="@+id/admin_image_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
+                    android:hint="Add Optional Image URL" />
+
+                <EditText
+                    android:id="@+id/admin_details_edit"
+                    android:inputType="textMultiLine"
+                    android:minLines="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/chrono_2_button"
+                    android:textColorHint="@color/chronology_light_color"
+                    android:hint="Details" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Select Category"
+                    android:textSize="20sp" />
+
+
+                <RadioGroup
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_sports"
+                        android:text="Sports"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_holiday"
+                        android:text="Holiday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_clubs"
+                        android:text="Clubs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_fun"
+                        android:text="Fun Event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <RadioButton
+                        android:id="@+id/admin_radio_academics"
+                        android:text="Academics"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+
+                </RadioGroup>
+
+                <Button
+                    android:id="@+id/admin_form_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/chrono_button"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingRight="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="Create Event" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/chronology_color"
+            android:choiceMode="singleChoice" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

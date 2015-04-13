@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include
+        layout="@layout/action_bar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:padding="4dp"
+                android:layout_gravity="center_horizontal" />
+
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/all_events_listView"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id= "@+id/left_drawer"
+            android:background="@color/chronology_color"
+            android:choiceMode="singleChoice"
+            android:layout_gravity="start"
+            android:layout_width="240dp"
+            android:layout_height="match_parent" />
+
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

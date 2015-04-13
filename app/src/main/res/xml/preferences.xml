@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="@string/green_auto_key"
+        android:title="Highlight RSVP\'d events"
+        android:summary="In the event list, events that you RSVP\'d to will be highlighted green."
+        android:padding="16dp"
+        android:defaultValue="true" />
+
+   <!-- <CheckBoxPreference
+        android:key="@string/auto_login_key"
+        android:title="Auto Login"
+        android:summary="Automatically Login at App Launch"
+        android:padding="16dp"
+        android:defaultValue="true" />-->
+
+
+</PreferenceScreen>

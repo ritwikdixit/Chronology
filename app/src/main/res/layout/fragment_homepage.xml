@@ -1,0 +1,71 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomepageActivity"
+    tools:ignore="MergeRootFrame">
+
+    <include
+        layout="@layout/action_bar" />
+
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/navigation_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
+        <LinearLayout
+            android:id="@+id/scroller_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/scrolling_banner"
+                android:background="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_weight="4"
+                android:layout_gravity="center_horizontal" />
+
+            <FrameLayout
+                android:padding="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:progressDrawable="@drawable/green_color"
+                    android:id="@+id/progressBar"
+                    android:layout_gravity="center" />
+
+            </FrameLayout>
+
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_weight="5" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id= "@+id/left_drawer"
+            android:background="@color/chronology_color"
+            android:choiceMode="singleChoice"
+            android:layout_gravity="start"
+            android:layout_width="240dp"
+            android:layout_height="match_parent" />
+
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

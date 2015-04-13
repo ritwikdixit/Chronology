@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chronology_color">#4CAF50</color>
+    <color name="chronology_light_color">#74B984</color>
+    <color name="drawer_background">#424242</color>
+    <color name="drawer_select">#656565</color>
+
+    <color name="title_list_black">#434343</color>
+    <color name="light_grey">#A9A9A9</color>
+    <color name="almost_white">#EFEFEF</color>
+
+    <color name="calendar_blue">#3498db</color>
+    <color name="calendar_red">#e74c3c</color>
+    <color name="calendar_green">#4CAF50</color>
+    <color name="calendar_orange">#F47143</color>
+
+
+
+    <color name="chronology_secondary">#EB4747</color>
+</resources>
