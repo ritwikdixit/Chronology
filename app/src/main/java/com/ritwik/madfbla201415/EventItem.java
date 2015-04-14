@@ -55,6 +55,12 @@ public class EventItem implements Serializable{
          new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
     }
 
+    //internally saved data
+    public EventItem(String[] data, Context context) {
+        this(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7],
+                data[8], data[9], data[10], data[11], Boolean.parseBoolean(data[12]), context);
+    }
+
 
     public String getmStartDate() {
         return mStartDate;
@@ -172,12 +178,14 @@ public class EventItem implements Serializable{
     //this is for debugging do not delete
     @Override
     public String toString() {
-        return mTitle + "---"
-                + mStartDate + "-" + mEndDate
-                + " " + mStartTime + "-" + mEndTime
-                + " locate @" + mLocation + " " + " details=" + mDetails
-                + " img src=" + mUrl + " contact @" + mContactInfo
-                + " @category " + category;
+        return
+                number + "---" + id
+                + "---" +mStartDate + "---" + mEndDate
+                + "---" + mStartTime + "---" + mEndTime
+                +  "---" + mTitle
+                + "---" + mLocation + " ---" + mDetails
+                + "---" + mUrl + "---" + mContactInfo
+                + "---" + category + "---" + isAttending + "<*>";
 
     }
 }

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -78,6 +80,8 @@ public class HomepageFragment extends Fragment {
     private static ArrayList<EventItem> showEvents;
 
     public static final String LOG_TAG = "EventList";
+    public static final String DATA_TAG = "DataStorage";
+
     private Firebase ref = DataHolder.getRef();
 
     //keys for detail activity
@@ -230,6 +234,11 @@ public class HomepageFragment extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mScrollerLayout = (LinearLayout) rootView.findViewById(R.id.scroller_layout);
 
+        if (!isNetworkAvailable()) {
+            events = DataStorage.readFromFile(parentActivity);
+            showEvents = new ArrayList<>();
+        }
+
         if (events == null) {
 
             eventCompare = new Comparator<EventItem>() {
@@ -271,6 +280,8 @@ public class HomepageFragment extends Fragment {
                             parentActivity
                     ));
 
+                    DataStorage.write(events, DataHolder.FILE_NAME, parentActivity);
+                    DataStorage.writeToFile(events, parentActivity);
 
                     Collections.sort(events, eventCompare);
                     extendsToday();
@@ -295,7 +306,7 @@ public class HomepageFragment extends Fragment {
                 }
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(FirebaseError firebaseError) {
-                    Log.d("Loading Event Item Error", firebaseError.getMessage());
+                    Log.d(LOG_TAG, firebaseError.getMessage());
                 }
             });
         }
@@ -358,6 +369,13 @@ public class HomepageFragment extends Fragment {
         return rootView;
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void initDrawer() {
         DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
         mDrawerList.setAdapter(mDrawerAdapter);
@@ -418,7 +436,7 @@ public class HomepageFragment extends Fragment {
             public void onChildRemoved(DataSnapshot dataSnapshot) {}
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Loading Event Item Error", firebaseError.getMessage());
+                Log.d(LOG_TAG, firebaseError.getMessage());
             }
         });
     }

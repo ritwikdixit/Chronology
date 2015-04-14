@@ -1,7 +1,6 @@
 package com.ritwik.madfbla201415.Push;
 
 import android.app.Application;
-
 import com.pushbots.push.Pushbots;
 
 public class PushNotif extends Application {

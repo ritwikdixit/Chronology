@@ -13,6 +13,8 @@ public class DataHolder {
     private static String[] mAdminDrawerArray = { "Home", "Month View",
             "All Events", "Help", "Notifications", "Create Event", "Log Out"};
 
+    public static final String FILE_NAME = "stored_events";
+
     private static boolean isAdmin = false;
     private static int[] resIds = {
             R.drawable.ic_home,
