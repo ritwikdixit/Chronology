@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
-import com.ritwik.android.madfbla201415.R;
+import com.ritwik.madfbla201415.R;
 import com.ritwik.madfbla201415.SettingsActivity;
 
 public class PushActivity extends ActionBarActivity {

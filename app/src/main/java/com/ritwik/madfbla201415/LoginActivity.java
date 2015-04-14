@@ -5,8 +5,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.ritwik.android.madfbla201415.R;
-
 
 public class LoginActivity extends ActionBarActivity {
 

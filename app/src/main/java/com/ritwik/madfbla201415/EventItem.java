@@ -4,9 +4,6 @@ package com.ritwik.madfbla201415;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
-
-import com.ritwik.android.madfbla201415.R;
-
 import java.io.Serializable;
 import java.util.Date;
 

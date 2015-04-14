@@ -20,8 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
 
-import com.ritwik.android.madfbla201415.R;
-
 import java.util.Arrays;
 import java.util.List;
 

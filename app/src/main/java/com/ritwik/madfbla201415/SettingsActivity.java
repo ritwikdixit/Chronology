@@ -8,8 +8,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ritwik.android.madfbla201415.R;
-
 //don't worry about the methods being deprecated
 //they work better on old devices.
 

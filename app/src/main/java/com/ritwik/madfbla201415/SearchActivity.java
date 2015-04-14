@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ritwik.android.madfbla201415.R;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 

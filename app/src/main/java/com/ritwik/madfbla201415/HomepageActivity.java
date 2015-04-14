@@ -3,8 +3,6 @@ package com.ritwik.madfbla201415;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.ritwik.android.madfbla201415.R;
-
 public class HomepageActivity extends ActionBarActivity {
 
     public HomepageActivity() {

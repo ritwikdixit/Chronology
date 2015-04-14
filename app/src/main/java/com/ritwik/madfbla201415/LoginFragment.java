@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.ritwik.android.madfbla201415.R;
 
 
 public class LoginFragment extends Fragment {

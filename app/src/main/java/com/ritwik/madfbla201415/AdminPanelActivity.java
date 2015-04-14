@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.ritwik.android.madfbla201415.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -324,6 +323,8 @@ public class AdminPanelActivity extends ActionBarActivity  {
                         })
                         .setNegativeButton("Back Home", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(mContext, HomepageActivity.class);
+                                mContext.startActivity(intent);
                                 finish();
                             }
                         })

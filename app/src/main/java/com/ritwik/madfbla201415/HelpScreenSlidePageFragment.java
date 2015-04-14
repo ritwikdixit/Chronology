@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ritwik.android.madfbla201415.R;
 
 /**
  * Created by joshuazhou on 2015-02-01.

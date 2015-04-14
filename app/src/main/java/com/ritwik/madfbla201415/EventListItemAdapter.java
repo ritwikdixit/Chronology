@@ -10,8 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ritwik.android.madfbla201415.R;
-
 import java.util.ArrayList;
 
 public class EventListItemAdapter extends ArrayAdapter<EventItem> {

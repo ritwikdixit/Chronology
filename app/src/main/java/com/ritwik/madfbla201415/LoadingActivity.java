@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.ritwik.android.madfbla201415.R;
 import com.ritwik.madfbla201415.Push.PushActivity;
 import com.ritwik.madfbla201415.Push.PushReceiver;
 

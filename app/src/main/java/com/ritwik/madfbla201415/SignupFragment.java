@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.ritwik.android.madfbla201415.R;
 
 //class for signing up
 

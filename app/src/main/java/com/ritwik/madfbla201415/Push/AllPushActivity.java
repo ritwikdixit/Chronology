@@ -16,10 +16,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ritwik.android.madfbla201415.R;
 import com.ritwik.madfbla201415.DataHolder;
 import com.ritwik.madfbla201415.DrawerAdapter;
 import com.ritwik.madfbla201415.DrawerItemClickListener;
+import com.ritwik.madfbla201415.R;
 import com.ritwik.madfbla201415.SettingsActivity;
 
 import java.util.ArrayList;
