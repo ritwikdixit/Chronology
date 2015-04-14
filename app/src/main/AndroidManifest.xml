@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ritwik.android.madfbla201415" >
+    package="com.ritwik.madfbla201415" >
 
     <!-- GCM connects to Google Services. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,10 +11,10 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <permission
-        android:name="com.ritwik.android.madfbla201415.permission.C2D_MESSAGE"
+        android:name="com.ritwik.madfbla201415.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.ritwik.android.madfbla201415.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.ritwik.madfbla201415.permission.C2D_MESSAGE" />
 
     <!-- This app has permission to register and receive data message. -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -46,7 +46,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.ritwik.android.madfbla201415" />
+                <category android:name="com.ritwik.madfbla201415" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.pushbots.push.DefaultPushHandler" />
@@ -57,7 +57,7 @@
             android:name=".HomepageActivity"
             android:label="@string/HomepageLabel" >
             <intent-filter>
-                <action android:name="com.ritwik.android.madfbla201415.MESSAGE" />
+                <action android:name="com.ritwik.madfbla201415.MESSAGE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -102,7 +102,7 @@
             android:parentActivityName=".HomepageActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ritwik.android.madfbla201415.HomepageActivity" />
+                android:value="com.ritwik.madfbla201415.HomepageActivity" />
         </activity>
         <activity android:name=".SearchActivity" >
             <intent-filter>
