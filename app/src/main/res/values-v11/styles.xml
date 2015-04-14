@@ -1,5 +1,5 @@
 <resources>
-    
+
     <style name="AppTheme2" parent="@android:style/Theme.Holo.Light">
         <item name="actionBarStyle">@style/actionBarStyle2</item>
     </style>
