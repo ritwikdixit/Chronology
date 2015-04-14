@@ -35,7 +35,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/chrono_2_button"
                     android:textColorHint="@color/chronology_light_color"
-                    android:text="New Event Title" />
+                    android:hint="New Event Title" />
 
                 <TextView
                     android:id="@+id/admin_date_text"

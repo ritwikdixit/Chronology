@@ -120,7 +120,7 @@ public class HomepageFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_homepage, container, false);
-        
+        activity = getActivity();
         setHasOptionsMenu(true);
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
