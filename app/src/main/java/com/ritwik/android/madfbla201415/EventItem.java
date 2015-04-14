@@ -4,9 +4,11 @@ package com.ritwik.android.madfbla201415;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class EventItem {
+public class EventItem implements Serializable{
 
     private String number;
     private String id;

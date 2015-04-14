@@ -28,6 +28,8 @@ import java.util.*;
 
 public class HomepageFragment extends Fragment {
 
+    private static Activity activity;
+
     //the scrolling image banner with a ViewPager, and adapter
     // essentially a list of images being animated by runnable
 
@@ -70,6 +72,7 @@ public class HomepageFragment extends Fragment {
     public static final String CAT_FUN_KEY = "Fun Event";
     public static final String CAT_ACADEMICS_KEY = "Academics";
 
+    public static final String EVENTS_FILENAME = "Events_File_Name";
 
     //drawer
     private DrawerLayout mDrawerLayout;
@@ -176,11 +179,12 @@ public class HomepageFragment extends Fragment {
                     }
                 });
 
+
         ref.child("admins").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Map<String, Object> adminUsers = (Map<String, Object>) snapshot.getValue();
-                if(adminUsers.containsKey(DataHolder.getUID()))
+                if (adminUsers.containsKey(DataHolder.getUID()))
                     DataHolder.setAdmin(true);
                 initDrawer();
             }
@@ -290,7 +294,7 @@ public class HomepageFragment extends Fragment {
         });
 
         eventAdapter = new EventListItemAdapter(getActivity(), showEvents);
-      
+
         mListView.setAdapter(eventAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -377,26 +381,20 @@ public class HomepageFragment extends Fragment {
 
                 Collections.sort(events, eventCompare);
                 extendsToday();
-
-
             }
-
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             public void onCancelled(FirebaseError firebaseError) {
                 Log.d("Loading Event Item Error", firebaseError.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        activity = getActivity();
     }
 
     public static void extendsToday() {
@@ -415,13 +413,19 @@ public class HomepageFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDrawerToggle.syncState();
+        activity = getActivity();
 
     }
 
     public static ArrayList<EventItem> getEvents() {
         return events;
     }
-
+    public static void saveEventsLocally(){
+        DataStorage.write(events, EVENTS_FILENAME, activity.getApplicationContext());
+    }
+    public static void loadEventsLocally(){
+        events = (ArrayList<EventItem>) DataStorage.read(EVENTS_FILENAME, activity.getApplicationContext());
+    }
     public static int getEventsPositionForNumQuery(String numQuery) {
 
         for (int i = 0; i < events.size(); i++) {
