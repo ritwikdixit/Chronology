@@ -26,6 +26,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/* Note: if the app is not launched to this page (ie notification) other pages may
+ * not work properly or the app may crash due to uninitialized data and nulls everywhere
+ */
+
 public class HomepageFragment extends Fragment {
 
     //the scrolling image banner with a ViewPager, and adapter
@@ -39,6 +43,11 @@ public class HomepageFragment extends Fragment {
 
     private EventListItemAdapter eventAdapter;
     private View thisRootView;
+
+
+    //NOTE: if this is not initialized, app crashes on event create
+    //that will happen if the app is launched and homepage fragment onCreateView never called
+    private static Activity parentActivity;
 
     //this is static so i can refer to it in the other class
     //detail activity
@@ -129,6 +138,8 @@ public class HomepageFragment extends Fragment {
                 return onOptionsItemSelected(menuItem);
             }
         });
+
+        parentActivity = getActivity();
 
         //init the drawer
         thisRootView = rootView;
@@ -232,7 +243,7 @@ public class HomepageFragment extends Fragment {
                             newEvent.get("contact_info").toString(),
                             newEvent.get("category").toString(),
                             isGoing,
-                            getActivity()
+                            parentActivity
                     ));
 
 
@@ -240,7 +251,7 @@ public class HomepageFragment extends Fragment {
                     extendsToday();
 
                     mListView.setAdapter(eventAdapter);
-                    mImageAdapter = new BannerAdapter(getActivity(), showEvents);
+                    mImageAdapter = new BannerAdapter(parentActivity, showEvents);
                     mScrollBanner.setAdapter(mImageAdapter);
 
                 }
@@ -254,7 +265,7 @@ public class HomepageFragment extends Fragment {
                         if (t.getId().equals(removedID))
                             x.remove();
                     }
-                    mImageAdapter = new BannerAdapter(getActivity(), showEvents);
+                    mImageAdapter = new BannerAdapter(parentActivity, showEvents);
                     mScrollBanner.setAdapter(mImageAdapter);
                 }
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
