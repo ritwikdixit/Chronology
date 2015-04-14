@@ -290,7 +290,7 @@ public class HomepageFragment extends Fragment {
         });
 
         eventAdapter = new EventListItemAdapter(getActivity(), showEvents);
-
+      
         mListView.setAdapter(eventAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

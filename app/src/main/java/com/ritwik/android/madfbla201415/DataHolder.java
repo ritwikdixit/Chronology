@@ -1,10 +1,8 @@
 package com.ritwik.android.madfbla201415;
 
 import com.firebase.client.Firebase;
+import com.pushbots.push.Pushbots;
 
-/**
- * Created by Soham Pardeshi on 12/31/2014.
- */
 
 public class DataHolder {
 
@@ -40,7 +38,10 @@ public class DataHolder {
     public static void setUID(String x){
         UID = x;
     }
-    public static void setName(String x){ fullName = x; }
+    public static void setName(String x){
+        fullName = x;
+        Pushbots.sharedInstance().setAlias(x);
+    }
     public static void setEmail(String x){
         email = x;
     }

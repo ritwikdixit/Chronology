@@ -8,10 +8,6 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-/**
- * Created by Ritwik on 1/9/15.
- */
-
 //don't worry about the methods being deprecated
 //they work better on old devices.
 

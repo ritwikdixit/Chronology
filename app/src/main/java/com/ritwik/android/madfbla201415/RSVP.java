@@ -1,7 +1,5 @@
 package com.ritwik.android.madfbla201415;
 
-import android.util.Log;
-
 import com.firebase.client.Firebase;
 import java.util.HashMap;
 import java.util.Map;

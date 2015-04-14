@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -57,7 +58,7 @@ public class HelpScreenSlidePageFragment extends Fragment {
 
         int imageResource = getArguments().getInt(ARG_IMAGE);
         mImage = (ImageView)rootView.findViewById(R.id.help_image);
-        Picasso.with(getActivity()).load(imageResource).into(mImage);
+        Glide.with(getActivity()).load(imageResource).into(mImage);
 
         return rootView;
     }

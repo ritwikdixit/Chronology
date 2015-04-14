@@ -1,13 +1,9 @@
 package com.ritwik.android.madfbla201415;
 
-import android.app.Activity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-/**
- * Created by Ritwik on 1/2/15.
- */
 
 //listens for a left to right swipe
 public class SwipeListener extends GestureDetector.SimpleOnGestureListener {
