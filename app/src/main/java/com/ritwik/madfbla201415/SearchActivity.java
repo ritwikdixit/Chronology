@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -135,6 +136,13 @@ public class SearchActivity extends ActionBarActivity {
     public void presentData() {
         adapter = new EventListItemAdapter(this, mData);
         mEventsView.setAdapter(adapter);
+
+        // If no events have been found, alert the user. This is a rudimentary
+        // mechanism. In future, a TextView or something should show on screen indefinitely
+        // that says "No events found." Or whatever.
+        if (mData.size() == 0) {
+            Toast.makeText(this, "No events found", Toast.LENGTH_LONG).show();
+        }
     }
 
     //this is in case it has not loaded yet
