@@ -88,110 +88,69 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
     }
 
     private void userPosition(int position) {
-        if (position == 0) {
-
-            //home
-            if(!(mContext instanceof HomepageActivity)) {
+        if (position == 0 && !(mContext instanceof HomepageActivity)) {
                 Intent intent = new Intent(mContext, HomepageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 1) {
-
-            //calendar
-            if(!(mContext instanceof CalendarActivity)){
+        } else if (position == 1 && !(mContext instanceof CalendarActivity)){
                 Intent intent = new Intent(mContext, CalendarActivity.class);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 2) {
-
-            //all events
-            if(!(mContext instanceof AllEventsActivity)){
+        } else if (position == 2 && !(mContext instanceof AllEventsActivity)){
                 Intent intent = new Intent(mContext, AllEventsActivity.class);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 3) {
-
-            if (!(mContext instanceof HelpActivity)) {
+        } else if (position == 3 && !(mContext instanceof HelpActivity)) {
                 Intent intent = new Intent(mContext, HelpActivity.class);
                 mContext.startActivity(intent);
-            }
-        } else if (position == 4) {
-            //notifications
-            if(!(mContext instanceof AllPushActivity)){
+
+        } else if (position == 4 && !(mContext instanceof AllPushActivity)){
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
-            }
 
         } else if (position == 5) {
-
             //log out
             initLogOutDialog();
-
         }
+        if(!(mContext instanceof HomepageActivity))
+            mContext.finish();
     }
 
     private void adminPosition(int position) {
-        if (position == 0) {
-
-            //home
-            if(!(mContext instanceof HomepageActivity)) {
+        if (position == 0 && !(mContext instanceof HomepageActivity)) {
                 Intent intent = new Intent(mContext, HomepageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 1) {
-
-            //calendar
-            if(!(mContext instanceof CalendarActivity)){
+        } else if (position == 1 && !(mContext instanceof CalendarActivity)){
                 Intent intent = new Intent(mContext, CalendarActivity.class);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 2) {
-            //all events
-            if(!(mContext instanceof AllEventsActivity)){
+        } else if (position == 2 && !(mContext instanceof AllEventsActivity)){
                 Intent intent = new Intent(mContext, AllEventsActivity.class);
                 mContext.startActivity(intent);
-            }
 
-        } else if (position == 3) {
-            //help
-//            try {
-//                SendPush.postData("Tomato", "Test");
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//            Log.e(LOG_TAG, "Sending Data via Push");
-
-            if (!(mContext instanceof HelpActivity)) {
+        } else if (position == 3 && !(mContext instanceof HelpActivity)) {
                 Intent intent = new Intent(mContext, HelpActivity.class);
                 mContext.startActivity(intent);
-            }
-        } else if (position == 4) {
 
-            //notifications
-            if(!(mContext instanceof AllPushActivity)){
+        } else if (position == 4 && !(mContext instanceof AllPushActivity)){
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
-            }
 
         } else if (position == 5) {
-
             // admin panel create event
             Intent intent = new Intent(mContext, AdminPanelActivity.class);
             mContext.startActivity(intent);
 
         } else if (position == 6) {
-
             //log out
             initLogOutDialog();
-
         }
+
+        if(!(mContext instanceof HomepageActivity))
+            mContext.finish();
     }
 
 

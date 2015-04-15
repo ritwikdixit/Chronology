@@ -12,60 +12,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-/**
- * Created by Soham on 4/13/2015.
- */
 public class DataStorage {
-    public static void write(Object o, String filename, Context c){
-        ObjectOutputStream out = null;
-        FileOutputStream fos = null;
-        try {
-            fos = c.openFileOutput(filename, Context.MODE_PRIVATE);
-            out = new ObjectOutputStream(fos);
-            out.writeObject(o);
-            Log.v(HomepageFragment.DATA_TAG, "Success1");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                if (out != null)
-                    out.close();
-                if (fos != null)
-                    fos.close();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-    }
-    public static Object read (String filename, Context c){
-        ObjectInputStream out = null;
-        FileInputStream fos = null;
-        Object x = null;
-        try {
-            fos = c.openFileInput(filename);
-            out = new ObjectInputStream(fos);
-            x = out.readObject();
-            Log.v(HomepageFragment.DATA_TAG, "Success2");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                if (out != null)
-                    out.close();
-                if (fos != null)
-                    fos.close();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        //cast to an event item
-        return x;
-    }
-
-    public static void writeToFile(ArrayList<EventItem> events, Context c) {
+   public static void writeToFile(ArrayList<EventItem> events, Context c) {
         try {
             String s = createStorageString(events);
             FileOutputStream fos = c.openFileOutput(DataHolder.FILE_NAME, Context.MODE_PRIVATE);

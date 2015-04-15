@@ -280,7 +280,7 @@ public class HomepageFragment extends Fragment {
                             parentActivity
                     ));
 
-                    DataStorage.write(events, DataHolder.FILE_NAME, parentActivity);
+                    //DataStorage.write(events, DataHolder.FILE_NAME, parentActivity);
                     DataStorage.writeToFile(events, parentActivity);
 
                     Collections.sort(events, eventCompare);
@@ -411,7 +411,6 @@ public class HomepageFragment extends Fragment {
                 Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                 boolean isGoing = snapshot.child("rsvp")
                         .child(DataHolder.getUID()).getValue() != null;
-                Log.v(LOG_TAG, "is?" + isGoing);
                 events.add(new EventItem(
                         snapshot.getKey(),
                         newEvent.get("id").toString(),
@@ -469,12 +468,6 @@ public class HomepageFragment extends Fragment {
 
     public static ArrayList<EventItem> getEvents() {
         return events;
-    }
-    public static void saveEventsLocally(){
-        DataStorage.write(events, EVENTS_FILENAME, activity.getApplicationContext());
-    }
-    public static void loadEventsLocally(){
-        events = (ArrayList<EventItem>) DataStorage.read(EVENTS_FILENAME, activity.getApplicationContext());
     }
     public static int getEventsPositionForNumQuery(String numQuery) {
 

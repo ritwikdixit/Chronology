@@ -105,7 +105,6 @@ public class SearchActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if ((intent.getAction()).equals(Intent.ACTION_SEARCH)) {
             mQuery = intent.getStringExtra(SearchManager.QUERY);
-            Log.v(TAG, "success");
             getSupportActionBar().setTitle("Search: " + mQuery);
             doTheSearch(mQuery);
         }
@@ -129,7 +128,6 @@ public class SearchActivity extends ActionBarActivity {
             if (events.size() <= 0) {
                 events = new ArrayList<>(HomepageFragment.getEvents());
                 delayNewQuery();
-                Log.v(TAG, "delayed");
             }
     }
 

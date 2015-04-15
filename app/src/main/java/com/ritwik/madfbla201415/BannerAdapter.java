@@ -35,6 +35,7 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
 
         ImageView image = mEvents.get(position).getmImage();
+        
         container.addView(image);
 
         //set listener

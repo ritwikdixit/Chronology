@@ -177,7 +177,6 @@ public class AllEventsActivity extends ActionBarActivity  {
 
         filteredEvents.clear();
         String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-        Log.v(CalendarActivity.TAG, todayDate);
 
         //0 none , 1 from today, 2 this week, 3 this month
         if (code == 0) {

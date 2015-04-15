@@ -7,4 +7,4 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/actionBarSize"
     android:minHeight="?android:attr/actionBarSize"
-    app:theme="@style/actionBarStyle1" />
+    app:theme="@style/actionBarStyle1"/>

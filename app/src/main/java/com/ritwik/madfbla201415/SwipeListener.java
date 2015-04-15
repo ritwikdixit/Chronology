@@ -14,9 +14,6 @@ public class SwipeListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-        Log.v(TAG, "Swipe Works " + velocityX + " " + velocityY);
-
         if (velocityX > 1500 && Math.abs(velocityY) < 2000) {
             swiped = true;
         }

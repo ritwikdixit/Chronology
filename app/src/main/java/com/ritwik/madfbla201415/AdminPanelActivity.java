@@ -537,7 +537,6 @@ public class AdminPanelActivity extends ActionBarActivity  {
             }
 
             String dateFormat = year + "-" + monthStr + "-" + dayStr;
-            Log.v(LOG_TAG, dateFormat);
 
             if (isStart)
                 ((AdminPanelActivity)getActivity()).setStartDate(dateFormat);
