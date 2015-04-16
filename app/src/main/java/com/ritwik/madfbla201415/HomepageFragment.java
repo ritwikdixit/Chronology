@@ -303,6 +303,7 @@ public class HomepageFragment extends Fragment {
                     }
                     mImageAdapter = new BannerAdapter(parentActivity, showEvents);
                     mScrollBanner.setAdapter(mImageAdapter);
+                    mScrollBanner.setOffscreenPageLimit(3);
                 }
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
                 public void onCancelled(FirebaseError firebaseError) {
@@ -317,6 +318,7 @@ public class HomepageFragment extends Fragment {
         mImageAdapter = new BannerAdapter(getActivity(), showEvents);
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
+        mScrollBanner.setOffscreenPageLimit(3);
 
         //When a page changes on a banner the bar smooth scrolls to position
         mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){

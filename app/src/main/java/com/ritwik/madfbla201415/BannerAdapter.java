@@ -3,6 +3,8 @@ package com.ritwik.madfbla201415;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,7 +37,12 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
 
         ImageView image = mEvents.get(position).getmImage();
-        
+
+        //if the image already has a parent ie already instantiated
+        if (image.getParent() != null) {
+            ((ViewPager) image.getParent()).removeView(image);
+        }
+
         container.addView(image);
 
         //set listener
