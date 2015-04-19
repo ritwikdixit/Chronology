@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.ritwik.madfbla201415.Push.PushReceiver;
 
 
 public class LoginFragment extends Fragment {
@@ -62,13 +63,24 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        //Read about Explicit Intents at
-                        //http://developer.android.com/guide/components/intents-filters.html
-                        //used to start activities (like this) and send data across activities
+
+                        //Intents are used to start activities (like this) and send data across activities
+                        Intent intent = getActivity().getIntent();
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
-                        homepageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        //if started by a notification
+                        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+                            homepageIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
+                            homepageIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+                            homepageIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+                        }
+
+                        homepageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homepageIntent);
                         getActivity().finish();
+
                     }
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {

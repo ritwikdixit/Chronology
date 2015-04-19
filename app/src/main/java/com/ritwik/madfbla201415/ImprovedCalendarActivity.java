@@ -1,5 +1,6 @@
 package com.ritwik.madfbla201415;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import java.util.GregorianCalendar;
 
 
 public class ImprovedCalendarActivity extends ActionBarActivity {
+
     private ListView mEventsList;
     private EventListItemAdapter adapter;
     private Context mContext = this;
@@ -78,6 +80,7 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
         setText(Calendar.getInstance().getTime());
         mEventsList.setAdapter(adapter);
 
+        //initialize the calendar
         caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         final Calendar cal = Calendar.getInstance();
@@ -87,17 +90,15 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
         caldroidFragment.setArguments(args);
 
 
-
-        for(EventItem ei : HomepageFragment.getEvents()){
-            ArrayList<Date> ald = between(ei.dateStart(false), ei.dateEnd(false));
-            for(Date d : ald) {
-                filterEvents(d);
-                if (!filteredEvents.isEmpty()) {
-                    caldroidFragment.setBackgroundResourceForDate(R.color.calendar_orange, d);
-                    caldroidFragment.setTextColorForDate(R.color.almost_white, d);
-                }
+        //for every event turn the calendar color green
+        for(EventItem ei : events){
+            ArrayList<Date> datesForEvent = ei.getAllDatesBetweenStartAndEnd();
+            for (Date date : datesForEvent) {
+                caldroidFragment.setBackgroundResourceForDate(R.drawable.chrono_button, date);
+                caldroidFragment.setTextColorForDate(android.R.color.white, date);
             }
         }
+
 
         final CaldroidListener listener = new CaldroidListener() {
             public void onSelectDate(Date date, View view) {
@@ -109,7 +110,6 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
             }
         };
         caldroidFragment.setCaldroidListener(listener);
-
 
         caldroidFragment.refreshView();
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
@@ -133,9 +133,9 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
                 detailIntent.putExtra(HomepageFragment.TITLE_KEY,
                         filteredEvents.get(position).getmTitle());
                 detailIntent.putExtra(HomepageFragment.START_DATE_KEY,
-                        events.get(position).getmStartDate());
+                        filteredEvents.get(position).getmStartDate());
                 detailIntent.putExtra(HomepageFragment.END_DATE_KEY,
-                        events.get(position).getmEndDate());
+                        filteredEvents.get(position).getmEndDate());
                 detailIntent.putExtra(HomepageFragment.START_TIME_KEY,
                         filteredEvents.get(position).getmStartTime());
                 detailIntent.putExtra(HomepageFragment.END_TIME_KEY,
@@ -166,8 +166,8 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
         filteredEvents.clear();
 
         for (EventItem thisEvent : HomepageFragment.getEvents()) {
-            if (thisEvent.dateStart(true).compareTo(date) < 1
-                    && thisEvent.dateEnd(true).compareTo(date) > -1) {
+            if (thisEvent.getStartDateObject().compareTo(date) < 1
+                    && thisEvent.getEndDateObject().compareTo(date) > -1) {
                 filteredEvents.add(thisEvent);
             }
         }
@@ -203,8 +203,14 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        //android library API 11+ standard search
+        SearchManager managerSearch = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearch = (SearchView) menu.findItem(R.id.chronology_search_bar).getActionView();
+        mSearch.setSearchableInfo(managerSearch.getSearchableInfo(getComponentName()));
+        mSearch.setIconifiedByDefault(true);
+        return super.onCreateOptionsMenu(menu);
     }
+
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
@@ -237,24 +243,5 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
             mDataText.setText(filteredEvents.size() + " Events on " + EventItem.formatDate(todayDate));
         }
     }
-    private ArrayList<Date> between(Date start, Date end) {
-        ArrayList<Date> dates = new ArrayList<Date>();
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(start);
 
-        while (calendar.getTime().before(end)){
-            Date result = calendar.getTime();
-            dates.add(result);
-            calendar.add(Calendar.DATE, 1);
-        }
-        return dates;
-    }
-    Calendar cal1 = Calendar.getInstance();
-    Calendar cal2 = Calendar.getInstance();
-    public boolean equals(Date a, Date b){
-        cal1.setTime(a);
-        cal2.setTime(b);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-    }
 }

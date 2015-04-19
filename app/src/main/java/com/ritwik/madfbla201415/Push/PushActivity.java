@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +20,13 @@ import com.firebase.client.Firebase;
 import com.ritwik.madfbla201415.R;
 import com.ritwik.madfbla201415.SettingsActivity;
 
+import java.util.ArrayList;
+
 public class PushActivity extends ActionBarActivity {
 
     private LinearLayout layout;
 
-    private static final String LOG_TAG = "NotifView";
+    public static final String LOG_TAG = "notifications";
     private Firebase ref;
 
     private ShareActionProvider mShare;
@@ -63,8 +66,19 @@ public class PushActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        mTitle.setText(extras.getString("Push_Message"));
-        mInfo.setText(extras.getString("Push_Details"));
+        String message = extras.getString(PushReceiver.PUSH_MSG_KEY);
+        String details = extras.getString(PushReceiver.PUSH_DETAILS_KEY);
+
+        //if this is a new notification, save it
+        if (!extras.getBoolean(AllPushActivity.NOT_NEW_KEY, false)) {
+            Log.v(LOG_TAG, "New Notification!");
+            ArrayList<PushItem> pushes = new ArrayList<>(PushStorage.readFromFile(this));
+            pushes.add(new PushItem(message, details));
+            PushStorage.writeToFile(pushes, this);
+        }
+
+        mTitle.setText(message);
+        mInfo.setText(details);
 
     }
 
@@ -89,13 +103,12 @@ public class PushActivity extends ActionBarActivity {
     private Intent getDefaultIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "Chronology is so good!");
+        intent.putExtra(Intent.EXTRA_TEXT, "Notifications can be sent via Chronology!");
         return intent;
     }
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         startActivity(new Intent(this, AllPushActivity.class));
         PushActivity.this.overridePendingTransition(
                 R.anim.neg_left_right, R.anim.left_to_right);

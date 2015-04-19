@@ -5,7 +5,10 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class EventItem implements Serializable{
 
@@ -136,43 +139,37 @@ public class EventItem implements Serializable{
         return monthNames[month - 1];
     }
 
-    public Date dateStart(){
-        String[] sd = getmStartDate().split("-");
-        Date date  = new Date();
-        date.setMonth(Integer.parseInt(sd[1]));
-        date.setDate(Integer.parseInt(sd[2]));
-        date.setYear(Integer.parseInt(sd[0]) - 1900);
+    //year - 1900, month - 1, day
+    public Date getStartDateObject() {
+        String[] components = getmStartDate().split("-");
+        Date date  = new Date(
+            Integer.parseInt(components[0]) - 1900,
+            Integer.parseInt(components[1]) - 1,
+            Integer.parseInt(components[2]));
         return date;
     }
-    public Date dateStart(boolean y){
-        String[] sd = getmStartDate().split("-");
-        Date date  = new Date();
-        date.setMonth(Integer.parseInt(sd[1]) - 1);
-        if(y)
-            date.setDate(Integer.parseInt(sd[2]) - 1);
-        else
-            date.setDate(Integer.parseInt(sd[2]));
-        date.setYear(Integer.parseInt(sd[0]) - 1900);
+
+    public Date getEndDateObject() {
+        String[] components = getmEndDate().split("-");
+        Date date  = new Date(
+                Integer.parseInt(components[0]) - 1900,
+                Integer.parseInt(components[1]) - 1,
+                Integer.parseInt(components[2]));
         return date;
     }
-    public Date dateEnd(){
-        String[] sd = getmEndDate().split("-");
-        Date date  = new Date();
-        date.setMonth(Integer.parseInt(sd[1]));
-        date.setDate(Integer.parseInt(sd[2]));
-        date.setYear(Integer.parseInt(sd[0]) - 1900);
-        return date;
-    }
-    public Date dateEnd(boolean x){
-        String[] sd = getmEndDate().split("-");
-        Date date  = new Date();
-        date.setMonth(Integer.parseInt(sd[1]) - 1);
-        if(x)
-            date.setDate(Integer.parseInt(sd[2]) - 1);
-        else
-            date.setDate(Integer.parseInt(sd[2]));
-        date.setYear(Integer.parseInt(sd[0]) - 1900);
-        return date;
+
+    public ArrayList<Date> getAllDatesBetweenStartAndEnd() {
+        ArrayList<Date> dates = new ArrayList<>();
+
+        //add all dates within to the list
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getStartDateObject());
+        while (cal.getTime().compareTo(getEndDateObject()) < 1) {
+            dates.add(cal.getTime());
+            cal.add(Calendar.DATE, 1);
+        }
+
+        return dates;
     }
 
     //this is for debugging do not delete

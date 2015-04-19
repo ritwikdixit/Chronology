@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.ritwik.madfbla201415.Push.PushReceiver;
 
 //class for signing up
 
@@ -122,9 +123,21 @@ public class SignupFragment extends Fragment {
                         Toast.makeText(getActivity(), "Success, Account Created!",
                                 Toast.LENGTH_SHORT).show();
 
+                        Intent intent = getActivity().getIntent();
                         Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
+
+                        //if started by a notification
+                        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+                            homepageIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
+                            homepageIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+                            homepageIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+                        }
+
                         homepageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homepageIntent);
+                        getActivity().finish();
                     }
 
                     @Override

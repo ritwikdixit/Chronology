@@ -29,7 +29,7 @@ public class AllPushActivity extends ActionBarActivity  {
 
     private ListView mAllNotificationsView;
     private PushListItemAdapter adapter;
-    private ArrayList<PushItem> pushNotifs = new ArrayList<PushItem>();
+    private ArrayList<PushItem> pushes;
 
     private Activity mContext = this;
 
@@ -40,6 +40,8 @@ public class AllPushActivity extends ActionBarActivity  {
 
     private Toolbar toolbar;
     private SearchView mSearch;
+
+    public static final String NOT_NEW_KEY = "not_new";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,16 +95,11 @@ public class AllPushActivity extends ActionBarActivity  {
 
         mAllNotificationsView =  (ListView) findViewById(R.id.all_push_list);
 
+        pushes = new ArrayList<>(PushStorage.readFromFile(this));
 
-        adapter = new PushListItemAdapter(this, pushNotifs);
+        adapter = new PushListItemAdapter(this, pushes);
         mAllNotificationsView.setAdapter(adapter);
 
-        mAllNotificationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
         mAllNotificationsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -110,9 +107,9 @@ public class AllPushActivity extends ActionBarActivity  {
 
                 //Putting data for detail activity
                 Intent pushIntent = new Intent(mContext, PushActivity.class);
-                pushIntent.putExtra(Intent.EXTRA_TEXT, position + 1);
-                pushIntent.putExtra("Push_Message", pushNotifs.get(position).getMessage());
-                pushIntent.putExtra("Push_Details", pushNotifs.get(position).getDetails());
+                pushIntent.putExtra(PushReceiver.PUSH_MSG_KEY, pushes.get(position).getMessage());
+                pushIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY, pushes.get(position).getDetails());
+                pushIntent.putExtra(NOT_NEW_KEY, true);
 
                 startActivity(pushIntent);
                 AllPushActivity.this.overridePendingTransition(

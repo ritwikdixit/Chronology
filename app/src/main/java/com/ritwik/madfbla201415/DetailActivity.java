@@ -88,7 +88,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
             }
         });
 
-        mTitle = (TextView) findViewById(R.id.title2);
+        mTitle = (TextView) findViewById(R.id.title1);
         mStartDate = (TextView) findViewById(R.id.detail_start_date);
         mEndDate = (TextView) findViewById(R.id.detail_end_date);
         mStartTime = (TextView) findViewById(R.id.detail_start_time);

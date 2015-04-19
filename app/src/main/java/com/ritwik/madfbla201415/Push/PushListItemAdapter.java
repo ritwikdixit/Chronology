@@ -16,10 +16,12 @@ import java.util.Date;
 public class PushListItemAdapter extends ArrayAdapter<PushItem> {
 
     private Activity mActivity;
+    private ArrayList<PushItem> pushes;
 
-    public PushListItemAdapter(Activity activity, ArrayList<PushItem> events) {
-        super(activity, 0, events);
+    public PushListItemAdapter(Activity activity, ArrayList<PushItem> pushes) {
+        super(activity, 0, pushes);
         mActivity = activity;
+        this.pushes = new ArrayList<>(pushes);
     }
 
     @Override
@@ -30,27 +32,25 @@ public class PushListItemAdapter extends ArrayAdapter<PushItem> {
                     .inflate(R.layout.list_item_push, null);
         }
 
-        PushItem thisPush = new PushItem(10, "to fix", "sorry");
+        PushItem thisPush = getItem(position);
 
-        TextView mDate =  (TextView) convertView.findViewById(R.id.event_list_item_date);
-        TextView mTime = (TextView) convertView.findViewById(R.id.event_list_item_time);
         TextView mTitle = (TextView) convertView.findViewById(R.id.event_list_item_title);
         TextView mDetails = (TextView) convertView.findViewById(R.id.event_list_item_details);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
-        SimpleDateFormat hdf = new SimpleDateFormat("hh:mm a");
-        Date resultdate = new Date(thisPush.getTime());
+        String message = thisPush.getMessage();
+        String details = thisPush.getDetails();
 
-        mDate.setText(sdf.format(resultdate));
-        mTime.setText(hdf.format(resultdate));
-        mTitle.setText(thisPush.getMessage());
-        mDetails.setText(thisPush.getDetails());
-
-        //populating a preview of the detail0
-        if (thisPush.getDetails().length() <= 30) {
-            mDetails.setText(thisPush.getDetails());
+        //if the message is too long, do not populate full list view
+        if (message.length() <= 45){
+            mTitle.setText(message);
         } else {
-            mDetails.setText(thisPush.getDetails().substring(0, 30) + "...");
+            mTitle.setText(message.substring(0, 42) + "...");
+        }
+
+        if (details.length() <= 45){
+            mDetails.setText(details);
+        } else {
+            mDetails.setText(details.substring(0, 45) + "...");
         }
 
         return convertView;

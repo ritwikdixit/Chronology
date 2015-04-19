@@ -88,13 +88,14 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
     }
 
     private void userPosition(int position) {
+        boolean clickedSamePage = false;
         if (position == 0 && !(mContext instanceof HomepageActivity)) {
                 Intent intent = new Intent(mContext, HomepageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
 
-        } else if (position == 1 && !(mContext instanceof CalendarActivity)){
-                Intent intent = new Intent(mContext, CalendarActivity.class);
+        } else if (position == 1 && !(mContext instanceof ImprovedCalendarActivity)){
+                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
                 mContext.startActivity(intent);
 
         } else if (position == 2 && !(mContext instanceof AllEventsActivity)){
@@ -112,19 +113,22 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 5) {
             //log out
             initLogOutDialog();
+        } else {
+            clickedSamePage = true;
         }
-        if(!(mContext instanceof HomepageActivity))
+        if(!(mContext instanceof HomepageActivity) && !clickedSamePage)
             mContext.finish();
     }
 
     private void adminPosition(int position) {
+        boolean clickedSamePage = false;
         if (position == 0 && !(mContext instanceof HomepageActivity)) {
                 Intent intent = new Intent(mContext, HomepageActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent);
 
-        } else if (position == 1 && !(mContext instanceof CalendarActivity)){
-                Intent intent = new Intent(mContext, CalendarActivity.class);
+        } else if (position == 1 && !(mContext instanceof ImprovedCalendarActivity)){
+                Intent intent = new Intent(mContext, ImprovedCalendarActivity.class);
                 mContext.startActivity(intent);
 
         } else if (position == 2 && !(mContext instanceof AllEventsActivity)){
@@ -147,9 +151,11 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
         } else if (position == 6) {
             //log out
             initLogOutDialog();
+        } else {
+            clickedSamePage = true;
         }
 
-        if(!(mContext instanceof HomepageActivity))
+        if(!(mContext instanceof HomepageActivity) && !clickedSamePage)
             mContext.finish();
     }
 

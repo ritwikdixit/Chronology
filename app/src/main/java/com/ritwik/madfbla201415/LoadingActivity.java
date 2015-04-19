@@ -29,56 +29,55 @@ public class LoadingActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        /*prefs = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext());
-
-        autoLogin = prefs.getBoolean(getString(R.string.auto_login_key), true);*/
-
         Firebase.setAndroidContext(this);
         if(DataHolder.isNull())
             DataHolder.setRef(new Firebase(URL_FIREBASE));
 
-
         ref = DataHolder.getRef();
         mContext = this;
 
+        //Checks if authorized, starts intent to appropriate activity
+        ref.addAuthStateListener(new Firebase.AuthStateListener() {
 
-        //get the data from the push receiver and redirect to pushActivity
-        Intent intent = getIntent();
-        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
 
-            Intent redirectIntent = new Intent(this, PushActivity.class);
-            redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
-                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
-            redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
-                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
-            startActivity(redirectIntent);
+                //already logged in
+                if (authData != null) {
+                    DataHolder.setUID(authData.getUid());
+                    Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
 
-            //for activities that rely on home
-            HomepageFragment.initEvents(this);
-            finish();
-
-        } else /*if (autoLogin)*/ {
-
-            //Checks if authorized, starts intent to appropriate activity
-            ref.addAuthStateListener(new Firebase.AuthStateListener() {
-
-                @Override
-                public void onAuthStateChanged(AuthData authData) {
-                    if (authData != null) {
-                        DataHolder.setUID(authData.getUid());
-                        Intent redirectIntent = new Intent(mContext, HomepageActivity.class);
-                        startActivity(redirectIntent);
-                    } else {
-                        Intent redirectIntent = new Intent(mContext, LoginActivity.class);
-                        startActivity(redirectIntent);
+                    //if was started by push notification
+                    Intent intent = getIntent();
+                    if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+                        redirectIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
+                        redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                                intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+                        redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                                intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
                     }
 
-                    finish();
-                }
-            });
-        }
+                    startActivity(redirectIntent);
 
+                //not logged in
+                } else {
+                    Intent redirectIntent = new Intent(mContext, LoginActivity.class);
+                    Intent intent = getIntent();
+
+                    if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+                        redirectIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
+                        redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                                intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+                        redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                                intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+                    }
+
+                    startActivity(redirectIntent);
+                }
+
+                finish();
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

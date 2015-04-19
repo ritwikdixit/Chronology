@@ -19,7 +19,6 @@ public class DataStorage {
             FileOutputStream fos = c.openFileOutput(DataHolder.FILE_NAME, Context.MODE_PRIVATE);
             fos.write(s.getBytes());
             fos.close();
-            Log.v(HomepageFragment.DATA_TAG, "Success11");
         } catch (IOException e) {
             Log.v(HomepageFragment.DATA_TAG, e.getMessage());
         }
@@ -39,7 +38,6 @@ public class DataStorage {
                 line = bufferedReader.readLine();
             }
             events = parse(sb.toString(), c);
-            Log.v(HomepageFragment.DATA_TAG, "Success22");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,6 +55,8 @@ public class DataStorage {
 
     //parse the string to an array of events
     public static ArrayList<EventItem> parse(String loaded, Context context) {
+        //in order to remove the [ and ] on the outsides
+        //loaded = loaded.substring(1, loaded.length() - 1);
         ArrayList<EventItem> events = new ArrayList<>();
         String[] eventStrings = loaded.split("<*>");
         for (String eventStr : eventStrings)

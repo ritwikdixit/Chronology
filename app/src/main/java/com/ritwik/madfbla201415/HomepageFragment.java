@@ -39,6 +39,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.ritwik.madfbla201415.Push.PushActivity;
+import com.ritwik.madfbla201415.Push.PushReceiver;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -367,6 +369,17 @@ public class HomepageFragment extends Fragment {
 
             }
         });
+
+        //if was started by notification, then go to it.
+        Intent notifIntent = getActivity().getIntent();
+        if (notifIntent != null && notifIntent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+            Intent redirectIntent = new Intent(getActivity(), PushActivity.class);
+            redirectIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                    notifIntent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+            redirectIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                    notifIntent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+            startActivity(redirectIntent);
+        }
 
         return rootView;
     }
