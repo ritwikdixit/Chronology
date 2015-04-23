@@ -13,7 +13,7 @@
         <include
             layout="@layout/action_bar" />
 
-        <com.ritwik.madfbla201415.BetterImageView
+        <com.ritwik.chronology.BetterImageView
             android:id="@+id/detail_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
