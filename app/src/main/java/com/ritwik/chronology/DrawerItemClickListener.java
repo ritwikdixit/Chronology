@@ -155,7 +155,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             clickedSamePage = true;
         }
 
-        if(!(mContext instanceof HomepageActivity) && !clickedSamePage  && position != 5)
+        if(!(mContext instanceof HomepageActivity) && !clickedSamePage  && position != 6)
             mContext.finish();
     }
 
