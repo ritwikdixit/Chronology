@@ -143,7 +143,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
 
-        } else if (position == 5) {
+        } else if (position == 5 && !(mContext instanceof AllPushActivity)) {
             // admin panel create event
             Intent intent = new Intent(mContext, AdminPanelActivity.class);
             mContext.startActivity(intent);
