@@ -118,6 +118,10 @@ public class HomepageFragment extends Fragment {
     private SearchView mSearch;
 
     private static Comparator eventCompare;
+    private static boolean rotatedScreen = false;
+
+    //for each implementation of HomepageFragment
+    private boolean getData = true;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -192,8 +196,8 @@ public class HomepageFragment extends Fragment {
                 }
             }
         };
-
-        initDrawer();
+        Log.v(LOG_TAG, "Is this parentActivity? " + (parentActivity.equals(this)));
+        initDrawer(parentActivity);
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         mProgressBar.setMax(100);
@@ -224,7 +228,7 @@ public class HomepageFragment extends Fragment {
                 Map<String, Object> adminUsers = (Map<String, Object>) snapshot.getValue();
                 if (adminUsers.containsKey(DataHolder.getUID()))
                     DataHolder.setAdmin(true);
-                initDrawer();
+                initDrawer(parentActivity);
             }
 
             @Override
@@ -241,7 +245,7 @@ public class HomepageFragment extends Fragment {
             showEvents = new ArrayList<>();
         }
 
-        if (events == null) {
+        if (events == null || rotatedScreen) {
 
             eventCompare = new Comparator<EventItem>() {
 
@@ -260,6 +264,9 @@ public class HomepageFragment extends Fragment {
                 // Retrieve new posts as they are added to Firebase
                 @Override
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+
+                    if (!getData)
+                        return;
 
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     boolean isGoing = snapshot.child("rsvp")
@@ -296,6 +303,8 @@ public class HomepageFragment extends Fragment {
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    if (!getData)
+                        return;
                     String removedID = dataSnapshot.child("id").getValue().toString();
                     Iterator<EventItem> x  = events.iterator();
                     while(x.hasNext()) {
@@ -314,6 +323,8 @@ public class HomepageFragment extends Fragment {
             });
         }
 
+
+        rotatedScreen = false;
         extendsToday();
 
         //Banner Adapter
@@ -391,68 +402,26 @@ public class HomepageFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void initDrawer() {
-        DrawerAdapter mDrawerAdapter = new DrawerAdapter(getActivity(), DataHolder.getDrawerArray());
+    public void onDestroy() {
+        super.onDestroy();
+        if (!parentActivity.isFinishing()) {
+                //screen rotation
+            rotatedScreen = true;
+        }
+        getData = false;
+    }
+
+    private void initDrawer(Activity context) {
+        DrawerAdapter mDrawerAdapter = new DrawerAdapter(context, DataHolder.getDrawerArray());
         mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setBackgroundResource(R.color.drawer_background);
 
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener(
-                getActivity(), mDrawerLayout, mDrawerList));
+               context, mDrawerLayout, mDrawerList));
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-    }
-
-    public static void initEvents(final Activity context) {
-
-        Firebase ref = DataHolder.getRef();
-        eventCompare = new Comparator<EventItem>() {
-
-            @Override
-            public int compare(EventItem event, EventItem event2) {
-                return event.getmStartDate().compareTo(event2.getmStartDate());
-            }
-        };
-
-        events = new ArrayList<>();
-        showEvents = new ArrayList<>();
-        Query eventsByDate = ref.child("calendar").orderByChild("start_date");
-        eventsByDate.addChildEventListener(new ChildEventListener() {
-
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
-                boolean isGoing = snapshot.child("rsvp")
-                        .child(DataHolder.getUID()).getValue() != null;
-                events.add(new EventItem(
-                        snapshot.getKey(),
-                        newEvent.get("id").toString(),
-                        newEvent.get("start_date").toString(),
-                        newEvent.get("end_date").toString(),
-                        newEvent.get("start_time").toString(),
-                        newEvent.get("end_time").toString(),
-                        newEvent.get("title").toString(),
-                        newEvent.get("location").toString(),
-                        newEvent.get("details").toString(),
-                        newEvent.get("url").toString(),
-                        newEvent.get("contact_info").toString(),
-                        newEvent.get("category").toString(),
-                        isGoing,
-                        context
-                ));
-
-                Collections.sort(events, eventCompare);
-                extendsToday();
-            }
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d(LOG_TAG, firebaseError.getMessage());
-            }
-        });
     }
 
     @Override
@@ -471,7 +440,6 @@ public class HomepageFragment extends Fragment {
             }
         }
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
