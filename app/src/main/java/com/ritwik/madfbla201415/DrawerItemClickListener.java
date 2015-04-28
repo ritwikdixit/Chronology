@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -143,7 +144,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
                 Intent intent = new Intent(mContext, AllPushActivity.class);
                 mContext.startActivity(intent);
 
-        } else if (position == 5 && !(mContext instanceof AllPushActivity)) {
+        } else if (position == 5 && !(mContext instanceof AdminPanelActivity)) {
             // admin panel create event
             Intent intent = new Intent(mContext, AdminPanelActivity.class);
             mContext.startActivity(intent);
@@ -155,6 +156,7 @@ public class DrawerItemClickListener implements ListView.OnItemClickListener {
             clickedSamePage = true;
         }
 
+        Log.v(LOG_TAG, position + "");
         if(!(mContext instanceof HomepageActivity) && !clickedSamePage  && position != 6)
             mContext.finish();
     }
