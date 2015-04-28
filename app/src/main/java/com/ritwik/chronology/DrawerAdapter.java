@@ -18,6 +18,10 @@ public class DrawerAdapter extends ArrayAdapter<String> {
     private String[] mArray;
     private Context mContext;
 
+    /*
+    Initializes a drawer adapter with a given array of data, (string)
+    here we take the string and convert it into the drawer title tab
+     */
     public DrawerAdapter(Context context, String[] array) {
         super(context, 0, Arrays.asList(array));
         mContext = context;

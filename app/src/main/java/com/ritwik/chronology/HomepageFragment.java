@@ -245,8 +245,14 @@ public class HomepageFragment extends Fragment {
             showEvents = new ArrayList<>();
         }
 
+        /*
+        If there are no events right now
+        rotated screen is there because the context needs updating
+        because rotating destroys the activity (context)
+         */
         if (events == null || rotatedScreen) {
 
+            //implementing the custom comparator to sort events
             eventCompare = new Comparator<EventItem>() {
 
                 @Override
@@ -255,19 +261,25 @@ public class HomepageFragment extends Fragment {
                 }
             };
 
+            //clear all events
             events = new ArrayList<>();
             showEvents = new ArrayList<>();
 
+            //Query the server (Fire Base API) and sort by start date
             Query eventsByDate = ref.child("calendar").orderByChild("start_date");
             eventsByDate.addChildEventListener(new ChildEventListener() {
 
-                // Retrieve new posts as they are added to Firebase
+                // Retrieve new posts as they are added to Fire base asynchronously
+                //We are using an anonymous inner class here for simplicity of OOP
                 @Override
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
 
+                    //if the context is old, do not resume
                     if (!getData)
                         return;
 
+                    //Extracting the JSON data from the server as a Map (Key, Value Pairs)
+                    //Constructing a custom Event object from the data
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     boolean isGoing = snapshot.child("rsvp")
                             .child(DataHolder.getUID()).getValue() != null;
