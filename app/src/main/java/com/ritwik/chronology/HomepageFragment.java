@@ -119,9 +119,8 @@ public class HomepageFragment extends Fragment {
 
     private static Comparator eventCompare;
     private static boolean rotatedScreen = false;
-
-    //for each implementation of HomepageFragment
     private boolean getData = true;
+    private int instanceID = 0;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -174,6 +173,7 @@ public class HomepageFragment extends Fragment {
         });
 
         parentActivity = getActivity();
+        instanceID = (int)(Math.random() * 1000000);
 
         //init the drawer
         thisRootView = rootView;
@@ -196,7 +196,7 @@ public class HomepageFragment extends Fragment {
                 }
             }
         };
-        Log.v(LOG_TAG, "Is this parentActivity? " + (parentActivity.equals(this)));
+
         initDrawer(parentActivity);
         //for aesthetics
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -205,6 +205,7 @@ public class HomepageFragment extends Fragment {
 
         //On Creation of Homepage, store user Data
         if(!DataHolder.hasUserData())
+            Log.v(LOG_TAG, "Yeah Admin works this timex");
             ref.child("users").child(DataHolder.getUID())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -246,11 +247,9 @@ public class HomepageFragment extends Fragment {
         }
 
         /*
-        If there are no events right now
-        rotated screen is there because the context needs updating
-        because rotating destroys the activity (context)
+        Short circuit on Java OR makes this work!
          */
-        if (events == null || rotatedScreen) {
+        if (events == null || events.size() == 0/* || rotatedScreen*/) {
 
             //implementing the custom comparator to sort events
             eventCompare = new Comparator<EventItem>() {
@@ -266,7 +265,7 @@ public class HomepageFragment extends Fragment {
             showEvents = new ArrayList<>();
 
             //Query the server (Fire Base API) and sort by start date
-            Query eventsByDate = ref.child("calendar").orderByChild("start_date");
+            final Query eventsByDate = ref.child("calendar").orderByChild("start_date");
             eventsByDate.addChildEventListener(new ChildEventListener() {
 
                 // Retrieve new posts as they are added to Fire base asynchronously
@@ -275,15 +274,17 @@ public class HomepageFragment extends Fragment {
                 public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
 
                     //if the context is old, do not resume
-                    if (!getData)
+                    if (!getData) {
+                        eventsByDate.removeEventListener(this);
                         return;
+                    }
 
                     //Extracting the JSON data from the server as a Map (Key, Value Pairs)
                     //Constructing a custom Event object from the data
                     Map<String, Object> newEvent = (Map<String, Object>) snapshot.getValue();
                     boolean isGoing = snapshot.child("rsvp")
                             .child(DataHolder.getUID()).getValue() != null;
-
+                    Log.v(LOG_TAG, instanceID + "");
                     events.add(new EventItem(
                             snapshot.getKey(),
                             newEvent.get("id").toString()                                                     ,
@@ -301,7 +302,6 @@ public class HomepageFragment extends Fragment {
                             parentActivity
                     ));
 
-                    //DataStorage.write(events, DataHolder.FILE_NAME, parentActivity);
                     DataStorage.writeToFile(events, parentActivity);
 
                     Collections.sort(events, eventCompare);
@@ -314,9 +314,18 @@ public class HomepageFragment extends Fragment {
                 }
 
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+                //if fire base object removed
+                //remove it from the events list
+                //& update events list accordingly
+                //basically re instantiate it
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    if (!getData)
+                    //if the context is old, do not resume
+                    if (!getData) {
+                        eventsByDate.removeEventListener(this);
                         return;
+                    }
+
                     String removedID = dataSnapshot.child("id").getValue().toString();
                     Iterator<EventItem> x  = events.iterator();
                     while(x.hasNext()) {
@@ -336,7 +345,6 @@ public class HomepageFragment extends Fragment {
         }
 
 
-        rotatedScreen = false;
         extendsToday();
 
         //Banner Adapter
@@ -344,7 +352,6 @@ public class HomepageFragment extends Fragment {
         mScrollBanner = (ViewPager) rootView.findViewById(R.id.scrolling_banner);
         mScrollBanner.setAdapter(mImageAdapter);
         mScrollBanner.setOffscreenPageLimit(3);
-
         //When a page changes on a banner the bar smooth scrolls to position
         mScrollBanner.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
 
@@ -364,7 +371,6 @@ public class HomepageFragment extends Fragment {
         });
 
         eventAdapter = new EventListItemAdapter(getActivity(), showEvents);
-
         mListView.setAdapter(eventAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -392,6 +398,8 @@ public class HomepageFragment extends Fragment {
 
             }
         });
+
+        rotatedScreen = false;
 
         //if was started by notification, then go to it.
         Intent notifIntent = getActivity().getIntent();
@@ -476,9 +484,17 @@ public class HomepageFragment extends Fragment {
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
-        ImageView bmImage;
+        ImageView bmImage, secondary;
+        Bitmap imageBit;
+
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
+        }
+
+        public void updateImageView(ImageView newImgView) {
+            bmImage = newImgView;
+            if (imageBit != null)
+                bmImage.setImageBitmap(imageBit);
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -488,6 +504,8 @@ public class HomepageFragment extends Fragment {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {
+                if (isCancelled())
+                    return null;
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
@@ -497,7 +515,19 @@ public class HomepageFragment extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
+            imageBit = result;
             bmImage.setImageBitmap(result);
+            if (secondary != null) {
+                secondary.setImageBitmap(result);
+            }
+        }
+
+        public void setSecondary(ImageView detailView) {
+            secondary = detailView;
+        }
+
+        public Bitmap getBitmap() {
+            return imageBit;
         }
 
     }

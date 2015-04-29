@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DetailActivity extends ActionBarActivity implements View.OnClickListener {
@@ -62,6 +63,7 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
     private SearchView mSearch;
     private Button mCalendarButton, mRSVPButton;
 
+    private int eventsIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +146,19 @@ public class DetailActivity extends ActionBarActivity implements View.OnClickLis
         AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
         loadAnimation.start();
 
-        new HomepageFragment.DownloadImageTask(mImage).execute(imageUrl);
+        ArrayList<EventItem> events = HomepageFragment.getEvents();
+        //get the events index
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getNumber().equals(eventNum))
+                eventsIndex = i;
+        }
+
+        HomepageFragment.DownloadImageTask downloader = events.get(eventsIndex).getDownloader();
+        if (downloader.getBitmap() == null) {
+            downloader.setSecondary(mImage);
+        } else {
+            mImage.setImageBitmap(downloader.getBitmap());
+        }
 
         layout = (LinearLayout) findViewById(R.id.root_container_detail);
 

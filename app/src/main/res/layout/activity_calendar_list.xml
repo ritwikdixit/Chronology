@@ -19,7 +19,10 @@
 
             <CalendarView
                 android:id="@+id/calendar_chronology"
-                android:shownWeekCount="4"
+                android:selectedWeekBackgroundColor="@android:color/transparent"
+                android:textColor="@android:color/transparent"
+                android:clickable="false"
+                android:shownWeekCount="1"
                 android:layout_weight="3"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
@@ -45,7 +48,7 @@
 
             <ListView
                 android:id="@+id/events_per_day_listView"
-                android:layout_weight="1.73"
+                android:layout_weight="1.75"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
 

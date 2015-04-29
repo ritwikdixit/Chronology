@@ -1,6 +1,5 @@
 package com.ritwik.chronology;
 
-
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.widget.ImageView;
@@ -8,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import com.ritwik.chronology.HomepageFragment.DownloadImageTask;
 
 public class EventItem implements Serializable{
 
@@ -29,6 +29,8 @@ public class EventItem implements Serializable{
     private String category;
 
     private boolean isAttending;
+
+    private DownloadImageTask downloader;
 
     public EventItem(String number, String id, String mStartDate, String mEndDate, String mStartTime,
                      String mEndTime, String mTitle, String mLocation, String mDetails,
@@ -54,7 +56,8 @@ public class EventItem implements Serializable{
         AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
         loadAnimation.start();
 
-         new HomepageFragment.DownloadImageTask(mImage).execute(this.mUrl);
+        downloader = new DownloadImageTask(mImage);
+        downloader.execute(this.mUrl);
     }
 
     //internally saved data
@@ -63,6 +66,14 @@ public class EventItem implements Serializable{
                 data[8], data[9], data[10], data[11], Boolean.parseBoolean(data[12]), context);
     }
 
+    //onRotate
+    public void contextsUpdate(Context context) {
+        mImage = new ImageView(context);
+        mImage.setImageResource(R.drawable.load_horiz_anim);
+        AnimationDrawable loadAnimation = (AnimationDrawable) mImage.getDrawable();
+        loadAnimation.start();
+        downloader.updateImageView(mImage);
+    }
 
     public String getmStartDate() {
         return mStartDate;
@@ -118,6 +129,10 @@ public class EventItem implements Serializable{
 
     public void setAttending(boolean set) {
         this.isAttending = set;
+    }
+
+    public DownloadImageTask getDownloader() {
+        return downloader;
     }
 
     //formats date so it fits in the listView

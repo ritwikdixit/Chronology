@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -115,7 +117,7 @@ public class ImprovedCalendarActivity extends ActionBarActivity {
         t.replace(R.id.calendar_chronology, caldroidFragment);
         filterEvents(new Date());
         t.commit();
-
+                
         addEventClicker();
     }
 
