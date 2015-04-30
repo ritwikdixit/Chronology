@@ -31,6 +31,8 @@ public class LoginFragment extends Fragment {
     private static final String URL_FIREBASE = "https://chronology.firebaseio.com";
     private static final String LOG_TAG = "LoginPhase";
 
+    private static boolean hasRotatedLogin = false;
+
 
     //empty constructor refer to onCreateView
     public LoginFragment() {}
@@ -52,6 +54,11 @@ public class LoginFragment extends Fragment {
         mSignInButton = (Button) rootView.findViewById(R.id.sign_in_button);
         mSignUpButtonView = (TextView) rootView.findViewById(R.id.sign_up_buttonview);
 
+        if (hasRotatedLogin) {
+            hasRotatedLogin = false;
+            doLogin();
+        }
+
         //creating anonymous inner classes for click events
         mSignInButton.setOnClickListener(new View.OnClickListener() {
 
@@ -64,22 +71,10 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onAuthenticated(AuthData authData) {
 
-                        //Intents are used to start activities (like this) and send data across activities
-                        Intent intent = getActivity().getIntent();
-                        Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
-
-                        //if started by a notification
-                        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
-                            homepageIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
-                            homepageIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
-                                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
-                            homepageIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
-                                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
-                        }
-
-                        homepageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(homepageIntent);
-                        getActivity().finish();
+                        if (getActivity() != null)
+                            doLogin();
+                        else
+                            hasRotatedLogin = true;
 
                     }
                     @Override
@@ -118,5 +113,24 @@ public class LoginFragment extends Fragment {
 
 
         return rootView;
+    }
+
+    public void doLogin() {
+        //Intents are used to start activities (like this) and send data across activities
+        Intent intent = getActivity().getIntent();
+        Intent homepageIntent = new Intent(getActivity(), HomepageActivity.class);
+
+        //if started by a notification
+        if (intent != null && intent.getBooleanExtra(PushReceiver.PUSH_REDIRECT_KEY, false)) {
+            homepageIntent.putExtra(PushReceiver.PUSH_REDIRECT_KEY, true);
+            homepageIntent.putExtra(PushReceiver.PUSH_DETAILS_KEY,
+                    intent.getStringExtra(PushReceiver.PUSH_DETAILS_KEY));
+            homepageIntent.putExtra(PushReceiver.PUSH_MSG_KEY,
+                    intent.getStringExtra(PushReceiver.PUSH_MSG_KEY));
+        }
+
+        homepageIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homepageIntent);
+        getActivity().finish();
     }
 }

@@ -19,7 +19,7 @@ public class BannerAdapter extends PagerAdapter {
 
     public BannerAdapter(Context context, ArrayList<EventItem> events) {
         mContext = context;
-        mEvents = new ArrayList<>(events);
+        mEvents = events;
     }
 
     @Override
